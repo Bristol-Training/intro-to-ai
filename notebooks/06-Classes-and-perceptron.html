@@ -130,10 +130,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header sidebar-header-stacked">
       <a href="../index.html" class="sidebar-logo-link">
       <img src="../assets/UoB_RGB_24.png" alt="Jean Golding Institute Logo" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Introduction to AI</a> 
+    </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
@@ -297,9 +300,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-are-classes" id="toc-what-are-classes" class="nav-link active" data-scroll-target="#what-are-classes">What Are Classes?</a></li>
-  <li><a href="#why-use-classes" id="toc-why-use-classes" class="nav-link" data-scroll-target="#why-use-classes">Why Use Classes?</a></li>
-  <li><a href="#how-do-they-work" id="toc-how-do-they-work" class="nav-link" data-scroll-target="#how-do-they-work">How Do They Work?</a></li>
+  <li><a href="#what-are-classes" id="toc-what-are-classes" class="nav-link active" data-scroll-target="#what-are-classes">What are classes?</a></li>
+  <li><a href="#why-use-classes" id="toc-why-use-classes" class="nav-link" data-scroll-target="#why-use-classes">Why use classes?</a></li>
+  <li><a href="#how-do-they-work" id="toc-how-do-they-work" class="nav-link" data-scroll-target="#how-do-they-work">How do they work?</a></li>
   <li><a href="#a-simple-perceptron" id="toc-a-simple-perceptron" class="nav-link" data-scroll-target="#a-simple-perceptron">A simple perceptron</a></li>
   <li><a href="#a-pytorch-neural-network" id="toc-a-pytorch-neural-network" class="nav-link" data-scroll-target="#a-pytorch-neural-network">A PyTorch neural network</a></li>
   </ul>
@@ -329,11 +332,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>This notebook introduces the concept of classes in Python and demonstrates their application in building a simple Perceptron, a pytorch neural network.</p>
 <section id="what-are-classes" class="level3">
-<h3 class="anchored" data-anchor-id="what-are-classes">What Are Classes?</h3>
+<h3 class="anchored" data-anchor-id="what-are-classes">What are classes?</h3>
 <p>Classes in Python are like blueprints for creating objects. They let us bundle data (attributes) and functions (methods) together in a neat package. In the context of neural networks, we use classes to define models—like a Perceptron or an MLP—making our code organized and reusable.</p>
 </section>
 <section id="why-use-classes" class="level3">
-<h3 class="anchored" data-anchor-id="why-use-classes">Why Use Classes?</h3>
+<h3 class="anchored" data-anchor-id="why-use-classes">Why use classes?</h3>
 <ul>
 <li><strong>Structure</strong>: Classes help us organize related elements (e.g., weights, forward logic) together in one place.</li>
 <li><strong>Reusability</strong>: Once defined, we can create multiple instances (objects) of a class.</li>
@@ -341,7 +344,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 </section>
 <section id="how-do-they-work" class="level3">
-<h3 class="anchored" data-anchor-id="how-do-they-work">How Do They Work?</h3>
+<h3 class="anchored" data-anchor-id="how-do-they-work">How do they work?</h3>
 <p>A class has: - An <code>__init__</code> method to set up initial attributes (like weights). - Other methods (like <code>forward</code>) to define what the class does.</p>
 <p>Let’s see two examples: a simple Perceptron and a PyTorch-style network.</p>
 </section>
@@ -404,7 +407,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> net(sample_input)</span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"SimpleNet output:"</span>, output)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>SimpleNet output: tensor([-0.3074], grad_fn=&lt;ViewBackward0&gt;)</code></pre>
+<pre><code>SimpleNet output: tensor([0.5625], grad_fn=&lt;ViewBackward0&gt;)</code></pre>
 </div>
 </div>
 
