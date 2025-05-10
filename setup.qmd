@@ -4,44 +4,52 @@ To follow along on your own machine, follow these instructions:
 
 1. **Open a terminal** (or Git Bash)
 
-    _Windows users:_ We recommend that you install Git and Git Bash, unless you are using Windows Subsystem for Linux (WSL).
-    You should be able to do this by running the following command in command prompt or Powershell:
+   ::: {.callout-note}
+   ## Windows users
 
-    ```bash
-    winget install --id Git.Git -e --source winget 
-    ```
+   We recommend that you install Git and Git Bash, unless you are using Windows Subsystem for Linux (WSL).
+   You should be able to do this by running the following command in command prompt or Powershell:
 
-    If this doesn't work, then [follow the instructions on the Git website](https://git-scm.com/downloads/win).
+   ```bash
+   winget install --id Git.Git -e --source winget
+   ```
+
+   If this doesn't work, then [follow the instructions on the Git website](https://git-scm.com/downloads/win).
+   :::
 
 2. **Install `uv`** by running:
 
-    ```bash
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-    ```
+   ```bash
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
 
-    Close and re-open your terminal, if the installer requests this.
+   Close and re-open your terminal, if the installer requests this.
 
-    If you already have `uv` installed, then upgrade to the latest version before continuing by running `uv self update`, or by upgrading through whatever means you used to install `uv` originally (for example, Homebrew users would run `brew upgrade uv`).
+   ::: {.callout-note}
+   ## If you have `uv` installed already
+   Upgrade to the latest version of `uv` before continuing, by running `uv self update`, or by upgrading through whatever means you used to install `uv` originally (for example, Homebrew users would run `brew upgrade uv`).
+   :::
 
 3. **Download the course content**:
 
-    ```bash
-    git clone https://github.com/Bristol-Training/intro-to-ai
-    cd course
-    ```
+   ```bash
+   git clone https://github.com/Bristol-Training/intro-to-ai
+   cd intro-to-ai
+   ```
 
 4. **Check your PyTorch version**:
 
-    ```bash
-    uv run python -c "import torch; print(torch.__version__)"
-    ```
+   ```bash
+   uv run python -c "import torch; print('PyTorch version', torch.__version__)"
+   ```
 
-    This command will automatically download the version of Python and all the Python libraries that are required for the course.
+   This command will automatically download the version of Python and associated libraries that are required for the course, before displaying the version of PyTorch on the screen.
+    This should be something like `2.7.0`.
 
 5. **Run Jupyter Lab**:
 
-    ```bash
-    uv run jupyter lab notebooks
-    ```
+   ```bash
+   uv run jupyter lab notebooks
+   ```
 
-    In future, just re-run this command to get access to the course again.
+   In future, just re-run this command to get access to the course again.

@@ -1,13 +1,50 @@
 # Introduction to AI
 
-The introduction to AI and neural networks course is aimed at the Python programmer who wants to learn how to apply deep learning to data problems.
+This course is aimed at the Python programmer who wants to learn how to apply deep learning to data problems. 
 
-## Read the course materials
+In this course we will learn about how a neural network is structured with multiple hidden layers and non-linear activation functions such a way that we can input some features of data to try and predict some labels.
 
-The course materials can be [read online](notebooks/00-Introduction.html).
+For the purpose of this course we will be using a tool called Jupyter Notebooks which provides you with a local editor and Python terminal in your web browser.
 
-You can also access pages from the course as [Juypter notebooks](https://github.com/Bristol-Training/intro-to-ai/tree/main/notebooks).
+## How to use the course materials
 
-## Run the code on your own machine
+You can [follow the course materials online](notebooks/01-Perceptron.ipynb).
 
-To follow along on your own machine, [follow these instructions](setup.qmd).
+To run the code on your own machine, [follow the setup instructions](setup.qmd).
+
+You can also access individual pages from the course as [Juypter notebooks](https://github.com/Bristol-Training/intro-to-ai/tree/main/notebooks).
+
+## Audience level
+
+You should be comfortable programming in Python. Experience with the content of our [Applied Data Analysis in Python course](https://bristol-training.github.io/applied-data-analysis-in-python/) or equivalent is strongly recommended. This covers:
+
+- Running python in a Jupyter notebook
+- Working with dataframes/numpy arrays
+- Plotting with matplotlib/seaborn
+- Defining functions
+- Using classes such as sklearn models
+- Test train split and validating models
+
+The theory of deep learning includes ideas from calculus and linear algebra. Understanding the idea of a derivative of a function would be strongly recommend. Having some notion of matrix multiplication would be useful but is not essential.
+
+## Intended learning outcomes
+
+By the end of this course, you will:
+
+- Understand the basic theory of a feed forward multi layer perceptron.
+- Start to get the grips with PyTorch, tensors and writing classes in Python.
+- Understand how to pre-process data for training (including test train split)
+- Understand how to feed forward data and evaluate test loss for a neural network.
+- Have a basic intuition for what gradient descent and back propagation are.
+- Implement back propagation to update our weights and biases and reduce our test loss.
+
+### What this course will not cover
+
+Deep learning and neural networks are a huge field of active research that we cannot cover in 3 hours. This is an intro level class designed to cover the learning outcomes above and serve as a prerequisite to further topics in AI, neural networks and deep learning, such as:
+
+- Cross entropy loss and more advanced optimisers
+- Training neural networks using High Powered Computing (HPC) resources
+- Convolutional Neural Networks (CNNs) for image/video analysis
+- Recurrent Neural Networks (RNNs) for time series and natural language processing
+- Transformers and Large Language Models (LLMs)
+- Graphical Neural Networks (GNNs)

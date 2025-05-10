@@ -2,15 +2,13 @@
 
 The introduction to AI and neural networks course is aimed at the Python programmer who wants to learn how to apply deep learning to data problems.
 
-## Read the course materials
+## How to use the course materials
 
-The course materials can be read [on the course website](https://bristol-training.github.io/intro-to-ai/).
+The course materials can be read online [on the course website](https://bristol-training.github.io/intro-to-ai/).
 
-You can also access pages from the course as [Juypter notebooks](https://github.com/Bristol-Training/intro-to-ai/tree/main/notebooks).
+To run the code on your own machine, [follow the setup instructions](https://bristol-training.github.io/intro-to-ai/setup.html).
 
-## Run the code on your own machine
-
-To follow along on your own machine, [follow these instructions](https://bristol-training.github.io/intro-to-ai/setup.html).
+You can also access individual pages from the course as [Juypter notebooks](./notebooks).
 
 ## Making changes to the course
 

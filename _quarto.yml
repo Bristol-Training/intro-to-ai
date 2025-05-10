@@ -13,9 +13,10 @@ website:
     style: "docked"
     border: true
     contents:
+      - href: "index.qmd"
+        text: "Introduction"
       - href: "setup.qmd"
         text: "Setup"
-      - href: "notebooks/00-Introduction.ipynb"
       - section: "Theory (part 1)"
         contents:
           - href: "notebooks/01-Perceptron.ipynb"
