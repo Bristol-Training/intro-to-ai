@@ -461,14 +461,12 @@ window.Quarto = {
 <section id="gradient-descent-in-higher-dimensions" class="level2">
 <h2 class="anchored" data-anchor-id="gradient-descent-in-higher-dimensions">Gradient Descent in Higher Dimensions</h2>
 <p>In practise, we want to update all the weights and biases of our neural network at once. This means we want to use a generalisation of the derivative called the gradient function. Given a function <span class="math inline">\(f\)</span> of <span class="math inline">\(n\)</span> variables: <span class="math inline">\(w_{1}, w_{2}, \ldots, w_{n}\)</span> we can define the gradient function of <span class="math inline">\(f\)</span> as:</p>
-$f (w_{1}, , w_{n}) =
-<span class="math display">\[\begin{bmatrix}
+<p><span class="math inline">\(\nabla f (w_{1}, \ldots, w_{n}) = \begin{bmatrix}
            \frac{\partial f}{\partial w_{1}} \\
            \frac{\partial f}{\partial w_{2}} \\
            \vdots \\
            \frac{\partial f}{\partial w_{n}}
-         \end{bmatrix}\]</span>
-<p>$</p>
+         \end{bmatrix}\)</span></p>
 <p>where <span class="math inline">\(\frac{\partial f}{\partial w_{1}}\)</span> is the <em>partial derivative</em> of the function <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(w_{1}\)</span>. What this means is that each component of this vector tells you how steep the function <span class="math inline">\(f\)</span> is with respect to each of its variables.</p>
 <p>Now if we imagine a loss surface (like a mountain range where the height of where you are standing is the value of a loss function) then we just want to walk downhill with respect to all of our components. This direction is described by the gradient vector.</p>
 <p>In practise the step we take is proportional to the size of the gradient. We will define a variable called the <em>learning rate</em>, which will tell us how big of a step to take downhill each time.</p>

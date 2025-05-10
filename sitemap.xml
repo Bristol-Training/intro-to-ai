@@ -2,66 +2,66 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://Bristol-Training.github.io/intro-to-ai/index.html</loc>
-    <lastmod>2025-05-10T19:29:48.882Z</lastmod>
+    <lastmod>2025-05-10T19:34:18.419Z</lastmod>
   </url>
   <url>
     <loc>https://Bristol-Training.github.io/intro-to-ai/notebooks/05-Data-pipeline.html</loc>
-    <lastmod>2025-05-10T19:31:08.028Z</lastmod>
+    <lastmod>2025-05-10T19:35:34.028Z</lastmod>
   </url>
   <url>
     <loc>https://Bristol-Training.github.io/intro-to-ai/notebooks/03-MLP-evaluation.html</loc>
-    <lastmod>2025-05-10T19:30:50.274Z</lastmod>
+    <lastmod>2025-05-10T19:35:16.871Z</lastmod>
   </url>
   <url>
     <loc>https://Bristol-Training.github.io/intro-to-ai/notebooks/04-PyTorch-and-tensors.html</loc>
-    <lastmod>2025-05-10T19:30:42.773Z</lastmod>
+    <lastmod>2025-05-10T19:35:09.763Z</lastmod>
   </url>
   <url>
     <loc>https://Bristol-Training.github.io/intro-to-ai/notebooks/09-Backpropagation.html</loc>
-    <lastmod>2025-05-10T19:30:34.648Z</lastmod>
+    <lastmod>2025-05-10T19:35:02.418Z</lastmod>
   </url>
   <url>
     <loc>https://Bristol-Training.github.io/intro-to-ai/notebooks/01-Perceptron.html</loc>
-    <lastmod>2025-05-10T19:30:26.241Z</lastmod>
+    <lastmod>2025-05-10T19:34:54.309Z</lastmod>
   </url>
   <url>
     <loc>https://Bristol-Training.github.io/intro-to-ai/notebooks/00-Introduction.html</loc>
-    <lastmod>2025-05-10T19:30:19.811Z</lastmod>
+    <lastmod>2025-05-10T19:34:48.266Z</lastmod>
   </url>
   <url>
     <loc>https://Bristol-Training.github.io/intro-to-ai/setup.html</loc>
-    <lastmod>2025-05-10T19:29:48.885Z</lastmod>
+    <lastmod>2025-05-10T19:34:18.422Z</lastmod>
   </url>
   <url>
     <loc>https://Bristol-Training.github.io/intro-to-ai/contributors.html</loc>
-    <lastmod>2025-05-10T19:29:48.882Z</lastmod>
+    <lastmod>2025-05-10T19:34:18.419Z</lastmod>
   </url>
   <url>
     <loc>https://Bristol-Training.github.io/intro-to-ai/notebooks/11-Learning-rate.html</loc>
-    <lastmod>2025-05-10T19:30:17.059Z</lastmod>
+    <lastmod>2025-05-10T19:34:45.637Z</lastmod>
   </url>
   <url>
     <loc>https://Bristol-Training.github.io/intro-to-ai/notebooks/08-Gradient-descent.html</loc>
-    <lastmod>2025-05-10T19:30:22.828Z</lastmod>
+    <lastmod>2025-05-10T19:34:51.090Z</lastmod>
   </url>
   <url>
     <loc>https://Bristol-Training.github.io/intro-to-ai/notebooks/02-Activation-functions.html</loc>
-    <lastmod>2025-05-10T19:30:31.570Z</lastmod>
+    <lastmod>2025-05-10T19:34:59.556Z</lastmod>
   </url>
   <url>
     <loc>https://Bristol-Training.github.io/intro-to-ai/notebooks/12-Moving-to-HPC.html</loc>
-    <lastmod>2025-05-10T19:30:37.682Z</lastmod>
+    <lastmod>2025-05-10T19:35:04.906Z</lastmod>
   </url>
   <url>
     <loc>https://Bristol-Training.github.io/intro-to-ai/notebooks/06-Classes-and-perceptron.html</loc>
-    <lastmod>2025-05-10T19:30:47.083Z</lastmod>
+    <lastmod>2025-05-10T19:35:13.923Z</lastmod>
   </url>
   <url>
     <loc>https://Bristol-Training.github.io/intro-to-ai/notebooks/10-Training-pipeline.html</loc>
-    <lastmod>2025-05-10T19:31:00.398Z</lastmod>
+    <lastmod>2025-05-10T19:35:26.663Z</lastmod>
   </url>
   <url>
     <loc>https://Bristol-Training.github.io/intro-to-ai/notebooks/07-Multi-layer-perceptron.html</loc>
-    <lastmod>2025-05-10T19:31:13.444Z</lastmod>
+    <lastmod>2025-05-10T19:35:39.185Z</lastmod>
   </url>
 </urlset>
