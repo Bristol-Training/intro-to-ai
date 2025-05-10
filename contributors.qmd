@@ -1,0 +1,10 @@
+# Contributors
+
+This course was written by:
+
+- Huw Day
+- Boyi Li
+- Vaishnu Dutta
+- Zhengzhe Peng
+
+The course is maintained by the Jean Golding Institute team.

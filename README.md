@@ -1,54 +1,40 @@
 # Introduction to AI
 
-Course material for introduction to AI and neural networks, mostly being run by Huw Day.
+The introduction to AI and neural networks course is aimed at the Python programmer who wants to learn how to apply deep learning to data problems.
 
-## Course materials
+## Read the course materials
 
-The course notebooks are in the [`notebooks`](./notebooks/) directory.
+The course materials can be read [on the course website](https://bristol-training.github.io/intro-to-ai/).
 
-## Run on your own machine
+You can also access pages from the course as [Juypter notebooks](https://github.com/Bristol-Training/intro-to-ai/tree/main/notebooks).
 
-> [!NOTE]
-> ### Windows users
-> Install Git and Git Bash first, unless you are using Windows Subsystem for Linux (WSL). You should be able to do this by running the following command in command prompt or Powershell:
->
-> ```shell
-> winget install --id Git.Git -e --source winget 
-> ```
->
-> If this doesn't work, then [follow the instructions on the Git website](https://git-scm.com/downloads/win).
+## Run the code on your own machine
 
-1. **Open a terminal** (or Git Bash)
+To follow along on your own machine, [follow these instructions](https://bristol-training.github.io/intro-to-ai/setup.html).
 
-2. **Install `uv`** by running:
+## Making changes to the course
 
-    ```shell
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-    ```
+We are happy to receive issues or pull requests for this course.
 
-    Close and re-open your terminal, if the installer requests this.
+Please install [nbstripout](https://pypi.org/project/nbstripout/) before you commit any changes, to ensure that output is stripped from the notebooks before Git sees them.
+If you're using uv, this should be as simple as:
 
-    If you already have `uv` installed, then upgrade to the latest version before continuing by running `uv self update`, or by upgrading through whatever means you used to install `uv` originally (for example, Homebrew users would run `brew upgrade uv`).
+```bash
+uvx nbstripout --install
+```
 
-3. **Download the course content**:
+We use [Quarto](https://quarto.org/) to build the website, and this happens automatically when you push your changes back up to GitHub, via a [GitHub Action](https://github.com/Bristol-Training/intro-to-ai/blob/main/.github/workflows/publish-page.yaml).
+To preview your changes locally before committing/pushing, install Quarto and then run:
 
-    ```shell
-    git clone https://github.com/Bristol-Training/intro-to-ai
-    cd course
-    ```
+```bash
+uv run quarto preview
+# or
+uv run quarto preview --no-execute
+# to skip running the python code in the notebooks
+```
 
-4. **Check your PyTorch version**:
+## License
 
-    ```shell
-    uv run python -c "import torch; print(torch.__version__)"
-    ```
+This content is licensed under Creative Commons Attribution 4.0 International (CC BY 4.0), unless specified otherwise.
 
-    This command will automatically download the version of Python and all the Python libraries that are required for the course.
-
-5. **Run Jupyter Lab**:
-
-    ```shell
-    uv run jupyter lab
-    ```
-
-    In future, just re-run this command to get access to the course again.
+To view a copy of this license, visit https://creativecommons.org/licenses/by/4.0/

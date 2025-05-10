@@ -1,0 +1,13 @@
+# Introduction to AI
+
+The introduction to AI and neural networks course is aimed at the Python programmer who wants to learn how to apply deep learning to data problems.
+
+## Read the course materials
+
+The course materials can be [read online](notebooks/00-Introduction.html).
+
+You can also access pages from the course as [Juypter notebooks](https://github.com/Bristol-Training/intro-to-ai/tree/main/notebooks).
+
+## Run the code on your own machine
+
+To follow along on your own machine, [follow these instructions](setup.qmd).

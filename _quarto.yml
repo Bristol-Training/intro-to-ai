@@ -1,0 +1,63 @@
+project:
+  type: website
+
+website:
+  title: "Introduction to AI"
+  page-navigation: true
+
+  sidebar: 
+    logo: "assets/UoB_RGB_24.png"
+    align: center
+    logo-alt: "Jean Golding Institute Logo"
+    style: "docked"
+    border: true
+    contents:
+      - href: "setup.qmd"
+        text: "Setup"
+      - href: "notebooks/00-Introduction.ipynb"
+      - section: "Theory (part 1)"
+        contents:
+          - href: "notebooks/01-Perceptron.ipynb"
+          - href: "notebooks/02-Activation-functions.ipynb"
+            text: "Activation functions"
+          - href: "notebooks/03-MLP-evaluation.ipynb"
+      - section: "Practical (part 1)"
+        contents:
+          - href: "notebooks/04-PyTorch-and-tensors.ipynb"
+            text: "PyTorch and tensors"
+          - href: "notebooks/05-Data-pipeline.ipynb"
+          - href: "notebooks/06-Classes-and-perceptron.ipynb"
+          - href: "notebooks/07-Multi-layer-perceptron.ipynb"
+            text: "Multi-later perceptron"
+      - section: "Theory (part 2)"
+        contents:
+          - href: "notebooks/08-Gradient-descent.ipynb"
+            text: "Gradient descent"
+          - href: "notebooks/09-Backpropagation.ipynb"
+            text: "Backpropagation"
+      - section: "Practical (part 2)"
+        contents:
+          - href: "notebooks/10-Training-pipeline.ipynb"
+            text: "Training pipeline"
+          - href: "notebooks/11-Learning-rate.ipynb"
+            text: "Learning rate"
+          - href: "notebooks/12-Moving-to-HPC.ipynb"
+            text: "Moving to HPC"
+      - section: "About"
+        contents:
+          - href: "contributors.qmd"
+
+  page-footer:
+    left: "Course delivered by the [Jean Golding Institute](https://www.bristol.ac.uk/golding/)<br>© [CC-BY 4.0](http://creativecommons.org/licenses/by/4.0/)"
+  repo-url: https://github.com/bristol-training/intro-to-ai
+  repo-actions: [edit, issue]
+
+format:
+  html:
+    theme: [cosmo, assets/styles.scss]
+    toc: true
+    highlight-style: github
+
+execute:
+  enabled: true
+  freeze: auto
