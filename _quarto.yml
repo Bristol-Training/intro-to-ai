@@ -5,7 +5,8 @@ website:
   title: "Introduction to AI"
   page-navigation: true
 
-  sidebar: 
+  sidebar:
+    title: "Introduction to AI"
     logo: "assets/UoB_RGB_24.png"
     align: center
     logo-alt: "Jean Golding Institute Logo"
