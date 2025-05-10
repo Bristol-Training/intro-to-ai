@@ -1,0 +1,20 @@
+[project]
+name = "intro-to-ai"
+version = "0.1.0"
+requires-python = "~=3.12.8"
+dependencies = [
+  "torch>=2.7",
+  "numpy>=2.2",
+  "matplotlib>=3.10",
+  "seaborn>=0.13",
+  "scikit-learn>=1.6",
+  "jupyter>=1.1.1",
+]
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
