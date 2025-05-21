@@ -314,36 +314,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Run the code on your own machine</h1>
 <p>To follow along on your own machine, follow these instructions:</p>
 <ol type="1">
-<li><p><strong>Open a terminal</strong> (or Git Bash)</p>
+<li><p><strong>Open a terminal</strong> (or Git Bash if you’re using Windows)</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Windows users
+If you’re using Windows
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>We recommend that you install Git and Git Bash, unless you are using Windows Subsystem for Linux (WSL). You should be able to do this by running the following command in command prompt or Powershell:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">winget</span> install <span class="at">--id</span> Git.Git <span class="at">-e</span> <span class="at">--source</span> winget</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>If this doesn’t work, then <a href="https://git-scm.com/downloads/win">follow the instructions on the Git website</a>.</p>
+</div>
 </div>
 </div></li>
 <li><p><strong>Install <code>uv</code></strong> by running:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-LsSf</span> https://astral.sh/uv/install.sh <span class="kw">|</span> <span class="fu">sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Close and re-open your terminal, if the installer requests this.</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 If you have <code>uv</code> installed already
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Upgrade to the latest version of <code>uv</code> before continuing, by running <code>uv self update</code>, or by upgrading through whatever means you used to install <code>uv</code> originally (for example, Homebrew users would run <code>brew upgrade uv</code>).</p>
+</div>
 </div>
 </div></li>
 <li><p><strong>Download the course content</strong>:</p>
