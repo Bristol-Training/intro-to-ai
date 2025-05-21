@@ -1,5 +1,247 @@
 [
   {
+    "objectID": "contributors.html",
+    "href": "contributors.html",
+    "title": "Contributors",
+    "section": "",
+    "text": "Contributors\nThis course was written by:\n\nHuw Day\nBoyi Li\nVaishnudebi Dutta\nZhengzhe Peng\n\nThe course is maintained by the Jean Golding Institute team.",
+    "crumbs": [
+      "About",
+      "Contributors"
+    ]
+  },
+  {
+    "objectID": "notebooks/02-Activation-functions.html",
+    "href": "notebooks/02-Activation-functions.html",
+    "title": "Activation functions: When straight lines aren’t enough",
+    "section": "",
+    "text": "We want to generalise the idea of the perceptron for trickier problems. A sensible thing to do is to add some hidden layers of neurons to our perceptron between our input layer and our output layer, constructing a so-called “Multilayer Perceptron” or “MLP” for short. These neurons in the hidden layer work in exactly the same way as those in the input layer. They have some weights and a bias assigned to them, take in inputs and do some linear shift to them.\nimport numpy as np\n\ndef toy_MLP(input, weights, bias):\n    \"\"\"\n    A toy example of a multilayer perceptron, two inputs x1 and x2, one hidden layer with two neurons, and one output layer with one neuron.\n    Manually assigned weights and biases:\n    \"\"\"\n    # These just check the inputs, weights and biases are the right shape/size\n    assert input.shape == (2,), \"Inputs are the wrong shape\"\n    assert weights.shape == (6,), \"Weights are the wrong shape\"\n    assert bias.shape == (3,), \"Biases are the wrong shape\"\n\n    # We feed the inputs into the hidden layer and calculate the outputs which then get fed into the output layer\n    hidden_layer = [input[0] * weights[0] + input[1] * weights[1] + bias[0],\n                    input[0] * weights[2] + input[1] * weights[3] + bias[1]]\n    # The output of the hidden layer is then fed into the output layer\n    output = hidden_layer[0] * weights[4] + hidden_layer[1] * weights[5] + bias[2]\n    # Because we are doing a classification task, we want discrete outputs, so we return 1 if the output is positive and 0 otherwise\n    output = 1 if output &gt; 0 else 0\n    return output\nWe can see that when we run this with some weights and biases we get some sense in which we are right or wrong:\n# Change the values in the below numpy arrays to test the function with different inputs\nweights = np.array([0.1, 0.2, 0.3, 0.4, 0.5, 0.6])\nbias = np.array([0.1, 0.2, 0.3])\n\nXORinputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])\nXORoutputs = np.array([0, 1, 1, 0])\n\nfor i in range(4):\n    output = toy_MLP(XORinputs[i], weights, bias)\n    print(f\"For input: {XORinputs[i]} we wanted to get {XORoutputs[i]} and got {output}\")\n\nFor input: [0 0] we wanted to get 0 and got 1\nFor input: [0 1] we wanted to get 1 and got 1\nFor input: [1 0] we wanted to get 1 and got 1\nFor input: [1 1] we wanted to get 0 and got 1\nRun the code below by changing the values of the weights and biases and see what happens to the decision boundary.\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom matplotlib.lines import Line2D\nfrom itertools import cycle\n\ndef decision_boundary_toy_mlp(function = toy_MLP, weights = weights, bias = bias, XORinputs = XORinputs, XORoutputs = XORoutputs, activation_function=None):\n    # Plot the decision boundary caluclated from toy_mlp based on weights and biases\n    # Includes the XOR data points\n    # And then draws a line showing where the decision boundary is\n\n    # Plotting the data points\n    for i,input in enumerate(XORinputs):\n        if XORoutputs[i]==0:\n            plt.scatter(input[0], input[1], color='blue', marker='^', s=100)\n        else:\n            plt.scatter(input[0], input[1], color='red', marker='o', s=100)\n\n    # Drawing the decision boundaries\n    proxy_lines=[]\n    color_cycle = cycle(['r', 'g', 'b', 'purple', 'orange', 'black'])\n    colors = [next(color_cycle) for _ in range(len(bias))]\n    labels=[]\n    x1_vals = np.linspace(-1, 2, 500)\n    x2_vals = np.linspace(-1, 2, 500)\n    x1, x2 = np.meshgrid(x1_vals, x2_vals)\n    def vectorized_MLP(x1, x2):\n        input_array = np.array([x1, x2])\n        if function == toy_MLP:\n            return toy_MLP(input_array, weights, bias)\n        return function(input_array, weights, bias, activation_function)\n    y = np.vectorize(vectorized_MLP)(x1, x2)\n    plt.contour(x1, x2, y, levels=[0],linewidths=2,colors=colors[0])\n    proxy_lines.append(Line2D([0], [0], color=colors[0], linestyle='-'))\n\n    # Plot settings\n    plt.xlim(-1, 2)\n    plt.ylim(-1, 2)\n    plt.xlabel('$x_1$', fontsize=12)\n    plt.ylabel('$x_2$', fontsize=12)\n    plt.axhline(0, color='black', linewidth=0.8)\n    plt.axvline(0, color='black', linewidth=0.8)\n    plt.grid(True, linestyle='--', alpha=0.3)\n    plt.legend(proxy_lines, labels)\n\n    # Displaying the plot\n    plt.show()\n\nXORinputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])\nXORoutputs = np.array([0, 1, 1, 0])\nweights = np.array([0.1, 0.5, 0.3, 0.4, 0.5, 0.6])\nbias = np.array([0.1, 0.2, 0.3])\ndecision_boundary_toy_mlp(function = toy_MLP, weights = weights, bias = bias, XORinputs = XORinputs, XORoutputs = XORoutputs)\nHave a play with different weights and biases to try and make a decision boundary that can distinguish between the two different categories of points. What do you notice about the decision boundary?\nWhat we saw previously is that doing multiple linear transformations to your data is still at the end of the day, a linear transformation. You can think of this in terms of composing functions:\nIf $ f(x) = w_{1}x + b_{1} $ and $ g(x) = w_{2}x + b_{2} $ are two functions that draw straight lines then we see that:\n\\(f(g(x)) = f(w_{2}x + b_{2}) = w_{1}(w_{2}x + b_{2}) + b_{1} = (w_{1}w_{2})x + (w_{1}b_{2} + b_{1})\\)\n…which is still just a straight line but with slope: \\((w_{1}w_{2})\\) and intercept \\((w_{1}b_{2} + b_{1})\\).\nSo what we need to do is introduce some non-linearity by adding something called an activation function. We have already seen these in some sense when we introduced the “step” by making an output 1 if the input is positive and 0 otherwise.",
+    "crumbs": [
+      "Theory (part 1)",
+      "Activation functions"
+    ]
+  },
+  {
+    "objectID": "notebooks/02-Activation-functions.html#activation-functions",
+    "href": "notebooks/02-Activation-functions.html#activation-functions",
+    "title": "Activation functions: When straight lines aren’t enough",
+    "section": "Activation functions",
+    "text": "Activation functions\nThere are many different activation functions which have different pros and cons! See below some of them:\n\nSigmoid\nThe first activation function you might encounter, which was used when neural networks were first studied, is called the Sigmoid function. It has the effect of squishing input values between 0 and 1. It is sometimes called the “logistic” function. If you’ve ever come across logistic regression, then you might understand why!\n\n\nReLU\nThe second and arguably most common activation function is called the Rectified Linear Unit, or ReLU for short. It returns 0 if the input is negative and returns the input value if the input is positive.\n\n\nTanh\nThe third activation function we’ll mention is tanh (pronounced “tanch” or “hyperbolic tan”), which has the effect of squishing all inputs into outputs in the range -1 to 1. It is the activation function most commonly used in certain types of recurrent neural networks (RNNs) which have applications in time series forecasting and natural language processing.\n\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Sigmoid\ndef sigmoid(x):\n    return 1 / (1 + np.exp(-x))\n# ReLU\ndef relu(x):\n    return np.maximum(0, x)\n# Tanh\ndef tanh(x):\n    return np.tanh(x)\n\n# Plot the activation functions on three different plots in the same figure\nx = np.linspace(-10, 10, 100)\nplt.figure(figsize=(12, 4))\nplt.subplot(1, 3, 1)\nplt.plot(x, sigmoid(x))\nplt.title('Sigmoid')\nplt.subplot(1, 3, 2)\nplt.plot(x, relu(x))\nplt.title('ReLU')\nplt.subplot(1, 3, 3)\nplt.plot(x, tanh(x))\nplt.title('Tanh')\nplt.show()\n\n\n\n\n\n\n\n\n\n# Recode toy_mlp function with activation functions\n\ndef toy_MLP_with_activations(input, weights, bias, activation_function=None):\n    \"\"\"\n    A toy example of a multilayer perceptron, two inputs x1 and x2, one hidden layer with two neurons, and one output layer with one neuron.\n    Also uses activation functions of your choosing\n    Manually assigned weights and biases:\n    \"\"\"\n    # These just check the inputs, weights and biases are the right shape/size\n    assert input.shape == (2,), \"Inputs are the wrong shape\"\n    assert weights.shape == (6,), \"Weights are the wrong shape\"\n    assert bias.shape == (3,), \"Biases are the wrong shape\"\n    assert activation_function in [None, sigmoid, relu, tanh], \"Please choose a valid activation function from [None, sigmoid, relu, tanh]\"\n\n    # If the activation function is None, we just use the identity function\n    if activation_function is None:\n        activation_function = lambda x: x\n\n    # We feed the inputs into the hidden layer and calculate the outputs which then get fed into the output layer\n    hidden_layer = [activation_function(input[0] * weights[0] + input[1] * weights[1] + bias[0]),\n                    activation_function(input[0] * weights[2] + input[1] * weights[3] + bias[1])]\n    # print(hidden_layer[0], hidden_layer[1])\n\n    # The output of the hidden layer is then fed into the output layer\n    output = hidden_layer[0] * weights[4] + hidden_layer[1] * weights[5] + bias[2]\n    # print(output)\n    # Because we are doing a classification task, we want discrete outputs, so we return 1 if the output is positive and 0 otherwise\n    output = 1 if output &gt; 0 else 0\n    return output\n\nWe can now try again to see if, using an activation function, we can get the right shape for the XOR problem:\n\n# Change the values in the below numpy arrays to test the function with different inputs\nweights = np.array([1, 1, 1, 1, 2, -1])\nbias = np.array([-0.1, -1.8, -2.0])\n\nXORinputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])\nXORoutputs = np.array([0, 1, 1, 0])\n\nfor i in range(4):\n    output = toy_MLP_with_activations(XORinputs[i], weights, bias, activation_function=tanh)\n    print(f\"For input: {XORinputs[i]} we wanted to get {XORoutputs[i]} and got {output}\")\n\nFor input: [0 0] we wanted to get 0 and got 0\nFor input: [0 1] we wanted to get 1 and got 1\nFor input: [1 0] we wanted to get 1 and got 1\nFor input: [1 1] we wanted to get 0 and got 0\n\n\n\ndecision_boundary_toy_mlp(function=toy_MLP_with_activations, weights=weights, bias=bias, XORinputs=XORinputs, XORoutputs=XORoutputs, activation_function=tanh)\n\n\n\n\n\n\n\n\nIn two-dimensional(2D) feature space, the decision boundary is a line. In 3D, it becomes a plane, and in higher dimensions, a hyperplane that separates the feature space.",
+    "crumbs": [
+      "Theory (part 1)",
+      "Activation functions"
+    ]
+  },
+  {
+    "objectID": "notebooks/06-Classes-and-perceptron.html",
+    "href": "notebooks/06-Classes-and-perceptron.html",
+    "title": "Classes and perceptron",
+    "section": "",
+    "text": "This notebook introduces the concept of classes in Python and demonstrates their application in building a simple Perceptron, a pytorch neural network.",
+    "crumbs": [
+      "Practical (part 1)",
+      "Classes and perceptron"
+    ]
+  },
+  {
+    "objectID": "notebooks/06-Classes-and-perceptron.html#a-simple-perceptron",
+    "href": "notebooks/06-Classes-and-perceptron.html#a-simple-perceptron",
+    "title": "Classes and perceptron",
+    "section": "A simple perceptron",
+    "text": "A simple perceptron\n\nThe Perceptron Class: This is like a tiny decision-maker. It sets up random “weights” and a “bias” when created.\nThe forward Method: It takes an input (like [1.0, 2.0]), mixes it with weights and bias, and decides “yes” (1) or “no” (-1) using a simple rule.\nTesting It: We create a Perceptron, give it an input, and see what it says—super simple!\n\n\nimport torch\nimport torch.nn as nn\n\nclass Perceptron:\n    def __init__(self, input_size):\n        # Initialize random weights and bias\n        self.weights = torch.randn(input_size)\n        self.bias = torch.randn(1)\n    \n    def forward(self, x):\n        # Compute the output: sign of (weights * input + bias)\n        return torch.sign(torch.dot(x, self.weights) + self.bias)\n\n# Test the Perceptron\nperceptron = Perceptron(input_size=2)  # Create an instance with 2 inputs\nsample_input = torch.tensor([5.0, 2.0])\noutput = perceptron.forward(sample_input)\nprint(\"Perceptron output:\", output)\n\nPerceptron output: tensor([-1.])",
+    "crumbs": [
+      "Practical (part 1)",
+      "Classes and perceptron"
+    ]
+  },
+  {
+    "objectID": "notebooks/06-Classes-and-perceptron.html#a-pytorch-neural-network",
+    "href": "notebooks/06-Classes-and-perceptron.html#a-pytorch-neural-network",
+    "title": "Classes and perceptron",
+    "section": "A PyTorch neural network",
+    "text": "A PyTorch neural network\n\nThe SimpleNet Class: A simple neural network built with PyTorch. It sets up two “layers” of connections: one from inputs to a hidden layer (like a middle step), and another from the hidden layer to the output.\nThe forward Method: This tells the network how to process an input—it passes it through the first layer, adds a twist with ReLU, then goes through the second layer to get the final result.\nTesting It: We create a SimpleNet, give it an input (like [1.0, 2.0]), and see what it predicts—nice and straightforward!\n\n\nclass SimpleNet(nn.Module):\n    def __init__(self, input_size, hidden_size, output_size):\n        super(SimpleNet, self).__init__()  # Initialize the parent nn.Module class\n        self.layer1 = nn.Linear(input_size, hidden_size)  # Input to hidden layer\n        self.layer2 = nn.Linear(hidden_size, output_size)  # Hidden to output layer\n        self.relu = nn.ReLU()\n\n    def forward(self, x):\n        # Define the forward pass with ReLU activation\n        x = self.layer1(x)\n        x = self.relu(x)\n        x = self.layer2(x)\n        return x\n\nsample_input = torch.tensor([5.0, 2.0])\n# Test the SimpleNet\nnet = SimpleNet(input_size=2, hidden_size=4, output_size=1)  # Create an instance\noutput = net(sample_input)\nprint(\"SimpleNet output:\", output)\n\nSimpleNet output: tensor([0.3447], grad_fn=&lt;ViewBackward0&gt;)",
+    "crumbs": [
+      "Practical (part 1)",
+      "Classes and perceptron"
+    ]
+  },
+  {
+    "objectID": "notebooks/10-Training-pipeline.html",
+    "href": "notebooks/10-Training-pipeline.html",
+    "title": "Training pipeline: Multi-layer perceptron implementation",
+    "section": "",
+    "text": "A multi-layer perceptron is a type of feedforward neural network (FNN). It is composed of fully connected layers and non-linear activation functions, and is commonly used for classifying data that cannot be separated by a straight line.",
+    "crumbs": [
+      "Practical (part 2)",
+      "Training pipeline"
+    ]
+  },
+  {
+    "objectID": "notebooks/10-Training-pipeline.html#step-1-define-the-mlp-model",
+    "href": "notebooks/10-Training-pipeline.html#step-1-define-the-mlp-model",
+    "title": "Training pipeline: Multi-layer perceptron implementation",
+    "section": "Step 1: Define the MLP model",
+    "text": "Step 1: Define the MLP model\n\nimport torch.nn as nn\nclass MLP(nn.Module):\n    def __init__(self, input_size, hidden_size, num_classes):\n        \"\"\"\n        Initialise a simple feedforward MLP architecture.\n        \n        Parameters:\n         input_size: Number of input features (e.g., 4 for Iris dataset)\n         hidden_size: Number of neurons in the hidden layer\n         num_classes: Number of output classes (e.g., 3 for Iris species)\n        \"\"\"\n        super(MLP, self).__init__()\n        \n        # First layer (input to hidden)\n        self.layer1 = nn.Linear(input_size, hidden_size)\n        self.relu = nn.ReLU()\n        \n        # Second layer (hidden to hidden)\n        self.layer2 = nn.Linear(hidden_size, hidden_size)\n        \n        # Output layer (hidden to output)\n        self.output = nn.Linear(hidden_size, num_classes)\n        self.softmax = nn.Softmax(dim=1)  # Softmax for multi-class classification\n        \n    def forward(self, x):\n        \"\"\"\n        Define the forward pass through the network for a single input.\n        \n        Parameter:\n         x: Input tensor of shape [input_size] representing a single sample\n        \n        Returns:\n         Output tensor of shape [num_classes] for a single prediction\n        \"\"\"\n\n        # Forward pass through the network\n        # Each step applies a linear transformation followed by a non-linear activation\n        \n        x = self.layer1(x)\n        x = self.relu(x)\n            \n        x = self.layer2(x)\n        x = self.relu(x)\n            \n        x = self.output(x)\n        x = self.softmax(x)  # Apply softmax to get probabilities\n        \n        return x",
+    "crumbs": [
+      "Practical (part 2)",
+      "Training pipeline"
+    ]
+  },
+  {
+    "objectID": "notebooks/10-Training-pipeline.html#step-2-set-model-parameters-and-initialise-model",
+    "href": "notebooks/10-Training-pipeline.html#step-2-set-model-parameters-and-initialise-model",
+    "title": "Training pipeline: Multi-layer perceptron implementation",
+    "section": "Step 2: Set model parameters and initialise model",
+    "text": "Step 2: Set model parameters and initialise model\n\ninput_size = 4    # Assuming 4 features (like Iris dataset)\nhidden_size = 16  # Neurons in hidden layer\nnum_classes = 3   # Output classes \nmodel = MLP(input_size, hidden_size, num_classes)\nmodel\n\nMLP(\n  (layer1): Linear(in_features=4, out_features=16, bias=True)\n  (relu): ReLU()\n  (layer2): Linear(in_features=16, out_features=16, bias=True)\n  (output): Linear(in_features=16, out_features=3, bias=True)\n  (softmax): Softmax(dim=1)\n)",
+    "crumbs": [
+      "Practical (part 2)",
+      "Training pipeline"
+    ]
+  },
+  {
+    "objectID": "notebooks/10-Training-pipeline.html#step-3-loss-function",
+    "href": "notebooks/10-Training-pipeline.html#step-3-loss-function",
+    "title": "Training pipeline: Multi-layer perceptron implementation",
+    "section": "Step 3: Loss function",
+    "text": "Step 3: Loss function\n\ndef calculate_loss(model, X, y_true):\n    \"\"\"\n    Calculate loss for the model without training.\n    \n    Parameters:\n     model: The MLP model\n     X: Input features (torch tensor) - single sample, not batched\n     y_true: True label (torch tensor) - single label, not batched\n    \n    Returns:\n     loss: Sum of squared errors loss value\n    \"\"\"\n    \n    # Add batch dimension of 1 for model compatibility\n    X_input = X.unsqueeze(0)  # Adds batch dimension [1, input_features]\n    y_pred = model(X_input)   # y_pred shape: [1, num_classes]\n    \n    # Get number of classes from model's output layer\n    num_classes = model.output.out_features\n    \n    # Create one-hot encoded label for a single sample\n    \"\"\"\n    as we are working with a classification problem that has 3 possible classes (0, 1, and 2). \n    Using one-hot encoding gives us:\n\n    Class 0 becomes: [1, 0, 0]\n    Class 1 becomes: [0, 1, 0]\n    Class 2 becomes: [0, 0, 1]\n\n    \"\"\"\n    y_true_one_hot = torch.zeros(1, num_classes)\n    \n    # Convert label tensor to integer and set the appropriate position to 1\n    label_idx = y_true.item()\n    y_true_one_hot[0, label_idx] = 1\n    \n    # Calculate sum of squared errors between prediction and one-hot label\n    squared_errors = (y_pred - y_true_one_hot) ** 2\n    loss = torch.sum(squared_errors)\n    \n    # Calculate and print the loss value\n    loss_value = loss.item()\n    \n    # Return the loss as a Python float\n    return loss_value",
+    "crumbs": [
+      "Practical (part 2)",
+      "Training pipeline"
+    ]
+  },
+  {
+    "objectID": "notebooks/10-Training-pipeline.html#step-4-prepare-iris-test-dataset",
+    "href": "notebooks/10-Training-pipeline.html#step-4-prepare-iris-test-dataset",
+    "title": "Training pipeline: Multi-layer perceptron implementation",
+    "section": "Step 4: Prepare Iris Test Dataset",
+    "text": "Step 4: Prepare Iris Test Dataset\n\n# In this step, the process is identical to the data handling steps in \"DataPipeline\" notebook.\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.datasets import load_iris\nimport torch\nfrom torch.utils.data import TensorDataset, DataLoader\nfrom sklearn.preprocessing import StandardScaler\n\n\n# load the dataset\niris = load_iris()\n\n\n# extract features and target classes\nX = iris.data\ny = iris.target\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\n\n# standardise the feature data\nscaler = StandardScaler()\nX_train = scaler.fit_transform(X_train)\nX_test = scaler.transform(X_test)\nX_test_tensor = torch.FloatTensor(X_test)\ny_test_tensor = torch.LongTensor(y_test)\n\n\nbatch_size = 30\ntest_dataset = TensorDataset(X_test_tensor, y_test_tensor)\ntest_loader = DataLoader(test_dataset, batch_size=batch_size)\n\ntrain_dataset = TensorDataset(torch.FloatTensor(X_train), torch.LongTensor(y_train))\ntrain_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)",
+    "crumbs": [
+      "Practical (part 2)",
+      "Training pipeline"
+    ]
+  },
+  {
+    "objectID": "notebooks/10-Training-pipeline.html#step-5-evaluate-test-loss-and-accuracy",
+    "href": "notebooks/10-Training-pipeline.html#step-5-evaluate-test-loss-and-accuracy",
+    "title": "Training pipeline: Multi-layer perceptron implementation",
+    "section": "Step 5: Evaluate Test Loss and Accuracy",
+    "text": "Step 5: Evaluate Test Loss and Accuracy\n\nimport matplotlib.pyplot as plt\n\n# Initialise a list to store the individual losses\nlosses = []\n# Evaluate the average SSE loss of the model on the test_dataset\nmodel.eval()\ntotal_test_loss = 0\nnum_test_samples = 0\n\nwith torch.no_grad():\n    for features, labels in test_loader:\n        for i in range(features.size(0)):\n            # Extract individual feature and label\n            single_feature = features[i]\n            single_label = labels[i]\n\n            # Calculate loss for individual sample\n            loss = calculate_loss(model, single_feature, single_label)\n            losses.append(loss)\n            total_test_loss += loss\n            num_test_samples += 1\n\n# Calculate average loss across all processed samples\nif num_test_samples &gt; 0:\n    avg_test_loss = total_test_loss / num_test_samples\n    print(f\"\\nAverage SSE loss on test set ({num_test_samples} samples): {avg_test_loss:.4f}\")\n    \n    # Plot the losses as a line chart\n    plt.figure(figsize=(10, 6))\n    plt.plot(range(num_test_samples), losses, label='Sample-wise SSE Loss', color='tab:blue', linewidth=2)\n    plt.xlabel(\"Sample Index\")\n    plt.ylabel(\"SSE Loss\")\n    plt.title(\"SSE Loss per Sample on Test Set\")\n    plt.legend()\n    plt.grid(True)\n    plt.tight_layout()\n    plt.show()\n\n\nAverage SSE loss on test set (30 samples): 0.6564",
+    "crumbs": [
+      "Practical (part 2)",
+      "Training pipeline"
+    ]
+  },
+  {
+    "objectID": "notebooks/01-Perceptron.html",
+    "href": "notebooks/01-Perceptron.html",
+    "title": "Perceptron",
+    "section": "",
+    "text": "The perceptron was introduced by American psychologist Frank Rosenblatt in 1957. Rosenblatt’s goal was to develop a computational model capable of learning and solving classification problems by simulating the functioning of neurons in the brain.\nThe perceptron is also considered the origin of neural networks (and deep learning). Therefore, learning about the construction of the perceptron is an important step in understanding the fundamental ideas that lead to neural networks and deep learning.",
+    "crumbs": [
+      "Theory (part 1)",
+      "Perceptron"
+    ]
+  },
+  {
+    "objectID": "notebooks/01-Perceptron.html#decision-boundary",
+    "href": "notebooks/01-Perceptron.html#decision-boundary",
+    "title": "Perceptron",
+    "section": "Decision boundary",
+    "text": "Decision boundary\nDecision boundary is an important concept in machine learning, especially in classification problems. It refers to the “line” or “hyperplane” in the feature space that separates data points of different classes. One can imagine that when we use a model to classify data, the decision boundary is the boundary the model uses to determine which class a data point belongs to.\nWe will use a simple logic circuit as an example to help understand the decision boundary and the role of the perceptron.\n\nLogic circuit\nFirst, let’s consider how we can use a perceptron to construct an AND gate in a logic circuit. An AND gate is a logic gate with two inputs and one output. As shown in the table below, the AND gate outputs 1 when (\\(x_1\\), \\(x_2\\)) = (1, 1), and outputs 0 when (\\(x_1\\), \\(x_2\\)) = (0, 1), (1, 0), or (0, 0).\n\n\n\n\\(x_1\\)\n\\(x_2\\)\n\\(y\\)\n\n\n\n\n0\n0\n0\n\n\n1\n0\n0\n\n\n0\n1\n0\n\n\n1\n1\n1\n\n\n\nNext, let’s consider using a perceptron to represent this AND gate. For simplicity, we set the threshold \\(θ\\) to 0. What we need to do is determine the values of \\(w_1\\), \\(w_2\\) and \\(b\\) that satisfy the conditions in the table above. What values should we set in order to create a perceptron that meets the required conditions?\nLet’s try to visualize the operation of the AND gate. In the case of the AND gate, when the weight parameters (\\(w_1\\), \\(w_2\\) , \\(b\\)) = (1.0, 0.8, -1.5), the conditions of the truth table are satisfied. At this point, the perceptron can be represented by the following equation:\n\\(y = \\begin{cases}\n0 & (x_1 + 0.8 × x_2 + (-1.5)\\leq 0) \\\\\n1 & (x_1 + 0.8 × x_2 +(-1.5) &gt; 0)\n\\end{cases}\\)\nThe perceptron represented by the above equation generates two regions in the feature space, separated by the line \\(x_1 + 0.8 × x_2 + (-1.5)= 0\\). One region will output 1, and the other will output 0. The line that divides the plane into two regions is one example of a decision boundary.\n\nPlot a decision boundary\nWe can use the following code to plot this decision boundary.\n\nimport numpy as np\nimport matplotlib.pyplot as plt\n\ndef draw_decision_boundary_and_gate(w1,w2,b):\n    # Creating the plot\n    plt.figure(figsize=(8, 6))\n\n    # Plotting the data points\n    point_pos_x1 = np.array([1])\n    point_pos_x2 = np.array([1])\n    plt.scatter(point_pos_x1, point_pos_x2, color='red', marker='^', s=100)\n    point_neg_x1 = np.array([0, 1,0])\n    point_neg_x2 = np.array([1, 0,0])\n    plt.scatter(point_neg_x1, point_neg_x2, color='blue', marker='o', s=100)\n\n    # Drawing the decision boundary\n    x1_vals = np.linspace(-1, 2, 100)\n    x2_vals = np.linspace(-1, 2, 100)\n    x1, x2 = np.meshgrid(x1_vals, x2_vals)\n    y = w1 * x1 + w2 * x2 + b\n    plt.contour(x1, x2, y, levels=[0], colors='black',linewidths=2)\n    plt.contourf(x1, x2, y, levels=[-np.inf, 0], colors='gray', alpha=0.3)\n\n    # Plot settings\n    plt.xlim(-1, 2)\n    plt.ylim(-1, 2)\n    plt.xlabel('$x_1$', fontsize=12)\n    plt.ylabel('$x_2$', fontsize=12)\n    plt.axhline(0, color='black', linewidth=0.8)\n    plt.axvline(0, color='black', linewidth=0.8)\n    plt.grid(True, linestyle='--', alpha=0.3)\n\n    # Displaying the plot\n    plt.show()\n\ndraw_decision_boundary_and_gate(w1=1,w2=0.8,b=-1.5)\n\n\n\n\n\n\n\n\nIn the figure above, the circles (○) represent 0, and the triangles (△) represent 1. When (\\(w_1\\), \\(w_2\\) , \\(b\\)) = (1.0, 0.8, -1.5), the generated decision boundary successfully separates the points correctly.\nCertainly, the settings of weight and bias parameters are not limited to this particular case. By adjusting these parameters, different decision boundaries can be explored.\n\n\nPlot decision boundaries with different bias\nBias is a parameter that adjusts the ease with which a neuron is activated (i.e., the degree to which the output signal equals 1). Through the following example, we can explore the impact of different bias values on the resulting decision boundary.\n\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom matplotlib.lines import Line2D\nfrom itertools import cycle\n\ndef draw_decision_boundary_and_gate(w1,w2,b_list):\n    # Creating the plot\n    plt.figure(figsize=(8, 6))\n\n    # Plotting the data points\n    point_pos_x1 = np.array([1])\n    point_pos_x2 = np.array([1])\n    plt.scatter(point_pos_x1, point_pos_x2, color='red', marker='^', s=100)\n    point_neg_x1 = np.array([0, 1,0])\n    point_neg_x2 = np.array([1, 0,0])\n    plt.scatter(point_neg_x1, point_neg_x2, color='blue', marker='o', s=100)\n\n    # Drawing the decision boundaries\n    proxy_lines=[]\n    color_cycle = cycle(['r', 'g', 'b', 'purple', 'orange', 'black'])\n    colors = [next(color_cycle) for _ in range(len(b_list))]\n    labels=[]\n    for i,b in enumerate(b_list):\n        x1_vals = np.linspace(-1, 2, 100)\n        x2_vals = np.linspace(-1, 2, 100)\n        x1, x2 = np.meshgrid(x1_vals, x2_vals)\n        y = w1 * x1 + w2 * x2 + b\n        plt.contour(x1, x2, y, levels=[0],linewidths=2,colors=colors[i])\n        proxy_lines.append(Line2D([0], [0], color=colors[i], linestyle='-'))\n        labels.append(f'b={b:.1f}')\n\n    # Plot settings\n    plt.xlim(-1, 2)\n    plt.ylim(-1, 2)\n    plt.xlabel('$x_1$', fontsize=12)\n    plt.ylabel('$x_2$', fontsize=12)\n    plt.axhline(0, color='black', linewidth=0.8)\n    plt.axvline(0, color='black', linewidth=0.8)\n    plt.grid(True, linestyle='--', alpha=0.3)\n    plt.legend(proxy_lines, labels)\n\n    # Displaying the plot\n    plt.show()\n\n# Keep w1 and w2 constant and only adjust b\nb_list=np.arange(-1.1, -1.7, -0.1)\ndraw_decision_boundary_and_gate(w1=1,w2=0.8,b_list=b_list)\n\n\n\n\n\n\n\n\nAs shown in the above figure, the bias \\(b\\) has an independent update rule, meaning that it can be adjusted independently of the input features, thereby optimizing the classification performance.\n\n\nPlot decision boundaries with different weights\nEach input signal in a perceptron has its own inherent weight, which plays a crucial role in controlling the importance of each signal. In other words, the greater the weight, the more significant the corresponding signal is. Through the following example, we can explore the impact of different weights on the result.\n\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom matplotlib.lines import Line2D\nfrom itertools import cycle\n\ndef draw_decision_boundary_and_gate(w1_list,w2,b):\n    # Creating the plot\n    plt.figure(figsize=(8, 6))\n\n    # Plotting the data points\n    point_pos_x1 = np.array([1])\n    point_pos_x2 = np.array([1])\n    plt.scatter(point_pos_x1, point_pos_x2, color='red', marker='^', s=100)\n    point_neg_x1 = np.array([0, 1,0])\n    point_neg_x2 = np.array([1, 0,0])\n    plt.scatter(point_neg_x1, point_neg_x2, color='blue', marker='o', s=100)\n\n    # Drawing the decision boundaries\n    proxy_lines=[]\n    color_cycle = cycle(['r', 'g', 'b', 'purple', 'orange', 'black'])\n    colors = [next(color_cycle) for _ in range(len(w1_list))]\n    labels=[]\n    for i,w1 in enumerate(w1_list):\n        x1_vals = np.linspace(-1, 2, 100)\n        x2_vals = np.linspace(-1, 2, 100)\n        x1, x2 = np.meshgrid(x1_vals, x2_vals)\n        y = w1 * x1 + w2 * x2 + b\n        plt.contour(x1, x2, y, levels=[0],linewidths=2,colors=colors[i])\n        proxy_lines.append(Line2D([0], [0], color=colors[i], linestyle='-'))\n        labels.append(f'w1={w1:.1f}')\n\n    # Plot settings\n    plt.xlim(-1, 2)\n    plt.ylim(-1, 2)\n    plt.xlabel('$x_1$', fontsize=12)\n    plt.ylabel('$x_2$', fontsize=12)\n    plt.axhline(0, color='black', linewidth=0.8)\n    plt.axvline(0, color='black', linewidth=0.8)\n    plt.grid(True, linestyle='--', alpha=0.3)\n    plt.legend(proxy_lines, labels)\n\n    # Displaying the plot\n    plt.show()\n\n# Keep w2 and b constant and only adjust w1\nw1_list=np.arange(0.2, 1.2, 0.2)\ndraw_decision_boundary_and_gate(w1_list=w1_list,w2=1,b=-1.1)\n\n\n\n\n\n\n\n\nAs shown in the above figure, in a perceptron, the weight \\(w_1\\) affects the contribution of the input \\(x_1\\) to the output \\(y\\).\nFrom the perspective of the decision boundary, the perceptron’s decision boundary is a straight line.\nWhen \\(w_1\\) increases, the slope of the decision boundary, \\(-\\frac{w_1}{w_2}\\), also changes, meaning the decision boundary rotates.\nThe larger \\(w_1\\) is, the stronger the influence along the \\(x_1\\) direction, making the decision boundary more sensitive to changes in \\(x_1\\).",
+    "crumbs": [
+      "Theory (part 1)",
+      "Perceptron"
+    ]
+  },
+  {
+    "objectID": "notebooks/01-Perceptron.html#the-limitation-of-perceptron",
+    "href": "notebooks/01-Perceptron.html#the-limitation-of-perceptron",
+    "title": "Perceptron",
+    "section": "The limitation of perceptron",
+    "text": "The limitation of perceptron\nWe already know that a perceptron can be used to implement an AND logic gate. Now, let’s consider the XOR gate.\nThe XOR gate outputs 1 when (\\(x_1\\), \\(x_2\\)) = (0, 1) or (1,0) and outputs 0 when (\\(x_1\\), \\(x_2\\)) = (0, 0) or (1, 1). It outputs 1 only when one of \\(x_1\\) or \\(x_2\\) is 1.\n\n\n\n\\(x_1\\)\n\\(x_2\\)\n\\(y\\)\n\n\n\n\n0\n0\n0\n\n\n1\n0\n1\n\n\n0\n1\n1\n\n\n1\n1\n0\n\n\n\nHowever, a perceptron cannot implement the XOR gate by simply plotting the truth table as an image. We can see that the perceptron is unable to achieve this XOR gate functionality. We can try to think through the reason by visualizing the problem.\n\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom matplotlib.lines import Line2D\n\ndef draw_xor_gate():\n    # Creating the plot\n    plt.figure(figsize=(8, 6))\n\n    # Plotting the data points\n    point_pos_x1 = np.array([0, 1])\n    point_pos_x2 = np.array([1, 0])\n    plt.scatter(point_pos_x1, point_pos_x2, color='red', marker='^', s=100)\n    point_neg_x1 = np.array([0, 1])\n    point_neg_x2 = np.array([0, 1])\n    plt.scatter(point_neg_x1, point_neg_x2, color='blue', marker='o', s=100)\n\n\n    # Plot settings\n    plt.xlim(-1, 2)\n    plt.ylim(-1, 2)\n    plt.xlabel('$x_1$', fontsize=12)\n    plt.ylabel('$x_2$', fontsize=12)\n    plt.axhline(0, color='black', linewidth=0.8)\n    plt.axvline(0, color='black', linewidth=0.8)\n    plt.grid(True, linestyle='--', alpha=0.3)\n\n    # Displaying the plot\n    plt.show()\n\ndraw_xor_gate()\n\n\n\n\n\n\n\n\nIt is impossible to separate the circles (○) and triangles (△) in the above figure with a single straight line, no matter how hard we try. In fact, it is impossible to separate the circles and triangles with just one line.\nThe limitation of the perceptron lies in the fact that it can only represent spaces that are divided by a single straight line. Such spaces, divided by a line, are called linear spaces",
+    "crumbs": [
+      "Theory (part 1)",
+      "Perceptron"
+    ]
+  },
+  {
+    "objectID": "notebooks/08-Gradient-descent.html",
+    "href": "notebooks/08-Gradient-descent.html",
+    "title": "Gradient descent: How do neural networks learn?",
+    "section": "",
+    "text": "We have seen how you can prepare some data with features X and labels y. Then we can define the architecture/structure of a multi-layer perceptron (MLP) and randomly initialise a collection of weights w and biases b for the different neurons and layers of our MLP. We can then feed our training data through our MLP to get predictions of our class labels.\n\\(X_{i} \\to MLP(w, b) \\to Prediction_{i}\\)\nWe have also seen that we can measure our sum of square errors by adding up the squared difference between each prediction and the corresponding observation (i.e. the correct answer). This sum will be 0 if our predictions are all correct and will get larger as more of our guesses are wrong.\n\\(Predictions, Observations \\to Error\\)",
+    "crumbs": [
+      "Theory (part 2)",
+      "Gradient descent"
+    ]
+  },
+  {
+    "objectID": "notebooks/08-Gradient-descent.html#tuning-our-weights-and-biases",
+    "href": "notebooks/08-Gradient-descent.html#tuning-our-weights-and-biases",
+    "title": "Gradient descent: How do neural networks learn?",
+    "section": "Tuning our weights and biases",
+    "text": "Tuning our weights and biases\nWe saw that randomly initialising the weights and biases was unlikely to lead to good predictions. We want to tune our weights and biases in a way that reduces our error.\nThe error is a function of our predictions and our observations. Our predictions are a function of our weights and biases. These statements together imply that our error is implicitly a function of our weights and biases. In other words:\nChanging your weights and biases in your MLP will change your error.\nFor fixed data and network structure, we can try to understand how we can change our weights and biases to reduce our error.",
+    "crumbs": [
+      "Theory (part 2)",
+      "Gradient descent"
+    ]
+  },
+  {
+    "objectID": "notebooks/08-Gradient-descent.html#gradient-descent-in-1d",
+    "href": "notebooks/08-Gradient-descent.html#gradient-descent-in-1d",
+    "title": "Gradient descent: How do neural networks learn?",
+    "section": "Gradient Descent in 1D",
+    "text": "Gradient Descent in 1D\n\ndef LinearFunc(x, weight, bias):\n    \"\"\"\n    Linear function: y = weight * x + bias\n    \"\"\"\n    return weight * x + bias\n\nimport math\n# Generate some sample data\nx = [i for i in range(10)]\ny = [math.sin(i) for i in x]\n\ndef SSE(x, y, weight, bias):\n    \"\"\"\n    Calculate the sum of squared errors (SSE) for a linear model.\n    \"\"\"\n    return sum((y[i] - LinearFunc(x[i], weight, bias)) ** 2 for i in range(len(y)))\n\n\n# Fix the bias but vary the weight\nbias = 2\n\nErrorDict = {}\nfor weight in range(-20, 20, 2):\n    sse = SSE(x, y, weight, bias)\n    ErrorDict[weight] = sse\n\n# Plot the error curve\nimport matplotlib.pyplot as plt\n\nplt.figure(figsize=(10, 6))\nplt.plot(ErrorDict.keys(), ErrorDict.values(), marker='o')\nplt.title('Sum of Squared Errors (SSE) vs. Weight (w1)')\nplt.xlabel('Weight')\nplt.ylabel('SSE')\nplt.grid()\nplt.show()\n\n\n\n\n\n\n\n\nWe can see for different weight values, there is a different error value. Accurate prediction is as simple as minimising the error with respect to the weights and biases.\nIn a calculus class you might have taken the derivative of a function \\(\\frac{dError}{dWeight}\\), which represents the slope/gradient of the error function with respect to the weight at a given position.\nWhilst you could in theory solve for when the derivative/slope is zero, to find an explicit answer in situations where there are a large number of weights and biases is often intractably difficult.\nInstead, we understand that if the derivative is positive when the slope is upwards and negative when the slope is downwards, we can just head in the opposite direction of the derivative.\n\ndef DerivativeSSE(x, y, weight, bias):\n    \"\"\"\n    Calculate the derivative of SSE with respect to weight.\n    \"\"\"\n    return -2 * sum((y[i] - LinearFunc(x[i], weight, bias)) * x[i] for i in range(len(y))) / len(y)\n\n# Create subplots\nfig, axes = plt.subplots(1, 2)\n\n# Plot SSE\naxes[0].plot(ErrorDict.keys(), ErrorDict.values(), marker='o')\naxes[0].set_title('SSE vs. Weight (w1)')\naxes[0].set_xlabel('Weight (w1)')\naxes[0].set_ylabel('SSE')\naxes[0].grid(True)\n\n# Plot Derivative of SSE\naxes[1].plot(ErrorDict.keys(), [DerivativeSSE(x, y, weight, bias) for weight in ErrorDict.keys()], marker='o')\naxes[1].set_title('Derivative of SSE vs. Weight (w1)')\naxes[1].set_xlabel('Weight (w1)')\naxes[1].set_ylabel('d(SSE)/dw1')\naxes[1].grid(True)\n\nplt.tight_layout()\nplt.show()\n\n# Make wider Huw!\n\n\n\n\n\n\n\n\nConsider the above left plot and choose a position on the x-axis and look at its corresponding SSE value. You can intuitively see which way is “downhill”.\nOn the above right plot you should be able to read off the derivative at the same x-axis value. If the left plot shows you’re facing uphill, the derivative should be positive on the right plot. If you’re facing downhill the derivative should be negative. The larger the value of the derivative, the steeper the slope.\nIt make sense then that we should take a step in the direction of the negative of the gradient. You should take a larger step if the value of the derivative is larger.\nIn practise we take a step size proportional to the derivative. We call the constant of proportionality the learning rate. If the learning rate is too large we might step over a minimum. If the rate is too small then we might take too long to find the minimum!\nThe process of taking small steps downhill by varying our weights is called Gradient Descent.",
+    "crumbs": [
+      "Theory (part 2)",
+      "Gradient descent"
+    ]
+  },
+  {
+    "objectID": "notebooks/08-Gradient-descent.html#gradient-descent-in-higher-dimensions",
+    "href": "notebooks/08-Gradient-descent.html#gradient-descent-in-higher-dimensions",
+    "title": "Gradient descent: How do neural networks learn?",
+    "section": "Gradient Descent in Higher Dimensions",
+    "text": "Gradient Descent in Higher Dimensions\nIn practise, we want to update all the weights and biases of our neural network at once. This means we want to use a generalisation of the derivative called the gradient function. Given a function \\(f\\) of \\(n\\) variables: \\(w_{1}, w_{2}, \\ldots, w_{n}\\) we can define the gradient function of \\(f\\) as:\n\\(\\nabla f (w_{1}, \\ldots, w_{n}) = \\begin{bmatrix}\n           \\frac{\\partial f}{\\partial w_{1}} \\\\\n           \\frac{\\partial f}{\\partial w_{2}} \\\\\n           \\vdots \\\\\n           \\frac{\\partial f}{\\partial w_{n}}\n         \\end{bmatrix}\\)\nwhere \\(\\frac{\\partial f}{\\partial w_{1}}\\) is the partial derivative of the function \\(f\\) with respect to \\(w_{1}\\). What this means is that each component of this vector tells you how steep the function \\(f\\) is with respect to each of its variables.\nNow if we imagine a loss surface (like a mountain range where the height of where you are standing is the value of a loss function) then we just want to walk downhill with respect to all of our components. This direction is described by the gradient vector.\nIn practise the step we take is proportional to the size of the gradient. We will define a variable called the learning rate, which will tell us how big of a step to take downhill each time.\nYou can play around with this web app to see how the loss surface “looks” with respect to a function and see how gradient descent moves you downhill towards minimal loss\nhttps://neuralpatterns.io/hill_climber.html",
+    "crumbs": [
+      "Theory (part 2)",
+      "Gradient descent"
+    ]
+  },
+  {
+    "objectID": "notebooks/03-MLP-evaluation.html",
+    "href": "notebooks/03-MLP-evaluation.html",
+    "title": "MLP evaluation",
+    "section": "",
+    "text": "What we have done so far is build a multilayer perceptron with activation functions so that we can begin to construct complex non-linear decision boundaries (or even tackle regression problems). We can build increasingly large neural networks with multiple hidden layers that can have huge numbers of connected neurons.\nSo far we have been eyeballing our outputs and attempting to manually tweak our weights and biases to solve a given problem. This aspect of “training” is something we will learn how to do automatically in the later theory section. Before we get to that process, we should set ourselves up for success so that we know how to prepare our data for training and testing and have a suitable way to evaluate how well our neural network is guessing.",
+    "crumbs": [
+      "Theory (part 1)",
+      "MLP evaluation"
+    ]
+  },
+  {
+    "objectID": "notebooks/03-MLP-evaluation.html#losscost-functions",
+    "href": "notebooks/03-MLP-evaluation.html#losscost-functions",
+    "title": "MLP evaluation",
+    "section": "Loss/cost functions",
+    "text": "Loss/cost functions\nThere are any different ways of evaluating loss/cost, i.e. quantifying how wrong our model is from correctly guessing the answer. In this course we will focus on the more conventional Sum of Square Errors or (SSE) for short. In other material you might encounter other forms of loss such as “Cross Entropy Loss”.\nThe basic idea is fairly intuitive. If your guess is the right answer, loss should be low, if your guess is the wrong answer, your loss should be high. A straightforward way to do this is to take the difference between your guess and your final answer. But this could run into issues.\nIf we have a neural network set up to guess if something is in class 0 or class 1 (this could be guessing if a picture is a cat, class 0, or a dog, class 1, for example) then if our neural network has a picture of a cat 0 that it guesses is a dog 1 and a picture of a dog 1 it guesses is a dog 0 then if we add together the differences between those two error we get:\n\\((0-1) + (1-0) = 0\\)\nwhich implies that there the network is perfect! So we want to make sure minus signs don’t cancel out. It transpires that a sensible way to do this is to square each of the errors before adding them together:\n\\((0-1)^2 + (1-0)^2 = 2\\)\nMore generally for \\(n\\) data points of \\(Observation_{i}\\) \\(Prediction_{i}\\) for \\(i=1, \\ldots, n\\) we define the Sum of Square Errors as:\n\\(SSE = \\Sigma_{i=1}^{n} (Observation_{i}- Prediction_{i})^2\\)\n\\(= (Observation_{1}- Prediction_{1})^2 + (Observation_{2}- Prediction_{2})^2 + \\ldots + (Observation_{n}- Prediction_{n})^2\\)",
+    "crumbs": [
+      "Theory (part 1)",
+      "MLP evaluation"
+    ]
+  },
+  {
+    "objectID": "notebooks/03-MLP-evaluation.html#out-of-sample-predictive-power",
+    "href": "notebooks/03-MLP-evaluation.html#out-of-sample-predictive-power",
+    "title": "MLP evaluation",
+    "section": "Out of sample predictive power",
+    "text": "Out of sample predictive power\nFor a full recap on testing your model from the applied data analysis in Python course, see here. The key thing to remember is that the true power of building predictive models is not predicting on data that we already have - you already know the right prediction then!\nWhat we aspire to do is to learn a pattern from some data with some labels and then predict new labels on previously unseen data. We might want to be able to guess the price of a stock next week, guess whether a picture is a dog or a cat or guess the next word in a sentence. To make our predictive model good at this, we need to reduce “overfitting” which is when our model learns charateristics specific to our dataset that doesn’t generalise.\nAn example of overfitting might be if you trained an image classifier to tell the difference between a dog and a cat, but all your examples of dogs were taken outside so lots of the background is green. A network could “learn” that green is associated with dog and then any picture with a green background might automatically get associated with a dog, even if the foreground image was a cat.\nIn order to mitigate this and maximise our ability to predict out of sample, we always seperate our data before training (this applies to all supervised learning, not just neural networks) into a test set and a train set. We train the model on the train set and then evaluate that models performance on the disjoint test set.",
+    "crumbs": [
+      "Theory (part 1)",
+      "MLP evaluation"
+    ]
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Introduction to AI",
@@ -95,50 +337,6 @@
     ]
   },
   {
-    "objectID": "notebooks/03-MLP-evaluation.html",
-    "href": "notebooks/03-MLP-evaluation.html",
-    "title": "MLP evaluation",
-    "section": "",
-    "text": "What we have done so far is build a multilayer perceptron with activation functions so that we can begin to construct complex non-linear decision boundaries (or even tackle regression problems). We can build increasingly large neural networks with multiple hidden layers that can have huge numbers of connected neurons.\nSo far we have been eyeballing our outputs and attempting to manually tweak our weights and biases to solve a given problem. This aspect of “training” is something we will learn how to do automatically in the later theory section. Before we get to that process, we should set ourselves up for success so that we know how to prepare our data for training and testing and have a suitable way to evaluate how well our neural network is guessing.",
-    "crumbs": [
-      "Theory (part 1)",
-      "MLP evaluation"
-    ]
-  },
-  {
-    "objectID": "notebooks/03-MLP-evaluation.html#losscost-functions",
-    "href": "notebooks/03-MLP-evaluation.html#losscost-functions",
-    "title": "MLP evaluation",
-    "section": "Loss/cost functions",
-    "text": "Loss/cost functions\nThere are any different ways of evaluating loss/cost, i.e. quantifying how wrong our model is from correctly guessing the answer. In this course we will focus on the more conventional Sum of Square Errors or (SSE) for short. In other material you might encounter other forms of loss such as “Cross Entropy Loss”.\nThe basic idea is fairly intuitive. If your guess is the right answer, loss should be low, if your guess is the wrong answer, your loss should be high. A straightforward way to do this is to take the difference between your guess and your final answer. But this could run into issues.\nIf we have a neural network set up to guess if something is in class 0 or class 1 (this could be guessing if a picture is a cat, class 0, or a dog, class 1, for example) then if our neural network has a picture of a cat 0 that it guesses is a dog 1 and a picture of a dog 1 it guesses is a dog 0 then if we add together the differences between those two error we get:\n\\((0-1) + (1-0) = 0\\)\nwhich implies that there the network is perfect! So we want to make sure minus signs don’t cancel out. It transpires that a sensible way to do this is to square each of the errors before adding them together:\n\\((0-1)^2 + (1-0)^2 = 2\\)\nMore generally for \\(n\\) data points of \\(Observation_{i}\\) \\(Prediction_{i}\\) for \\(i=1, \\ldots, n\\) we define the Sum of Square Errors as:\n\\(SSE = \\Sigma_{i=1}^{n} (Observation_{i}- Prediction_{i})^2\\)\n\\(= (Observation_{1}- Prediction_{1})^2 + (Observation_{2}- Prediction_{2})^2 + \\ldots + (Observation_{n}- Prediction_{n})^2\\)",
-    "crumbs": [
-      "Theory (part 1)",
-      "MLP evaluation"
-    ]
-  },
-  {
-    "objectID": "notebooks/03-MLP-evaluation.html#out-of-sample-predictive-power",
-    "href": "notebooks/03-MLP-evaluation.html#out-of-sample-predictive-power",
-    "title": "MLP evaluation",
-    "section": "Out of sample predictive power",
-    "text": "Out of sample predictive power\nFor a full recap on testing your model from the applied data analysis in Python course, see here. The key thing to remember is that the true power of building predictive models is not predicting on data that we already have - you already know the right prediction then!\nWhat we aspire to do is to learn a pattern from some data with some labels and then predict new labels on previously unseen data. We might want to be able to guess the price of a stock next week, guess whether a picture is a dog or a cat or guess the next word in a sentence. To make our predictive model good at this, we need to reduce “overfitting” which is when our model learns charateristics specific to our dataset that doesn’t generalise.\nAn example of overfitting might be if you trained an image classifier to tell the difference between a dog and a cat, but all your examples of dogs were taken outside so lots of the background is green. A network could “learn” that green is associated with dog and then any picture with a green background might automatically get associated with a dog, even if the foreground image was a cat.\nIn order to mitigate this and maximise our ability to predict out of sample, we always seperate our data before training (this applies to all supervised learning, not just neural networks) into a test set and a train set. We train the model on the train set and then evaluate that models performance on the disjoint test set.",
-    "crumbs": [
-      "Theory (part 1)",
-      "MLP evaluation"
-    ]
-  },
-  {
-    "objectID": "notebooks/04-PyTorch-and-tensors.html",
-    "href": "notebooks/04-PyTorch-and-tensors.html",
-    "title": "Introduction to PyTorch and tensors",
-    "section": "",
-    "text": "A tensor can be viewed as a multi-dimensional array. Similar to how an n-dimensional vector is shown as a one-dimensional array with n elements relative to a specific basis, any tensor can be expressed as a multi-dimensional array when referenced to a basis. The individual values within this multi-dimensional structure are referred to as the tensor’s components.\nPyTorch is an open-source machine learning library developed by Facebook’s AI Research lab. It’s known for its flexibility, intuitive design, and dynamic computational graph which makes debugging easier. This library offers multi-dimensional tensor data structures and implements various mathematical functions to manipulate these tensors. It also includes numerous tools for effective tensor serialisation, handling arbitrary data types, and provides several other practical utilities.\nPyTorch shares significant similarities with NumPy, though it uses the term ‘’tensor’’ instead of ‘’N-dimensional array’’. For example,\n\nimport torch\nimport numpy as np\n\narray_np = np.array([[1, 2, 3],\n                    [4, 5, 6]])\narray_pytorch = torch.tensor([[1, 2, 3],\n                             [4, 5, 6]])\nprint(array_np)\nprint(array_pytorch)\n\n[[1 2 3]\n [4 5 6]]\ntensor([[1, 2, 3],\n        [4, 5, 6]])\n\n\nNow let us create tensors and do some operations in PyTorch.\n\n# create specific tensors\nzeros = torch.zeros(3, 4)  # 3x4 tensor of zeros\nones = torch.ones(2, 3)    # 2x3 tensor of ones\nrand = torch.rand(2, 2)    # 2x2 tensor of random numbers (0-1)\nprint(zeros, \"\\n\", ones, \"\\n\", rand)\n\ntensor([[0., 0., 0., 0.],\n        [0., 0., 0., 0.],\n        [0., 0., 0., 0.]]) \n tensor([[1., 1., 1.],\n        [1., 1., 1.]]) \n tensor([[0.9742, 0.6474],\n        [0.8962, 0.1377]])\n\n\n\n# Create a 2x3 tensor\na = torch.tensor([[1, 2, 3], [4, 5, 6]])\na.shape  # dimension of the tensor a\n\ntorch.Size([2, 3])\n\n\n\n# Create tensor b of the same shape with tensor a\nb = torch.tensor([[7, 8, 9], [10, 11, 12]])\n# Add the tensors\nresult = a + b\nprint(result)\n\ntensor([[ 8, 10, 12],\n        [14, 16, 18]])\n\n\n\n# Create two 2x2 matrices\nmatrix_a = torch.tensor([[1, 2], [3, 4]])\nmatrix_b = torch.tensor([[5, 6], [7, 8]])\n# Perform matrix multiplication using torch.matmul\nmatrix_mult_result = torch.matmul(matrix_a, matrix_b)\nprint(matrix_mult_result)\n\ntensor([[19, 22],\n        [43, 50]])\n\n\n\n# Create two 1D tensors (vectors)\nvector_a = torch.tensor([1, 2, 3])\nvector_b = torch.tensor([4, 5, 6])\n# Computing the dot product between two vectors using torch.dot\ndot_product_result = torch.dot(vector_a, vector_b)\nprint(dot_product_result)\n\ntensor(32)\n\n\nIn this section, we have introduced some basic tensor operations. To learn more about tensor operations, refer to the official documentation: Tensor Operations",
-    "crumbs": [
-      "Practical (part 1)",
-      "PyTorch and tensors"
-    ]
-  },
-  {
     "objectID": "notebooks/09-Backpropagation.html",
     "href": "notebooks/09-Backpropagation.html",
     "title": "What is backpropagation?",
@@ -161,255 +359,14 @@
     ]
   },
   {
-    "objectID": "notebooks/01-Perceptron.html",
-    "href": "notebooks/01-Perceptron.html",
-    "title": "Perceptron",
+    "objectID": "notebooks/04-PyTorch-and-tensors.html",
+    "href": "notebooks/04-PyTorch-and-tensors.html",
+    "title": "Introduction to PyTorch and tensors",
     "section": "",
-    "text": "The perceptron was introduced by American psychologist Frank Rosenblatt in 1957. Rosenblatt’s goal was to develop a computational model capable of learning and solving classification problems by simulating the functioning of neurons in the brain.\nThe perceptron is also considered the origin of neural networks (and deep learning). Therefore, learning about the construction of the perceptron is an important step in understanding the fundamental ideas that lead to neural networks and deep learning.",
-    "crumbs": [
-      "Theory (part 1)",
-      "Perceptron"
-    ]
-  },
-  {
-    "objectID": "notebooks/01-Perceptron.html#decision-boundary",
-    "href": "notebooks/01-Perceptron.html#decision-boundary",
-    "title": "Perceptron",
-    "section": "Decision boundary",
-    "text": "Decision boundary\nDecision boundary is an important concept in machine learning, especially in classification problems. It refers to the “line” or “hyperplane” in the feature space that separates data points of different classes. One can imagine that when we use a model to classify data, the decision boundary is the boundary the model uses to determine which class a data point belongs to.\nWe will use a simple logic circuit as an example to help understand the decision boundary and the role of the perceptron.\n\nLogic circuit\nFirst, let’s consider how we can use a perceptron to construct an AND gate in a logic circuit. An AND gate is a logic gate with two inputs and one output. As shown in the table below, the AND gate outputs 1 when (\\(x_1\\), \\(x_2\\)) = (1, 1), and outputs 0 when (\\(x_1\\), \\(x_2\\)) = (0, 1), (1, 0), or (0, 0).\n\n\n\n\\(x_1\\)\n\\(x_2\\)\n\\(y\\)\n\n\n\n\n0\n0\n0\n\n\n1\n0\n0\n\n\n0\n1\n0\n\n\n1\n1\n1\n\n\n\nNext, let’s consider using a perceptron to represent this AND gate. For simplicity, we set the threshold \\(θ\\) to 0. What we need to do is determine the values of \\(w_1\\), \\(w_2\\) and \\(b\\) that satisfy the conditions in the table above. What values should we set in order to create a perceptron that meets the required conditions?\nLet’s try to visualize the operation of the AND gate. In the case of the AND gate, when the weight parameters (\\(w_1\\), \\(w_2\\) , \\(b\\)) = (1.0, 0.8, -1.5), the conditions of the truth table are satisfied. At this point, the perceptron can be represented by the following equation:\n\\(y = \\begin{cases}\n0 & (x_1 + 0.8 × x_2 + (-1.5)\\leq 0) \\\\\n1 & (x_1 + 0.8 × x_2 +(-1.5) &gt; 0)\n\\end{cases}\\)\nThe perceptron represented by the above equation generates two regions in the feature space, separated by the line \\(x_1 + 0.8 × x_2 + (-1.5)= 0\\). One region will output 1, and the other will output 0. The line that divides the plane into two regions is one example of a decision boundary.\n\nPlot a decision boundary\nWe can use the following code to plot this decision boundary.\n\nimport numpy as np\nimport matplotlib.pyplot as plt\n\ndef draw_decision_boundary_and_gate(w1,w2,b):\n    # Creating the plot\n    plt.figure(figsize=(8, 6))\n\n    # Plotting the data points\n    point_pos_x1 = np.array([1])\n    point_pos_x2 = np.array([1])\n    plt.scatter(point_pos_x1, point_pos_x2, color='red', marker='^', s=100)\n    point_neg_x1 = np.array([0, 1,0])\n    point_neg_x2 = np.array([1, 0,0])\n    plt.scatter(point_neg_x1, point_neg_x2, color='blue', marker='o', s=100)\n\n    # Drawing the decision boundary\n    x1_vals = np.linspace(-1, 2, 100)\n    x2_vals = np.linspace(-1, 2, 100)\n    x1, x2 = np.meshgrid(x1_vals, x2_vals)\n    y = w1 * x1 + w2 * x2 + b\n    plt.contour(x1, x2, y, levels=[0], colors='black',linewidths=2)\n    plt.contourf(x1, x2, y, levels=[-np.inf, 0], colors='gray', alpha=0.3)\n\n    # Plot settings\n    plt.xlim(-1, 2)\n    plt.ylim(-1, 2)\n    plt.xlabel('$x_1$', fontsize=12)\n    plt.ylabel('$x_2$', fontsize=12)\n    plt.axhline(0, color='black', linewidth=0.8)\n    plt.axvline(0, color='black', linewidth=0.8)\n    plt.grid(True, linestyle='--', alpha=0.3)\n\n    # Displaying the plot\n    plt.show()\n\ndraw_decision_boundary_and_gate(w1=1,w2=0.8,b=-1.5)\n\n\n\n\n\n\n\n\nIn the figure above, the circles (○) represent 0, and the triangles (△) represent 1. When (\\(w_1\\), \\(w_2\\) , \\(b\\)) = (1.0, 0.8, -1.5), the generated decision boundary successfully separates the points correctly.\nCertainly, the settings of weight and bias parameters are not limited to this particular case. By adjusting these parameters, different decision boundaries can be explored.\n\n\nPlot decision boundaries with different bias\nBias is a parameter that adjusts the ease with which a neuron is activated (i.e., the degree to which the output signal equals 1). Through the following example, we can explore the impact of different bias values on the resulting decision boundary.\n\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom matplotlib.lines import Line2D\nfrom itertools import cycle\n\ndef draw_decision_boundary_and_gate(w1,w2,b_list):\n    # Creating the plot\n    plt.figure(figsize=(8, 6))\n\n    # Plotting the data points\n    point_pos_x1 = np.array([1])\n    point_pos_x2 = np.array([1])\n    plt.scatter(point_pos_x1, point_pos_x2, color='red', marker='^', s=100)\n    point_neg_x1 = np.array([0, 1,0])\n    point_neg_x2 = np.array([1, 0,0])\n    plt.scatter(point_neg_x1, point_neg_x2, color='blue', marker='o', s=100)\n\n    # Drawing the decision boundaries\n    proxy_lines=[]\n    color_cycle = cycle(['r', 'g', 'b', 'purple', 'orange', 'black'])\n    colors = [next(color_cycle) for _ in range(len(b_list))]\n    labels=[]\n    for i,b in enumerate(b_list):\n        x1_vals = np.linspace(-1, 2, 100)\n        x2_vals = np.linspace(-1, 2, 100)\n        x1, x2 = np.meshgrid(x1_vals, x2_vals)\n        y = w1 * x1 + w2 * x2 + b\n        plt.contour(x1, x2, y, levels=[0],linewidths=2,colors=colors[i])\n        proxy_lines.append(Line2D([0], [0], color=colors[i], linestyle='-'))\n        labels.append(f'b={b:.1f}')\n\n    # Plot settings\n    plt.xlim(-1, 2)\n    plt.ylim(-1, 2)\n    plt.xlabel('$x_1$', fontsize=12)\n    plt.ylabel('$x_2$', fontsize=12)\n    plt.axhline(0, color='black', linewidth=0.8)\n    plt.axvline(0, color='black', linewidth=0.8)\n    plt.grid(True, linestyle='--', alpha=0.3)\n    plt.legend(proxy_lines, labels)\n\n    # Displaying the plot\n    plt.show()\n\n# Keep w1 and w2 constant and only adjust b\nb_list=np.arange(-1.1, -1.7, -0.1)\ndraw_decision_boundary_and_gate(w1=1,w2=0.8,b_list=b_list)\n\n\n\n\n\n\n\n\nAs shown in the above figure, the bias \\(b\\) has an independent update rule, meaning that it can be adjusted independently of the input features, thereby optimizing the classification performance.\n\n\nPlot decision boundaries with different weights\nEach input signal in a perceptron has its own inherent weight, which plays a crucial role in controlling the importance of each signal. In other words, the greater the weight, the more significant the corresponding signal is. Through the following example, we can explore the impact of different weights on the result.\n\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom matplotlib.lines import Line2D\nfrom itertools import cycle\n\ndef draw_decision_boundary_and_gate(w1_list,w2,b):\n    # Creating the plot\n    plt.figure(figsize=(8, 6))\n\n    # Plotting the data points\n    point_pos_x1 = np.array([1])\n    point_pos_x2 = np.array([1])\n    plt.scatter(point_pos_x1, point_pos_x2, color='red', marker='^', s=100)\n    point_neg_x1 = np.array([0, 1,0])\n    point_neg_x2 = np.array([1, 0,0])\n    plt.scatter(point_neg_x1, point_neg_x2, color='blue', marker='o', s=100)\n\n    # Drawing the decision boundaries\n    proxy_lines=[]\n    color_cycle = cycle(['r', 'g', 'b', 'purple', 'orange', 'black'])\n    colors = [next(color_cycle) for _ in range(len(w1_list))]\n    labels=[]\n    for i,w1 in enumerate(w1_list):\n        x1_vals = np.linspace(-1, 2, 100)\n        x2_vals = np.linspace(-1, 2, 100)\n        x1, x2 = np.meshgrid(x1_vals, x2_vals)\n        y = w1 * x1 + w2 * x2 + b\n        plt.contour(x1, x2, y, levels=[0],linewidths=2,colors=colors[i])\n        proxy_lines.append(Line2D([0], [0], color=colors[i], linestyle='-'))\n        labels.append(f'w1={w1:.1f}')\n\n    # Plot settings\n    plt.xlim(-1, 2)\n    plt.ylim(-1, 2)\n    plt.xlabel('$x_1$', fontsize=12)\n    plt.ylabel('$x_2$', fontsize=12)\n    plt.axhline(0, color='black', linewidth=0.8)\n    plt.axvline(0, color='black', linewidth=0.8)\n    plt.grid(True, linestyle='--', alpha=0.3)\n    plt.legend(proxy_lines, labels)\n\n    # Displaying the plot\n    plt.show()\n\n# Keep w2 and b constant and only adjust w1\nw1_list=np.arange(0.2, 1.2, 0.2)\ndraw_decision_boundary_and_gate(w1_list=w1_list,w2=1,b=-1.1)\n\n\n\n\n\n\n\n\nAs shown in the above figure, in a perceptron, the weight \\(w_1\\) affects the contribution of the input \\(x_1\\) to the output \\(y\\).\nFrom the perspective of the decision boundary, the perceptron’s decision boundary is a straight line.\nWhen \\(w_1\\) increases, the slope of the decision boundary, \\(-\\frac{w_1}{w_2}\\), also changes, meaning the decision boundary rotates.\nThe larger \\(w_1\\) is, the stronger the influence along the \\(x_1\\) direction, making the decision boundary more sensitive to changes in \\(x_1\\).",
-    "crumbs": [
-      "Theory (part 1)",
-      "Perceptron"
-    ]
-  },
-  {
-    "objectID": "notebooks/01-Perceptron.html#the-limitation-of-perceptron",
-    "href": "notebooks/01-Perceptron.html#the-limitation-of-perceptron",
-    "title": "Perceptron",
-    "section": "The limitation of perceptron",
-    "text": "The limitation of perceptron\nWe already know that a perceptron can be used to implement an AND logic gate. Now, let’s consider the XOR gate.\nThe XOR gate outputs 1 when (\\(x_1\\), \\(x_2\\)) = (0, 1) or (1,0) and outputs 0 when (\\(x_1\\), \\(x_2\\)) = (0, 0) or (1, 1). It outputs 1 only when one of \\(x_1\\) or \\(x_2\\) is 1.\n\n\n\n\\(x_1\\)\n\\(x_2\\)\n\\(y\\)\n\n\n\n\n0\n0\n0\n\n\n1\n0\n1\n\n\n0\n1\n1\n\n\n1\n1\n0\n\n\n\nHowever, a perceptron cannot implement the XOR gate by simply plotting the truth table as an image. We can see that the perceptron is unable to achieve this XOR gate functionality. We can try to think through the reason by visualizing the problem.\n\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom matplotlib.lines import Line2D\n\ndef draw_xor_gate():\n    # Creating the plot\n    plt.figure(figsize=(8, 6))\n\n    # Plotting the data points\n    point_pos_x1 = np.array([0, 1])\n    point_pos_x2 = np.array([1, 0])\n    plt.scatter(point_pos_x1, point_pos_x2, color='red', marker='^', s=100)\n    point_neg_x1 = np.array([0, 1])\n    point_neg_x2 = np.array([0, 1])\n    plt.scatter(point_neg_x1, point_neg_x2, color='blue', marker='o', s=100)\n\n\n    # Plot settings\n    plt.xlim(-1, 2)\n    plt.ylim(-1, 2)\n    plt.xlabel('$x_1$', fontsize=12)\n    plt.ylabel('$x_2$', fontsize=12)\n    plt.axhline(0, color='black', linewidth=0.8)\n    plt.axvline(0, color='black', linewidth=0.8)\n    plt.grid(True, linestyle='--', alpha=0.3)\n\n    # Displaying the plot\n    plt.show()\n\ndraw_xor_gate()\n\n\n\n\n\n\n\n\nIt is impossible to separate the circles (○) and triangles (△) in the above figure with a single straight line, no matter how hard we try. In fact, it is impossible to separate the circles and triangles with just one line.\nThe limitation of the perceptron lies in the fact that it can only represent spaces that are divided by a single straight line. Such spaces, divided by a line, are called linear spaces",
-    "crumbs": [
-      "Theory (part 1)",
-      "Perceptron"
-    ]
-  },
-  {
-    "objectID": "notebooks/11-Learning-rate.html",
-    "href": "notebooks/11-Learning-rate.html",
-    "title": "Interpretation of various learning rates",
-    "section": "",
-    "text": "When examining learning rate graphs, several distinct patterns emerge that provide valuable insights into model training dynamics: - Very high learning rate (yellow curve) typically produces diverging loss that increases over time, indicating unstable optimisation where parameter updates overshoot minima and potentially cause numerical instability. - High learning rates (green curve) show rapid initial progress followed by oscillation or plateauing, suggesting the model approaches optimal regions quickly but lacks the precision to settle properly, bouncing around like a ball with too much energy. - Good learning rates (red curve) display steady, consistent decreases that eventually flatten at low values, representing an ideal balance between speed and stability that allows the model to converge efficiently. - Low learning rates (blue curve) produce very slow, almost linear decreases in loss, indicating cautious parameter updates that never overshoot but require significantly more computational resources and training time.",
-    "crumbs": [
-      "Practical (part 2)",
-      "Learning rate"
-    ]
-  },
-  {
-    "objectID": "contributors.html",
-    "href": "contributors.html",
-    "title": "Contributors",
-    "section": "",
-    "text": "Contributors\nThis course was written by:\n\nHuw Day\nBoyi Li\nVaishnudebi Dutta\nZhengzhe Peng\n\nThe course is maintained by the Jean Golding Institute team.",
-    "crumbs": [
-      "About",
-      "Contributors"
-    ]
-  },
-  {
-    "objectID": "setup.html",
-    "href": "setup.html",
-    "title": "Run the code on your own machine",
-    "section": "",
-    "text": "Run the code on your own machine\nTo follow along on your own machine, follow these instructions:\n\nOpen a terminal (or Git Bash)\n\n\n\n\n\n\nWindows users\n\n\n\nWe recommend that you install Git and Git Bash, unless you are using Windows Subsystem for Linux (WSL). You should be able to do this by running the following command in command prompt or Powershell:\nwinget install --id Git.Git -e --source winget\nIf this doesn’t work, then follow the instructions on the Git website.\n\n\nInstall uv by running:\ncurl -LsSf https://astral.sh/uv/install.sh | sh\nClose and re-open your terminal, if the installer requests this.\n\n\n\n\n\n\nIf you have uv installed already\n\n\n\nUpgrade to the latest version of uv before continuing, by running uv self update, or by upgrading through whatever means you used to install uv originally (for example, Homebrew users would run brew upgrade uv).\n\n\nDownload the course content:\ngit clone https://github.com/Bristol-Training/intro-to-ai\ncd intro-to-ai\nCheck your PyTorch version:\nuv run python -c \"import torch; print('PyTorch version', torch.__version__)\"\nThis command will automatically download the version of Python and associated libraries that are required for the course, before displaying the version of PyTorch on the screen. This should be something like 2.7.0.\nRun Jupyter Lab:\nuv run jupyter lab notebooks\nIn future, just re-run this command to get access to the course again.",
-    "crumbs": [
-      "Setup"
-    ]
-  },
-  {
-    "objectID": "notebooks/08-Gradient-descent.html",
-    "href": "notebooks/08-Gradient-descent.html",
-    "title": "Gradient descent: How do neural networks learn?",
-    "section": "",
-    "text": "We have seen how you can prepare some data with features X and labels y. Then we can define the architecture/structure of a multi-layer perceptron (MLP) and randomly initialise a collection of weights w and biases b for the different neurons and layers of our MLP. We can then feed our training data through our MLP to get predictions of our class labels.\n\\(X_{i} \\to MLP(w, b) \\to Prediction_{i}\\)\nWe have also seen that we can measure our sum of square errors by adding up the squared difference between each prediction and the corresponding observation (i.e. the correct answer). This sum will be 0 if our predictions are all correct and will get larger as more of our guesses are wrong.\n\\(Predictions, Observations \\to Error\\)",
-    "crumbs": [
-      "Theory (part 2)",
-      "Gradient descent"
-    ]
-  },
-  {
-    "objectID": "notebooks/08-Gradient-descent.html#tuning-our-weights-and-biases",
-    "href": "notebooks/08-Gradient-descent.html#tuning-our-weights-and-biases",
-    "title": "Gradient descent: How do neural networks learn?",
-    "section": "Tuning our weights and biases",
-    "text": "Tuning our weights and biases\nWe saw that randomly initialising the weights and biases was unlikely to lead to good predictions. We want to tune our weights and biases in a way that reduces our error.\nThe error is a function of our predictions and our observations. Our predictions are a function of our weights and biases. These statements together imply that our error is implicitly a function of our weights and biases. In other words:\nChanging your weights and biases in your MLP will change your error.\nFor fixed data and network structure, we can try to understand how we can change our weights and biases to reduce our error.",
-    "crumbs": [
-      "Theory (part 2)",
-      "Gradient descent"
-    ]
-  },
-  {
-    "objectID": "notebooks/08-Gradient-descent.html#gradient-descent-in-1d",
-    "href": "notebooks/08-Gradient-descent.html#gradient-descent-in-1d",
-    "title": "Gradient descent: How do neural networks learn?",
-    "section": "Gradient Descent in 1D",
-    "text": "Gradient Descent in 1D\n\ndef LinearFunc(x, weight, bias):\n    \"\"\"\n    Linear function: y = weight * x + bias\n    \"\"\"\n    return weight * x + bias\n\nimport math\n# Generate some sample data\nx = [i for i in range(10)]\ny = [math.sin(i) for i in x]\n\ndef SSE(x, y, weight, bias):\n    \"\"\"\n    Calculate the sum of squared errors (SSE) for a linear model.\n    \"\"\"\n    return sum((y[i] - LinearFunc(x[i], weight, bias)) ** 2 for i in range(len(y)))\n\n\n# Fix the bias but vary the weight\nbias = 2\n\nErrorDict = {}\nfor weight in range(-20, 20, 2):\n    sse = SSE(x, y, weight, bias)\n    ErrorDict[weight] = sse\n\n# Plot the error curve\nimport matplotlib.pyplot as plt\n\nplt.figure(figsize=(10, 6))\nplt.plot(ErrorDict.keys(), ErrorDict.values(), marker='o')\nplt.title('Sum of Squared Errors (SSE) vs. Weight (w1)')\nplt.xlabel('Weight')\nplt.ylabel('SSE')\nplt.grid()\nplt.show()\n\n\n\n\n\n\n\n\nWe can see for different weight values, there is a different error value. Accurate prediction is as simple as minimising the error with respect to the weights and biases.\nIn a calculus class you might have taken the derivative of a function \\(\\frac{dError}{dWeight}\\), which represents the slope/gradient of the error function with respect to the weight at a given position.\nWhilst you could in theory solve for when the derivative/slope is zero, to find an explicit answer in situations where there are a large number of weights and biases is often intractably difficult.\nInstead, we understand that if the derivative is positive when the slope is upwards and negative when the slope is downwards, we can just head in the opposite direction of the derivative.\n\ndef DerivativeSSE(x, y, weight, bias):\n    \"\"\"\n    Calculate the derivative of SSE with respect to weight.\n    \"\"\"\n    return -2 * sum((y[i] - LinearFunc(x[i], weight, bias)) * x[i] for i in range(len(y))) / len(y)\n\n# Create subplots\nfig, axes = plt.subplots(1, 2)\n\n# Plot SSE\naxes[0].plot(ErrorDict.keys(), ErrorDict.values(), marker='o')\naxes[0].set_title('SSE vs. Weight (w1)')\naxes[0].set_xlabel('Weight (w1)')\naxes[0].set_ylabel('SSE')\naxes[0].grid(True)\n\n# Plot Derivative of SSE\naxes[1].plot(ErrorDict.keys(), [DerivativeSSE(x, y, weight, bias) for weight in ErrorDict.keys()], marker='o')\naxes[1].set_title('Derivative of SSE vs. Weight (w1)')\naxes[1].set_xlabel('Weight (w1)')\naxes[1].set_ylabel('d(SSE)/dw1')\naxes[1].grid(True)\n\nplt.tight_layout()\nplt.show()\n\n# Make wider Huw!\n\n\n\n\n\n\n\n\nConsider the above left plot and choose a position on the x-axis and look at its corresponding SSE value. You can intuitively see which way is “downhill”.\nOn the above right plot you should be able to read off the derivative at the same x-axis value. If the left plot shows you’re facing uphill, the derivative should be positive on the right plot. If you’re facing downhill the derivative should be negative. The larger the value of the derivative, the steeper the slope.\nIt make sense then that we should take a step in the direction of the negative of the gradient. You should take a larger step if the value of the derivative is larger.\nIn practise we take a step size proportional to the derivative. We call the constant of proportionality the learning rate. If the learning rate is too large we might step over a minimum. If the rate is too small then we might take too long to find the minimum!\nThe process of taking small steps downhill by varying our weights is called Gradient Descent.",
-    "crumbs": [
-      "Theory (part 2)",
-      "Gradient descent"
-    ]
-  },
-  {
-    "objectID": "notebooks/08-Gradient-descent.html#gradient-descent-in-higher-dimensions",
-    "href": "notebooks/08-Gradient-descent.html#gradient-descent-in-higher-dimensions",
-    "title": "Gradient descent: How do neural networks learn?",
-    "section": "Gradient Descent in Higher Dimensions",
-    "text": "Gradient Descent in Higher Dimensions\nIn practise, we want to update all the weights and biases of our neural network at once. This means we want to use a generalisation of the derivative called the gradient function. Given a function \\(f\\) of \\(n\\) variables: \\(w_{1}, w_{2}, \\ldots, w_{n}\\) we can define the gradient function of \\(f\\) as:\n\\(\\nabla f (w_{1}, \\ldots, w_{n}) = \\begin{bmatrix}\n           \\frac{\\partial f}{\\partial w_{1}} \\\\\n           \\frac{\\partial f}{\\partial w_{2}} \\\\\n           \\vdots \\\\\n           \\frac{\\partial f}{\\partial w_{n}}\n         \\end{bmatrix}\\)\nwhere \\(\\frac{\\partial f}{\\partial w_{1}}\\) is the partial derivative of the function \\(f\\) with respect to \\(w_{1}\\). What this means is that each component of this vector tells you how steep the function \\(f\\) is with respect to each of its variables.\nNow if we imagine a loss surface (like a mountain range where the height of where you are standing is the value of a loss function) then we just want to walk downhill with respect to all of our components. This direction is described by the gradient vector.\nIn practise the step we take is proportional to the size of the gradient. We will define a variable called the learning rate, which will tell us how big of a step to take downhill each time.\nYou can play around with this web app to see how the loss surface “looks” with respect to a function and see how gradient descent moves you downhill towards minimal loss\nhttps://neuralpatterns.io/hill_climber.html",
-    "crumbs": [
-      "Theory (part 2)",
-      "Gradient descent"
-    ]
-  },
-  {
-    "objectID": "notebooks/02-Activation-functions.html",
-    "href": "notebooks/02-Activation-functions.html",
-    "title": "Activation functions: When straight lines aren’t enough",
-    "section": "",
-    "text": "We want to generalise the idea of the perceptron for trickier problems. A sensible thing to do is to add some hidden layers of neurons to our perceptron between our input layer and our output layer, constructing a so-called “Multilayer Perceptron” or “MLP” for short. These neurons in the hidden layer work in exactly the same way as those in the input layer. They have some weights and a bias assigned to them, take in inputs and do some linear shift to them.\nimport numpy as np\n\ndef toy_MLP(input, weights, bias):\n    \"\"\"\n    A toy example of a multilayer perceptron, two inputs x1 and x2, one hidden layer with two neurons, and one output layer with one neuron.\n    Manually assigned weights and biases:\n    \"\"\"\n    # These just check the inputs, weights and biases are the right shape/size\n    assert input.shape == (2,), \"Inputs are the wrong shape\"\n    assert weights.shape == (6,), \"Weights are the wrong shape\"\n    assert bias.shape == (3,), \"Biases are the wrong shape\"\n\n    # We feed the inputs into the hidden layer and calculate the outputs which then get fed into the output layer\n    hidden_layer = [input[0] * weights[0] + input[1] * weights[1] + bias[0],\n                    input[0] * weights[2] + input[1] * weights[3] + bias[1]]\n    # The output of the hidden layer is then fed into the output layer\n    output = hidden_layer[0] * weights[4] + hidden_layer[1] * weights[5] + bias[2]\n    # Because we are doing a classification task, we want discrete outputs, so we return 1 if the output is positive and 0 otherwise\n    output = 1 if output &gt; 0 else 0\n    return output\nWe can see that when we run this with some weights and biases we get some sense in which we are right or wrong:\n# Change the values in the below numpy arrays to test the function with different inputs\nweights = np.array([0.1, 0.2, 0.3, 0.4, 0.5, 0.6])\nbias = np.array([0.1, 0.2, 0.3])\n\nXORinputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])\nXORoutputs = np.array([0, 1, 1, 0])\n\nfor i in range(4):\n    output = toy_MLP(XORinputs[i], weights, bias)\n    print(f\"For input: {XORinputs[i]} we wanted to get {XORoutputs[i]} and got {output}\")\n\nFor input: [0 0] we wanted to get 0 and got 1\nFor input: [0 1] we wanted to get 1 and got 1\nFor input: [1 0] we wanted to get 1 and got 1\nFor input: [1 1] we wanted to get 0 and got 1\nRun the code below by changing the values of the weights and biases and see what happens to the decision boundary.\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom matplotlib.lines import Line2D\nfrom itertools import cycle\n\ndef decision_boundary_toy_mlp(function = toy_MLP, weights = weights, bias = bias, XORinputs = XORinputs, XORoutputs = XORoutputs, activation_function=None):\n    # Plot the decision boundary caluclated from toy_mlp based on weights and biases\n    # Includes the XOR data points\n    # And then draws a line showing where the decision boundary is\n\n    # Plotting the data points\n    for i,input in enumerate(XORinputs):\n        if XORoutputs[i]==0:\n            plt.scatter(input[0], input[1], color='blue', marker='^', s=100)\n        else:\n            plt.scatter(input[0], input[1], color='red', marker='o', s=100)\n\n    # Drawing the decision boundaries\n    proxy_lines=[]\n    color_cycle = cycle(['r', 'g', 'b', 'purple', 'orange', 'black'])\n    colors = [next(color_cycle) for _ in range(len(bias))]\n    labels=[]\n    x1_vals = np.linspace(-1, 2, 500)\n    x2_vals = np.linspace(-1, 2, 500)\n    x1, x2 = np.meshgrid(x1_vals, x2_vals)\n    def vectorized_MLP(x1, x2):\n        input_array = np.array([x1, x2])\n        if function == toy_MLP:\n            return toy_MLP(input_array, weights, bias)\n        return function(input_array, weights, bias, activation_function)\n    y = np.vectorize(vectorized_MLP)(x1, x2)\n    plt.contour(x1, x2, y, levels=[0],linewidths=2,colors=colors[0])\n    proxy_lines.append(Line2D([0], [0], color=colors[0], linestyle='-'))\n\n    # Plot settings\n    plt.xlim(-1, 2)\n    plt.ylim(-1, 2)\n    plt.xlabel('$x_1$', fontsize=12)\n    plt.ylabel('$x_2$', fontsize=12)\n    plt.axhline(0, color='black', linewidth=0.8)\n    plt.axvline(0, color='black', linewidth=0.8)\n    plt.grid(True, linestyle='--', alpha=0.3)\n    plt.legend(proxy_lines, labels)\n\n    # Displaying the plot\n    plt.show()\n\nXORinputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])\nXORoutputs = np.array([0, 1, 1, 0])\nweights = np.array([0.1, 0.5, 0.3, 0.4, 0.5, 0.6])\nbias = np.array([0.1, 0.2, 0.3])\ndecision_boundary_toy_mlp(function = toy_MLP, weights = weights, bias = bias, XORinputs = XORinputs, XORoutputs = XORoutputs)\nHave a play with different weights and biases to try and make a decision boundary that can distinguish between the two different categories of points. What do you notice about the decision boundary?\nWhat we saw previously is that doing multiple linear transformations to your data is still at the end of the day, a linear transformation. You can think of this in terms of composing functions:\nIf $ f(x) = w_{1}x + b_{1} $ and $ g(x) = w_{2}x + b_{2} $ are two functions that draw straight lines then we see that:\n\\(f(g(x)) = f(w_{2}x + b_{2}) = w_{1}(w_{2}x + b_{2}) + b_{1} = (w_{1}w_{2})x + (w_{1}b_{2} + b_{1})\\)\n…which is still just a straight line but with slope: \\((w_{1}w_{2})\\) and intercept \\((w_{1}b_{2} + b_{1})\\).\nSo what we need to do is introduce some non-linearity by adding something called an activation function. We have already seen these in some sense when we introduced the “step” by making an output 1 if the input is positive and 0 otherwise.",
-    "crumbs": [
-      "Theory (part 1)",
-      "Activation functions"
-    ]
-  },
-  {
-    "objectID": "notebooks/02-Activation-functions.html#activation-functions",
-    "href": "notebooks/02-Activation-functions.html#activation-functions",
-    "title": "Activation functions: When straight lines aren’t enough",
-    "section": "Activation functions",
-    "text": "Activation functions\nThere are many different activation functions which have different pros and cons! See below some of them:\n\nSigmoid\nThe first activation function you might encounter, which was used when neural networks were first studied, is called the Sigmoid function. It has the effect of squishing input values between 0 and 1. It is sometimes called the “logistic” function. If you’ve ever come across logistic regression, then you might understand why!\n\n\nReLU\nThe second and arguably most common activation function is called the Rectified Linear Unit, or ReLU for short. It returns 0 if the input is negative and returns the input value if the input is positive.\n\n\nTanh\nThe third activation function we’ll mention is tanh (pronounced “tanch” or “hyperbolic tan”), which has the effect of squishing all inputs into outputs in the range -1 to 1. It is the activation function most commonly used in certain types of recurrent neural networks (RNNs) which have applications in time series forecasting and natural language processing.\n\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Sigmoid\ndef sigmoid(x):\n    return 1 / (1 + np.exp(-x))\n# ReLU\ndef relu(x):\n    return np.maximum(0, x)\n# Tanh\ndef tanh(x):\n    return np.tanh(x)\n\n# Plot the activation functions on three different plots in the same figure\nx = np.linspace(-10, 10, 100)\nplt.figure(figsize=(12, 4))\nplt.subplot(1, 3, 1)\nplt.plot(x, sigmoid(x))\nplt.title('Sigmoid')\nplt.subplot(1, 3, 2)\nplt.plot(x, relu(x))\nplt.title('ReLU')\nplt.subplot(1, 3, 3)\nplt.plot(x, tanh(x))\nplt.title('Tanh')\nplt.show()\n\n\n\n\n\n\n\n\n\n# Recode toy_mlp function with activation functions\n\ndef toy_MLP_with_activations(input, weights, bias, activation_function=None):\n    \"\"\"\n    A toy example of a multilayer perceptron, two inputs x1 and x2, one hidden layer with two neurons, and one output layer with one neuron.\n    Also uses activation functions of your choosing\n    Manually assigned weights and biases:\n    \"\"\"\n    # These just check the inputs, weights and biases are the right shape/size\n    assert input.shape == (2,), \"Inputs are the wrong shape\"\n    assert weights.shape == (6,), \"Weights are the wrong shape\"\n    assert bias.shape == (3,), \"Biases are the wrong shape\"\n    assert activation_function in [None, sigmoid, relu, tanh], \"Please choose a valid activation function from [None, sigmoid, relu, tanh]\"\n\n    # If the activation function is None, we just use the identity function\n    if activation_function is None:\n        activation_function = lambda x: x\n\n    # We feed the inputs into the hidden layer and calculate the outputs which then get fed into the output layer\n    hidden_layer = [activation_function(input[0] * weights[0] + input[1] * weights[1] + bias[0]),\n                    activation_function(input[0] * weights[2] + input[1] * weights[3] + bias[1])]\n    # print(hidden_layer[0], hidden_layer[1])\n\n    # The output of the hidden layer is then fed into the output layer\n    output = hidden_layer[0] * weights[4] + hidden_layer[1] * weights[5] + bias[2]\n    # print(output)\n    # Because we are doing a classification task, we want discrete outputs, so we return 1 if the output is positive and 0 otherwise\n    output = 1 if output &gt; 0 else 0\n    return output\n\nWe can now try again to see if, using an activation function, we can get the right shape for the XOR problem:\n\n# Change the values in the below numpy arrays to test the function with different inputs\nweights = np.array([1, 1, 1, 1, 2, -1])\nbias = np.array([-0.1, -1.8, -2.0])\n\nXORinputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])\nXORoutputs = np.array([0, 1, 1, 0])\n\nfor i in range(4):\n    output = toy_MLP_with_activations(XORinputs[i], weights, bias, activation_function=tanh)\n    print(f\"For input: {XORinputs[i]} we wanted to get {XORoutputs[i]} and got {output}\")\n\nFor input: [0 0] we wanted to get 0 and got 0\nFor input: [0 1] we wanted to get 1 and got 1\nFor input: [1 0] we wanted to get 1 and got 1\nFor input: [1 1] we wanted to get 0 and got 0\n\n\n\ndecision_boundary_toy_mlp(function=toy_MLP_with_activations, weights=weights, bias=bias, XORinputs=XORinputs, XORoutputs=XORoutputs, activation_function=tanh)\n\n\n\n\n\n\n\n\nIn two-dimensional(2D) feature space, the decision boundary is a line. In 3D, it becomes a plane, and in higher dimensions, a hyperplane that separates the feature space.",
-    "crumbs": [
-      "Theory (part 1)",
-      "Activation functions"
-    ]
-  },
-  {
-    "objectID": "notebooks/12-Moving-to-HPC.html",
-    "href": "notebooks/12-Moving-to-HPC.html",
-    "title": "Difference between local vs. HPC processing",
-    "section": "",
-    "text": "Running neural network training locally versus on High-Performance Computing (HPC) systems introduces key differences:\nScale differences: Local machines typically handle smaller models and datasets, while HPC environments can process massive datasets and more complex architectures.\nTraining time: What might take days on a local machine could be completed in hours or minutes on HPC systems due to parallel processing capabilities.\nResource allocation: Local setups often face memory constraints, while HPC environments provide managed resources that can be dynamically allocated.\nCode adaptation: Minimal code changes are needed when moving to HPC, mainly related to data loading and distribution across nodes.\nSetup complexity: Local environments require simple installation of packages like PyTorch, while HPC systems need job submission scripts and knowledge of workload managers.\nFor smaller neural networks like our Iris dataset example, local processing is sufficient. Larger, production-scale models benefit significantly from HPC resources.",
-    "crumbs": [
-      "Practical (part 2)",
-      "Moving to HPC"
-    ]
-  },
-  {
-    "objectID": "notebooks/12-Moving-to-HPC.html#bristol-hpc-resources",
-    "href": "notebooks/12-Moving-to-HPC.html#bristol-hpc-resources",
-    "title": "Difference between local vs. HPC processing",
-    "section": "Bristol HPC Resources",
-    "text": "Bristol HPC Resources\nUniversity of Bristol provides access to powerful HPC facilities:\n\nBlueCrystal Phase 4: A general-purpose HPC cluster with GPU capabilities\nBluePebble: Designed specifically for machine learning workloads with advanced GPU nodes\n\nRegistered students and researchers should visit the High Performance Computing or Bristol’s new supercomputer Isambard 3 and Isambard-AI website for access information and documentation.",
-    "crumbs": [
-      "Practical (part 2)",
-      "Moving to HPC"
-    ]
-  },
-  {
-    "objectID": "notebooks/06-Classes-and-perceptron.html",
-    "href": "notebooks/06-Classes-and-perceptron.html",
-    "title": "Classes and perceptron",
-    "section": "",
-    "text": "This notebook introduces the concept of classes in Python and demonstrates their application in building a simple Perceptron, a pytorch neural network.",
+    "text": "A tensor can be viewed as a multi-dimensional array. Similar to how an n-dimensional vector is shown as a one-dimensional array with n elements relative to a specific basis, any tensor can be expressed as a multi-dimensional array when referenced to a basis. The individual values within this multi-dimensional structure are referred to as the tensor’s components.\nPyTorch is an open-source machine learning library developed by Facebook’s AI Research lab. It’s known for its flexibility, intuitive design, and dynamic computational graph which makes debugging easier. This library offers multi-dimensional tensor data structures and implements various mathematical functions to manipulate these tensors. It also includes numerous tools for effective tensor serialisation, handling arbitrary data types, and provides several other practical utilities.\nPyTorch shares significant similarities with NumPy, though it uses the term ‘’tensor’’ instead of ‘’N-dimensional array’’. For example,\n\nimport torch\nimport numpy as np\n\narray_np = np.array([[1, 2, 3],\n                    [4, 5, 6]])\narray_pytorch = torch.tensor([[1, 2, 3],\n                             [4, 5, 6]])\nprint(array_np)\nprint(array_pytorch)\n\n[[1 2 3]\n [4 5 6]]\ntensor([[1, 2, 3],\n        [4, 5, 6]])\n\n\nNow let us create tensors and do some operations in PyTorch.\n\n# create specific tensors\nzeros = torch.zeros(3, 4)  # 3x4 tensor of zeros\nones = torch.ones(2, 3)    # 2x3 tensor of ones\nrand = torch.rand(2, 2)    # 2x2 tensor of random numbers (0-1)\nprint(zeros, \"\\n\", ones, \"\\n\", rand)\n\ntensor([[0., 0., 0., 0.],\n        [0., 0., 0., 0.],\n        [0., 0., 0., 0.]]) \n tensor([[1., 1., 1.],\n        [1., 1., 1.]]) \n tensor([[0.6451, 0.7210],\n        [0.5962, 0.2703]])\n\n\n\n# Create a 2x3 tensor\na = torch.tensor([[1, 2, 3], [4, 5, 6]])\na.shape  # dimension of the tensor a\n\ntorch.Size([2, 3])\n\n\n\n# Create tensor b of the same shape with tensor a\nb = torch.tensor([[7, 8, 9], [10, 11, 12]])\n# Add the tensors\nresult = a + b\nprint(result)\n\ntensor([[ 8, 10, 12],\n        [14, 16, 18]])\n\n\n\n# Create two 2x2 matrices\nmatrix_a = torch.tensor([[1, 2], [3, 4]])\nmatrix_b = torch.tensor([[5, 6], [7, 8]])\n# Perform matrix multiplication using torch.matmul\nmatrix_mult_result = torch.matmul(matrix_a, matrix_b)\nprint(matrix_mult_result)\n\ntensor([[19, 22],\n        [43, 50]])\n\n\n\n# Create two 1D tensors (vectors)\nvector_a = torch.tensor([1, 2, 3])\nvector_b = torch.tensor([4, 5, 6])\n# Computing the dot product between two vectors using torch.dot\ndot_product_result = torch.dot(vector_a, vector_b)\nprint(dot_product_result)\n\ntensor(32)\n\n\nIn this section, we have introduced some basic tensor operations. To learn more about tensor operations, refer to the official documentation: Tensor Operations",
     "crumbs": [
       "Practical (part 1)",
-      "Classes and perceptron"
-    ]
-  },
-  {
-    "objectID": "notebooks/06-Classes-and-perceptron.html#a-simple-perceptron",
-    "href": "notebooks/06-Classes-and-perceptron.html#a-simple-perceptron",
-    "title": "Classes and perceptron",
-    "section": "A simple perceptron",
-    "text": "A simple perceptron\n\nThe Perceptron Class: This is like a tiny decision-maker. It sets up random “weights” and a “bias” when created.\nThe forward Method: It takes an input (like [1.0, 2.0]), mixes it with weights and bias, and decides “yes” (1) or “no” (-1) using a simple rule.\nTesting It: We create a Perceptron, give it an input, and see what it says—super simple!\n\n\nimport torch\nimport torch.nn as nn\n\nclass Perceptron:\n    def __init__(self, input_size):\n        # Initialize random weights and bias\n        self.weights = torch.randn(input_size)\n        self.bias = torch.randn(1)\n    \n    def forward(self, x):\n        # Compute the output: sign of (weights * input + bias)\n        return torch.sign(torch.dot(x, self.weights) + self.bias)\n\n# Test the Perceptron\nperceptron = Perceptron(input_size=2)  # Create an instance with 2 inputs\nsample_input = torch.tensor([5.0, 2.0])\noutput = perceptron.forward(sample_input)\nprint(\"Perceptron output:\", output)\n\nPerceptron output: tensor([-1.])",
-    "crumbs": [
-      "Practical (part 1)",
-      "Classes and perceptron"
-    ]
-  },
-  {
-    "objectID": "notebooks/06-Classes-and-perceptron.html#a-pytorch-neural-network",
-    "href": "notebooks/06-Classes-and-perceptron.html#a-pytorch-neural-network",
-    "title": "Classes and perceptron",
-    "section": "A PyTorch neural network",
-    "text": "A PyTorch neural network\n\nThe SimpleNet Class: A simple neural network built with PyTorch. It sets up two “layers” of connections: one from inputs to a hidden layer (like a middle step), and another from the hidden layer to the output.\nThe forward Method: This tells the network how to process an input—it passes it through the first layer, adds a twist with ReLU, then goes through the second layer to get the final result.\nTesting It: We create a SimpleNet, give it an input (like [1.0, 2.0]), and see what it predicts—nice and straightforward!\n\n\nclass SimpleNet(nn.Module):\n    def __init__(self, input_size, hidden_size, output_size):\n        super(SimpleNet, self).__init__()  # Initialize the parent nn.Module class\n        self.layer1 = nn.Linear(input_size, hidden_size)  # Input to hidden layer\n        self.layer2 = nn.Linear(hidden_size, output_size)  # Hidden to output layer\n        self.relu = nn.ReLU()\n\n    def forward(self, x):\n        # Define the forward pass with ReLU activation\n        x = self.layer1(x)\n        x = self.relu(x)\n        x = self.layer2(x)\n        return x\n\nsample_input = torch.tensor([5.0, 2.0])\n# Test the SimpleNet\nnet = SimpleNet(input_size=2, hidden_size=4, output_size=1)  # Create an instance\noutput = net(sample_input)\nprint(\"SimpleNet output:\", output)\n\nSimpleNet output: tensor([-0.8022], grad_fn=&lt;ViewBackward0&gt;)",
-    "crumbs": [
-      "Practical (part 1)",
-      "Classes and perceptron"
-    ]
-  },
-  {
-    "objectID": "notebooks/10-Training-pipeline.html",
-    "href": "notebooks/10-Training-pipeline.html",
-    "title": "Training pipeline: Multi-layer perceptron implementation",
-    "section": "",
-    "text": "A multi-layer perceptron is a type of feedforward neural network (FNN). It is composed of fully connected layers and non-linear activation functions, and is commonly used for classifying data that cannot be separated by a straight line.",
-    "crumbs": [
-      "Practical (part 2)",
-      "Training pipeline"
-    ]
-  },
-  {
-    "objectID": "notebooks/10-Training-pipeline.html#step-1-define-the-mlp-model",
-    "href": "notebooks/10-Training-pipeline.html#step-1-define-the-mlp-model",
-    "title": "Training pipeline: Multi-layer perceptron implementation",
-    "section": "Step 1: Define the MLP model",
-    "text": "Step 1: Define the MLP model\n\nimport torch.nn as nn\nclass MLP(nn.Module):\n    def __init__(self, input_size, hidden_size, num_classes):\n        \"\"\"\n        Initialise a simple feedforward MLP architecture.\n        \n        Parameters:\n         input_size: Number of input features (e.g., 4 for Iris dataset)\n         hidden_size: Number of neurons in the hidden layer\n         num_classes: Number of output classes (e.g., 3 for Iris species)\n        \"\"\"\n        super(MLP, self).__init__()\n        \n        # First layer (input to hidden)\n        self.layer1 = nn.Linear(input_size, hidden_size)\n        self.relu = nn.ReLU()\n        \n        # Second layer (hidden to hidden)\n        self.layer2 = nn.Linear(hidden_size, hidden_size)\n        \n        # Output layer (hidden to output)\n        self.output = nn.Linear(hidden_size, num_classes)\n        self.softmax = nn.Softmax(dim=1)  # Softmax for multi-class classification\n        \n    def forward(self, x):\n        \"\"\"\n        Define the forward pass through the network for a single input.\n        \n        Parameter:\n         x: Input tensor of shape [input_size] representing a single sample\n        \n        Returns:\n         Output tensor of shape [num_classes] for a single prediction\n        \"\"\"\n\n        # Forward pass through the network\n        # Each step applies a linear transformation followed by a non-linear activation\n        \n        x = self.layer1(x)\n        x = self.relu(x)\n            \n        x = self.layer2(x)\n        x = self.relu(x)\n            \n        x = self.output(x)\n        x = self.softmax(x)  # Apply softmax to get probabilities\n        \n        return x",
-    "crumbs": [
-      "Practical (part 2)",
-      "Training pipeline"
-    ]
-  },
-  {
-    "objectID": "notebooks/10-Training-pipeline.html#step-2-set-model-parameters-and-initialise-model",
-    "href": "notebooks/10-Training-pipeline.html#step-2-set-model-parameters-and-initialise-model",
-    "title": "Training pipeline: Multi-layer perceptron implementation",
-    "section": "Step 2: Set model parameters and initialise model",
-    "text": "Step 2: Set model parameters and initialise model\n\ninput_size = 4    # Assuming 4 features (like Iris dataset)\nhidden_size = 16  # Neurons in hidden layer\nnum_classes = 3   # Output classes \nmodel = MLP(input_size, hidden_size, num_classes)\nmodel\n\nMLP(\n  (layer1): Linear(in_features=4, out_features=16, bias=True)\n  (relu): ReLU()\n  (layer2): Linear(in_features=16, out_features=16, bias=True)\n  (output): Linear(in_features=16, out_features=3, bias=True)\n  (softmax): Softmax(dim=1)\n)",
-    "crumbs": [
-      "Practical (part 2)",
-      "Training pipeline"
-    ]
-  },
-  {
-    "objectID": "notebooks/10-Training-pipeline.html#step-3-loss-function",
-    "href": "notebooks/10-Training-pipeline.html#step-3-loss-function",
-    "title": "Training pipeline: Multi-layer perceptron implementation",
-    "section": "Step 3: Loss function",
-    "text": "Step 3: Loss function\n\ndef calculate_loss(model, X, y_true):\n    \"\"\"\n    Calculate loss for the model without training.\n    \n    Parameters:\n     model: The MLP model\n     X: Input features (torch tensor) - single sample, not batched\n     y_true: True label (torch tensor) - single label, not batched\n    \n    Returns:\n     loss: Sum of squared errors loss value\n    \"\"\"\n    \n    # Add batch dimension of 1 for model compatibility\n    X_input = X.unsqueeze(0)  # Adds batch dimension [1, input_features]\n    y_pred = model(X_input)   # y_pred shape: [1, num_classes]\n    \n    # Get number of classes from model's output layer\n    num_classes = model.output.out_features\n    \n    # Create one-hot encoded label for a single sample\n    \"\"\"\n    as we are working with a classification problem that has 3 possible classes (0, 1, and 2). \n    Using one-hot encoding gives us:\n\n    Class 0 becomes: [1, 0, 0]\n    Class 1 becomes: [0, 1, 0]\n    Class 2 becomes: [0, 0, 1]\n\n    \"\"\"\n    y_true_one_hot = torch.zeros(1, num_classes)\n    \n    # Convert label tensor to integer and set the appropriate position to 1\n    label_idx = y_true.item()\n    y_true_one_hot[0, label_idx] = 1\n    \n    # Calculate sum of squared errors between prediction and one-hot label\n    squared_errors = (y_pred - y_true_one_hot) ** 2\n    loss = torch.sum(squared_errors)\n    \n    # Calculate and print the loss value\n    loss_value = loss.item()\n    \n    # Return the loss as a Python float\n    return loss_value",
-    "crumbs": [
-      "Practical (part 2)",
-      "Training pipeline"
-    ]
-  },
-  {
-    "objectID": "notebooks/10-Training-pipeline.html#step-4-prepare-iris-test-dataset",
-    "href": "notebooks/10-Training-pipeline.html#step-4-prepare-iris-test-dataset",
-    "title": "Training pipeline: Multi-layer perceptron implementation",
-    "section": "Step 4: Prepare Iris Test Dataset",
-    "text": "Step 4: Prepare Iris Test Dataset\n\n# In this step, the process is identical to the data handling steps in \"DataPipeline\" notebook.\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.datasets import load_iris\nimport torch\nfrom torch.utils.data import TensorDataset, DataLoader\nfrom sklearn.preprocessing import StandardScaler\n\n\n# load the dataset\niris = load_iris()\n\n\n# extract features and target classes\nX = iris.data\ny = iris.target\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\n\n# standardise the feature data\nscaler = StandardScaler()\nX_train = scaler.fit_transform(X_train)\nX_test = scaler.transform(X_test)\nX_test_tensor = torch.FloatTensor(X_test)\ny_test_tensor = torch.LongTensor(y_test)\n\n\nbatch_size = 30\ntest_dataset = TensorDataset(X_test_tensor, y_test_tensor)\ntest_loader = DataLoader(test_dataset, batch_size=batch_size)\n\ntrain_dataset = TensorDataset(torch.FloatTensor(X_train), torch.LongTensor(y_train))\ntrain_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)",
-    "crumbs": [
-      "Practical (part 2)",
-      "Training pipeline"
-    ]
-  },
-  {
-    "objectID": "notebooks/10-Training-pipeline.html#step-5-evaluate-test-loss-and-accuracy",
-    "href": "notebooks/10-Training-pipeline.html#step-5-evaluate-test-loss-and-accuracy",
-    "title": "Training pipeline: Multi-layer perceptron implementation",
-    "section": "Step 5: Evaluate Test Loss and Accuracy",
-    "text": "Step 5: Evaluate Test Loss and Accuracy\n\nimport matplotlib.pyplot as plt\n\n# Initialise a list to store the individual losses\nlosses = []\n# Evaluate the average SSE loss of the model on the test_dataset\nmodel.eval()\ntotal_test_loss = 0\nnum_test_samples = 0\n\nwith torch.no_grad():\n    for features, labels in test_loader:\n        for i in range(features.size(0)):\n            # Extract individual feature and label\n            single_feature = features[i]\n            single_label = labels[i]\n\n            # Calculate loss for individual sample\n            loss = calculate_loss(model, single_feature, single_label)\n            losses.append(loss)\n            total_test_loss += loss\n            num_test_samples += 1\n\n# Calculate average loss across all processed samples\nif num_test_samples &gt; 0:\n    avg_test_loss = total_test_loss / num_test_samples\n    print(f\"\\nAverage SSE loss on test set ({num_test_samples} samples): {avg_test_loss:.4f}\")\n    \n    # Plot the losses as a line chart\n    plt.figure(figsize=(10, 6))\n    plt.plot(range(num_test_samples), losses, label='Sample-wise SSE Loss', color='tab:blue', linewidth=2)\n    plt.xlabel(\"Sample Index\")\n    plt.ylabel(\"SSE Loss\")\n    plt.title(\"SSE Loss per Sample on Test Set\")\n    plt.legend()\n    plt.grid(True)\n    plt.tight_layout()\n    plt.show()\n\n\nAverage SSE loss on test set (30 samples): 0.6383",
-    "crumbs": [
-      "Practical (part 2)",
-      "Training pipeline"
+      "PyTorch and tensors"
     ]
   },
   {
@@ -472,10 +429,53 @@
     "href": "notebooks/07-Multi-layer-perceptron.html#step-5-evaluate-test-loss-and-accuracy",
     "title": "Multi-layer perceptron implementation",
     "section": "Step 5: Evaluate Test Loss and Accuracy",
-    "text": "Step 5: Evaluate Test Loss and Accuracy\n\nimport matplotlib.pyplot as plt\n# Initialize a list to store the individual losses\nlosses = []\n# Evaluate the average SSE loss of the model on the test_dataset\nmodel.eval()\ntotal_test_loss = 0\nnum_test_samples = 0\n\nwith torch.no_grad():\n    for features, labels in test_loader:\n        for i in range(features.size(0)):\n            # Extract individual feature and label\n            single_feature = features[i]\n            single_label = labels[i]\n\n            # Calculate loss for individual sample\n            loss = calculate_loss(model, single_feature, single_label)\n            losses.append(loss)\n            total_test_loss += loss\n            num_test_samples += 1\n\n# Calculate average loss across all processed samples\nif num_test_samples &gt; 0:\n    avg_test_loss = total_test_loss / num_test_samples\n    print(f\"\\nAverage SSE loss on test set ({num_test_samples} samples): {avg_test_loss:.4f}\")\n    \n    # Plot the losses as a line chart\n    plt.figure(figsize=(10, 6))\n    plt.plot(range(num_test_samples), losses, label='Sample-wise SSE Loss', color='tab:blue', linewidth=2)\n    plt.xlabel(\"Sample Index\")\n    plt.ylabel(\"SSE Loss\")\n    plt.title(\"SSE Loss per Sample on Test Set\")\n    plt.legend()\n    plt.grid(True)\n    plt.tight_layout()\n    plt.show()\n\n\nAverage SSE loss on test set (30 samples): 0.6470",
+    "text": "Step 5: Evaluate Test Loss and Accuracy\n\nimport matplotlib.pyplot as plt\n# Initialize a list to store the individual losses\nlosses = []\n# Evaluate the average SSE loss of the model on the test_dataset\nmodel.eval()\ntotal_test_loss = 0\nnum_test_samples = 0\n\nwith torch.no_grad():\n    for features, labels in test_loader:\n        for i in range(features.size(0)):\n            # Extract individual feature and label\n            single_feature = features[i]\n            single_label = labels[i]\n\n            # Calculate loss for individual sample\n            loss = calculate_loss(model, single_feature, single_label)\n            losses.append(loss)\n            total_test_loss += loss\n            num_test_samples += 1\n\n# Calculate average loss across all processed samples\nif num_test_samples &gt; 0:\n    avg_test_loss = total_test_loss / num_test_samples\n    print(f\"\\nAverage SSE loss on test set ({num_test_samples} samples): {avg_test_loss:.4f}\")\n    \n    # Plot the losses as a line chart\n    plt.figure(figsize=(10, 6))\n    plt.plot(range(num_test_samples), losses, label='Sample-wise SSE Loss', color='tab:blue', linewidth=2)\n    plt.xlabel(\"Sample Index\")\n    plt.ylabel(\"SSE Loss\")\n    plt.title(\"SSE Loss per Sample on Test Set\")\n    plt.legend()\n    plt.grid(True)\n    plt.tight_layout()\n    plt.show()\n\n\nAverage SSE loss on test set (30 samples): 0.6773",
     "crumbs": [
       "Practical (part 1)",
       "Multi-later perceptron"
+    ]
+  },
+  {
+    "objectID": "notebooks/11-Learning-rate.html",
+    "href": "notebooks/11-Learning-rate.html",
+    "title": "Interpretation of various learning rates",
+    "section": "",
+    "text": "When examining learning rate graphs, several distinct patterns emerge that provide valuable insights into model training dynamics: - Very high learning rate (yellow curve) typically produces diverging loss that increases over time, indicating unstable optimisation where parameter updates overshoot minima and potentially cause numerical instability. - High learning rates (green curve) show rapid initial progress followed by oscillation or plateauing, suggesting the model approaches optimal regions quickly but lacks the precision to settle properly, bouncing around like a ball with too much energy. - Good learning rates (red curve) display steady, consistent decreases that eventually flatten at low values, representing an ideal balance between speed and stability that allows the model to converge efficiently. - Low learning rates (blue curve) produce very slow, almost linear decreases in loss, indicating cautious parameter updates that never overshoot but require significantly more computational resources and training time.",
+    "crumbs": [
+      "Practical (part 2)",
+      "Learning rate"
+    ]
+  },
+  {
+    "objectID": "notebooks/12-Moving-to-HPC.html",
+    "href": "notebooks/12-Moving-to-HPC.html",
+    "title": "Difference between local vs. HPC processing",
+    "section": "",
+    "text": "Running neural network training locally versus on High-Performance Computing (HPC) systems introduces key differences:\nScale differences: Local machines typically handle smaller models and datasets, while HPC environments can process massive datasets and more complex architectures.\nTraining time: What might take days on a local machine could be completed in hours or minutes on HPC systems due to parallel processing capabilities.\nResource allocation: Local setups often face memory constraints, while HPC environments provide managed resources that can be dynamically allocated.\nCode adaptation: Minimal code changes are needed when moving to HPC, mainly related to data loading and distribution across nodes.\nSetup complexity: Local environments require simple installation of packages like PyTorch, while HPC systems need job submission scripts and knowledge of workload managers.\nFor smaller neural networks like our Iris dataset example, local processing is sufficient. Larger, production-scale models benefit significantly from HPC resources.",
+    "crumbs": [
+      "Practical (part 2)",
+      "Moving to HPC"
+    ]
+  },
+  {
+    "objectID": "notebooks/12-Moving-to-HPC.html#bristol-hpc-resources",
+    "href": "notebooks/12-Moving-to-HPC.html#bristol-hpc-resources",
+    "title": "Difference between local vs. HPC processing",
+    "section": "Bristol HPC Resources",
+    "text": "Bristol HPC Resources\nUniversity of Bristol provides access to powerful HPC facilities:\n\nBlueCrystal Phase 4: A general-purpose HPC cluster with GPU capabilities\nBluePebble: Designed specifically for machine learning workloads with advanced GPU nodes\n\nRegistered students and researchers should visit the High Performance Computing or Bristol’s new supercomputer Isambard 3 and Isambard-AI website for access information and documentation.",
+    "crumbs": [
+      "Practical (part 2)",
+      "Moving to HPC"
+    ]
+  },
+  {
+    "objectID": "setup.html",
+    "href": "setup.html",
+    "title": "Run the code on your own machine",
+    "section": "",
+    "text": "Run the code on your own machine\nTo follow along on your own machine, follow these instructions:\n\nOpen a terminal (or Git Bash)\n\n\n\n\n\n\nWindows users\n\n\n\nWe recommend that you install Git and Git Bash, unless you are using Windows Subsystem for Linux (WSL). You should be able to do this by running the following command in command prompt or Powershell:\nwinget install --id Git.Git -e --source winget\nIf this doesn’t work, then follow the instructions on the Git website.\n\n\nInstall uv by running:\ncurl -LsSf https://astral.sh/uv/install.sh | sh\nClose and re-open your terminal, if the installer requests this.\n\n\n\n\n\n\nIf you have uv installed already\n\n\n\nUpgrade to the latest version of uv before continuing, by running uv self update, or by upgrading through whatever means you used to install uv originally (for example, Homebrew users would run brew upgrade uv).\n\n\nDownload the course content:\ngit clone https://github.com/Bristol-Training/intro-to-ai\ncd intro-to-ai\nCheck your PyTorch version:\nuv run python -c \"import torch; print('PyTorch version', torch.__version__)\"\nThis command will automatically download the version of Python and associated libraries that are required for the course, before displaying the version of PyTorch on the screen. This should be something like 2.7.0.\nRun Jupyter Lab:\nuv run jupyter lab notebooks\nIn future, just re-run this command to get access to the course again.",
+    "crumbs": [
+      "Setup"
     ]
   }
 ]
