@@ -305,8 +305,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#output-layer" id="toc-output-layer" class="nav-link" data-scroll-target="#output-layer">Output layer</a></li>
   <li><a href="#step-1-define-the-mlp-model" id="toc-step-1-define-the-mlp-model" class="nav-link" data-scroll-target="#step-1-define-the-mlp-model">Step 1: Define the MLP model</a></li>
   <li><a href="#step-2-set-model-parameters-and-initialise-model" id="toc-step-2-set-model-parameters-and-initialise-model" class="nav-link" data-scroll-target="#step-2-set-model-parameters-and-initialise-model">Step 2: Set model parameters and initialise model</a></li>
+  <li><a href="#insert-picture-here" id="toc-insert-picture-here" class="nav-link" data-scroll-target="#insert-picture-here">Insert picture here</a>
+  <ul class="collapse">
   <li><a href="#step-3-prepare-iris-test-dataset" id="toc-step-3-prepare-iris-test-dataset" class="nav-link" data-scroll-target="#step-3-prepare-iris-test-dataset">Step 3: Prepare Iris Test Dataset</a></li>
   <li><a href="#step-4-evaluate-test-loss-and-accuracy" id="toc-step-4-evaluate-test-loss-and-accuracy" class="nav-link" data-scroll-target="#step-4-evaluate-test-loss-and-accuracy">Step 4: Evaluate Test Loss and Accuracy</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/bristol-training/intro-to-ai/blob/main/notebooks/07-Multi-layer-perceptron.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bristol-training/intro-to-ai/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -432,8 +435,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 )</code></pre>
 </div>
 </div>
-<p>Insert picture here</p>
 </section>
+<section id="insert-picture-here" class="level1">
+<h1>Insert picture here</h1>
 <section id="step-3-prepare-iris-test-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="step-3-prepare-iris-test-dataset">Step 3: Prepare Iris Test Dataset</h2>
 <div id="7" class="cell" data-execution_count="3">
@@ -644,40 +648,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> features, labels <span class="kw">in</span> test_loader:</span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(features.size(<span class="dv">0</span>)):</span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Extract individual feature and label</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>            single_feature <span class="op">=</span> features[i].unsqueeze(<span class="dv">0</span>)  <span class="co"># Add batch dimension</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>            single_label <span class="op">=</span> labels[i]</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Forward pass</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>            prediction <span class="op">=</span> model(single_feature)</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>            <span class="co"># One-hot encode label and convert to float</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>            one_hot_label <span class="op">=</span> F.one_hot(single_label, num_classes<span class="op">=</span><span class="dv">3</span>).<span class="bu">float</span>().unsqueeze(<span class="dv">0</span>)</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Calculate MSE loss</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> F.mse_loss(prediction, one_hot_label)</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>            losses.append(loss.item())</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>            total_test_loss <span class="op">+=</span> loss.item()</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>            num_test_samples <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate average loss across all processed samples</span></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> num_test_samples <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    avg_test_loss <span class="op">=</span> total_test_loss <span class="op">/</span> num_test_samples</span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Average MSE loss on test set (</span><span class="sc">{</span>num_test_samples<span class="sc">}</span><span class="ss"> samples): </span><span class="sc">{</span>avg_test_loss<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the losses as a line chart</span></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    plt.plot(<span class="bu">range</span>(num_test_samples), losses, label<span class="op">=</span><span class="st">'Sample-wise MSE Loss'</span>, color<span class="op">=</span><span class="st">'tab:blue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Sample Index"</span>)</span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"MSE Loss"</span>)</span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"MSE Loss per Sample on Test Set"</span>)</span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    plt.grid(<span class="va">True</span>)</span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>            <span class="co"># The unsqueeze(0) adds a batch dimension to the one-hot encoded label, </span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>            <span class="co"># making it compatible with the model's output shape.</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>            single_feature <span class="op">=</span> features[i].unsqueeze(<span class="dv">0</span>)  <span class="co"># Add batch dimension</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>            single_label <span class="op">=</span> labels[i]</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Forward pass</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>            prediction <span class="op">=</span> model(single_feature)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>            <span class="co"># The one-hot encoding converts the class label into a vector with only 0s and 1s.</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>            <span class="co"># For example, if the class label is 1 for the second class in a 3-class problem,</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>            <span class="co"># the one-hot encoding would be [0, 1, 0].</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>            <span class="co"># One-hot encode label and convert to float</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>            one_hot_label <span class="op">=</span> F.one_hot(single_label, num_classes<span class="op">=</span><span class="dv">3</span>).<span class="bu">float</span>().unsqueeze(<span class="dv">0</span>)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Calculate MSE loss</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> F.mse_loss(prediction, one_hot_label)</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>            losses.append(loss.item())</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>            total_test_loss <span class="op">+=</span> loss.item()</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>            num_test_samples <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate average loss across all processed samples</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> num_test_samples <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>    avg_test_loss <span class="op">=</span> total_test_loss <span class="op">/</span> num_test_samples</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Average MSE loss on test set (</span><span class="sc">{</span>num_test_samples<span class="sc">}</span><span class="ss"> samples): </span><span class="sc">{</span>avg_test_loss<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the losses as a line chart</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>    plt.plot(<span class="bu">range</span>(num_test_samples), losses, label<span class="op">=</span><span class="st">'Sample-wise MSE Loss'</span>, color<span class="op">=</span><span class="st">'tab:blue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Sample Index"</span>)</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"MSE Loss"</span>)</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"MSE Loss per Sample on Test Set"</span>)</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>    plt.grid(<span class="va">True</span>)</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Average MSE loss on test set (30 samples): 0.2482</code></pre>
+Average MSE loss on test set (30 samples): 0.2252</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -687,8 +699,10 @@ Average MSE loss on test set (30 samples): 0.2482</code></pre>
 </div>
 </div>
 </div>
+<p>It should not surprise</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -485,40 +485,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> features, labels <span class="kw">in</span> test_loader:</span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(features.size(<span class="dv">0</span>)):</span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Extract individual feature and label</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>            single_feature <span class="op">=</span> features[i].unsqueeze(<span class="dv">0</span>)  <span class="co"># Add batch dimension</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>            single_label <span class="op">=</span> labels[i]</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Forward pass</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>            prediction <span class="op">=</span> model(single_feature)</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>            <span class="co"># One-hot encode label and convert to float</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>            one_hot_label <span class="op">=</span> F.one_hot(single_label, num_classes<span class="op">=</span><span class="dv">3</span>).<span class="bu">float</span>().unsqueeze(<span class="dv">0</span>)</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Calculate MSE loss</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> F.mse_loss(prediction, one_hot_label)</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>            losses.append(loss.item())</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>            total_test_loss <span class="op">+=</span> loss.item()</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>            num_test_samples <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate average loss across all processed samples</span></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> num_test_samples <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    avg_test_loss <span class="op">=</span> total_test_loss <span class="op">/</span> num_test_samples</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Average MSE loss on test set (</span><span class="sc">{</span>num_test_samples<span class="sc">}</span><span class="ss"> samples): </span><span class="sc">{</span>avg_test_loss<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the losses as a line chart</span></span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    plt.plot(<span class="bu">range</span>(num_test_samples), losses, label<span class="op">=</span><span class="st">'Sample-wise MSE Loss'</span>, color<span class="op">=</span><span class="st">'tab:blue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Sample Index"</span>)</span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"MSE Loss"</span>)</span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"MSE Loss per Sample on Test Set"</span>)</span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>    plt.grid(<span class="va">True</span>)</span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>            <span class="co"># The unsqueeze(0) adds a batch dimension to the one-hot encoded label, </span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>            <span class="co"># making it compatible with the model's output shape.</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>            single_feature <span class="op">=</span> features[i].unsqueeze(<span class="dv">0</span>)  <span class="co"># Add batch dimension</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>            single_label <span class="op">=</span> labels[i]</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Forward pass</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>            prediction <span class="op">=</span> model(single_feature)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>            <span class="co"># The one-hot encoding converts the class label into a vector with only 0s and 1s.</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>            <span class="co"># For example, if the class label is 1 for the second class in a 3-class problem,</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>            <span class="co"># the one-hot encoding would be [0, 1, 0].</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>            <span class="co"># One-hot encode label and convert to float</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>            one_hot_label <span class="op">=</span> F.one_hot(single_label, num_classes<span class="op">=</span><span class="dv">3</span>).<span class="bu">float</span>().unsqueeze(<span class="dv">0</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Calculate MSE loss</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> F.mse_loss(prediction, one_hot_label)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>            losses.append(loss.item())</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>            total_test_loss <span class="op">+=</span> loss.item()</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>            num_test_samples <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate average loss across all processed samples</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> num_test_samples <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>    avg_test_loss <span class="op">=</span> total_test_loss <span class="op">/</span> num_test_samples</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Average MSE loss on test set (</span><span class="sc">{</span>num_test_samples<span class="sc">}</span><span class="ss"> samples): </span><span class="sc">{</span>avg_test_loss<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the losses as a line chart</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>    plt.plot(<span class="bu">range</span>(num_test_samples), losses, label<span class="op">=</span><span class="st">'Sample-wise MSE Loss'</span>, color<span class="op">=</span><span class="st">'tab:blue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Sample Index"</span>)</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"MSE Loss"</span>)</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"MSE Loss per Sample on Test Set"</span>)</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>    plt.grid(<span class="va">True</span>)</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Average MSE loss on test set (30 samples): 0.2249</code></pre>
+Average MSE loss on test set (30 samples): 0.2359</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -533,24 +541,25 @@ Average MSE loss on test set (30 samples): 0.2249</code></pre>
 <h1>Step 5: Implement Training Pipeline</h1>
 <section id="setting-the-learning-rate" class="level3">
 <h3 class="anchored" data-anchor-id="setting-the-learning-rate">Setting the learning Rate</h3>
-<p>Ineuralep network trainingsettingng the learning rate over time is beneficial. With high learning rates, parameter vectors bounce chaotically, struggling to settle into optimal regions of the loss function. The timing of decay is crucial; too slow wastes computation, too fast prevents finding the best solution. The code below <code>optim.SGD(model.parameters(), lr=0.01)</code> creates a <a href="https://optimization.cbe.cornell.edu/index.php?title=Stochastic_gradient_descent">Stochastic Gradient Descent optimiser</a> that will adjust the parameters of our model during training. It configures the optimiser to work with all the parameters in our model and sets the initial learning rate to <code>0.01</code>. This optimiser SGD is responsible for updating our model’s weights based on the calculated gradients, helping the model to improve over time during the training process.er training.</p>
+<p>Ineuralep network trainingsettingng the learning rate over time is beneficial. With high learning rates, parameter vectors bounce chaotically, struggling to settle into optimal regions of the loss function. The timing of decay is crucial; too slow wastes computation, too fast prevents finding the best solution. The code below <code>optim.SGD(model.parameters(), lr=0.01)</code> creates a <a href="https://optimization.cbe.cornell.edu/index.php?title=Stochastic_gradient_descent">Stochastic Gradient Descent optimiser</a> that will adjust the parameters of our model during training. It configures the optimiser to work with all the parameters in our model and sets the initial learning rate to <code>0.1</code>. This optimiser SGD is responsible for updating our model’s weights based on the calculated gradients, helping the model to improve over time during the training process.er training.</p>
 <div id="10" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.optim <span class="im">as</span> optim</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up optimiser which in our case is Stochastic Gradient Descent</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>optimiser <span class="op">=</span> optim.SGD(model.parameters(), lr<span class="op">=</span><span class="fl">0.1</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># nn.Module has a built in method called .parameters() which returns the model's parameters</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Related batches to learning rate</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Learning_rate <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up optimiser which in our case is Stochastic Gradient Descent</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>optimiser <span class="op">=</span> optim.SGD(model.parameters(), lr<span class="op">=</span>Learning_rate)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># nn.Module has a built in method called .parameters() which returns the model's parameters</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Related batches to learning rate</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="choosing-number-of-epochs" class="level3">
 <h3 class="anchored" data-anchor-id="choosing-number-of-epochs">Choosing number of epochs</h3>
 <p>Determining the optimal <a href="https://deepai.org/machine-learning-glossary-and-terms/epoch">number of epochs</a> is crucial for neural network design. Too few, and our model will not learn properly; too many, and it may overfit, learning data noise rather than useful patterns. The right number is typically found through experimentation and monitoring performance on a validation set.</p>
 <div id="12" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>num_epochs <span class="op">=</span> <span class="dv">100</span></span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What is an epoch? One run of all the batches. </span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># What is an epoch? One run of all the batches. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>num_epochs <span class="op">=</span> <span class="dv">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>As an exercise, you can try increasing or decreasing the number of epochs to analyse how it affects our training.</p>
 <div id="14" class="cell" data-execution_count="7">
@@ -601,21 +610,21 @@ Average MSE loss on test set (30 samples): 0.2249</code></pre>
 <span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>plt.plot(test_losses, label<span class="op">=</span><span class="st">'Testing Loss'</span>)</span>
 <span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Epoch"</span>)</span>
 <span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Average MSE Loss"</span>)</span>
-<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Training and Testing Loss Curves"</span>)</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"Training and Testing Loss Curves, Epochs: </span><span class="sc">{</span>num_epochs<span class="sc">}</span><span class="ss">, Learning Rate: </span><span class="sc">{</span>Learning_rate<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
 <span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Epoch [10/100], Train Loss: 0.1962, Test Loss: 0.1961
-Epoch [20/100], Train Loss: 0.1547, Test Loss: 0.1512
-Epoch [30/100], Train Loss: 0.1169, Test Loss: 0.1094
-Epoch [40/100], Train Loss: 0.0937, Test Loss: 0.0827
-Epoch [50/100], Train Loss: 0.0770, Test Loss: 0.0637
-Epoch [60/100], Train Loss: 0.0648, Test Loss: 0.0500
-Epoch [70/100], Train Loss: 0.0553, Test Loss: 0.0403
-Epoch [80/100], Train Loss: 0.0474, Test Loss: 0.0332
-Epoch [90/100], Train Loss: 0.0405, Test Loss: 0.0278
-Epoch [100/100], Train Loss: 0.0346, Test Loss: 0.0238</code></pre>
+<pre><code>Epoch [10/100], Train Loss: 0.2053, Test Loss: 0.2014
+Epoch [20/100], Train Loss: 0.1599, Test Loss: 0.1525
+Epoch [30/100], Train Loss: 0.1295, Test Loss: 0.1217
+Epoch [40/100], Train Loss: 0.1132, Test Loss: 0.1054
+Epoch [50/100], Train Loss: 0.1004, Test Loss: 0.0926
+Epoch [60/100], Train Loss: 0.0875, Test Loss: 0.0800
+Epoch [70/100], Train Loss: 0.0745, Test Loss: 0.0672
+Epoch [80/100], Train Loss: 0.0616, Test Loss: 0.0549
+Epoch [90/100], Train Loss: 0.0503, Test Loss: 0.0440
+Epoch [100/100], Train Loss: 0.0410, Test Loss: 0.0352</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
