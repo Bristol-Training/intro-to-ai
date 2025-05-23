@@ -345,7 +345,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="how-do-they-work" class="level3">
 <h3 class="anchored" data-anchor-id="how-do-they-work">How do they work?</h3>
-<p>A class has: - An <code>__init__</code> method to set up initial attributes (like weights). - Other methods (like <code>forward</code>) to define what the class does.</p>
+<p>A class has: - An initiator method <code>__init__</code> to set up initial attributes (like weights). - Other methods (like <code>forward</code>) to define what the class does.</p>
 <p>Let’s see two examples: a simple Perceptron and a PyTorch-style network.</p>
 </section>
 <section id="a-simple-perceptron" class="level2">
@@ -355,7 +355,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>The <code>forward</code> Method</strong>: It takes an input (like <code>[1.0, 2.0]</code>), mixes it with weights and bias, and decides “yes” (1) or “no” (-1) using a simple rule.</li>
 <li><strong>Testing It</strong>: We create a Perceptron, give it an input, and see what it says—super simple!</li>
 </ul>
-<div id="2" class="cell" data-execution_count="1">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="06-Classes-and-perceptron_files/figure-html/2-1-image.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<div id="3" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -366,16 +372,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.bias <span class="op">=</span> torch.randn(<span class="dv">1</span>)</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compute the output: sign of (weights * input + bias)</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> torch.sign(torch.dot(x, <span class="va">self</span>.weights) <span class="op">+</span> <span class="va">self</span>.bias)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Test the Perceptron</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>perceptron <span class="op">=</span> Perceptron(input_size<span class="op">=</span><span class="dv">2</span>)  <span class="co"># Create an instance with 2 inputs</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>sample_input <span class="op">=</span> torch.tensor([<span class="fl">5.0</span>, <span class="fl">2.0</span>])</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> perceptron.forward(sample_input)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Perceptron output:"</span>, output)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        neuron_val <span class="op">=</span> torch.dot(x, <span class="va">self</span>.weights) <span class="op">+</span> <span class="va">self</span>.bias</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># If the neuron value is greater than 0, return 1; otherwise, return 0</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> neuron_val <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> torch.tensor([<span class="dv">1</span>])</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> torch.tensor([<span class="dv">0</span>])</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Test the Perceptron</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>my_perceptron <span class="op">=</span> Perceptron(input_size<span class="op">=</span><span class="dv">2</span>)  <span class="co"># Create an instance with 2 inputs</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>sample_input <span class="op">=</span> torch.tensor([<span class="fl">5.0</span>, <span class="fl">2.0</span>])</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> my_perceptron.forward(sample_input)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Perceptron output:"</span>, output)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Perceptron output: tensor([1.])</code></pre>
+<pre><code>Perceptron output: tensor([0])</code></pre>
 </div>
 </div>
 </section>
@@ -386,7 +396,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>The <code>forward</code> Method</strong>: This tells the network how to process an input—it passes it through the first layer, adds a twist with ReLU, then goes through the second layer to get the final result.</li>
 <li><strong>Testing It</strong>: We create a <code>SimpleNet</code>, give it an input (like <code>[1.0, 2.0]</code>), and see what it predicts—nice and straightforward!</li>
 </ul>
-<div id="4" class="cell" data-execution_count="2">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="06-Classes-and-perceptron_files/figure-html/5-1-image.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<div id="6" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SimpleNet(nn.Module):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, input_size, hidden_size, output_size):</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(SimpleNet, <span class="va">self</span>).<span class="fu">__init__</span>()  <span class="co"># Initialize the parent nn.Module class</span></span>
@@ -401,13 +417,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.layer2(x)</span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> x</span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>sample_input <span class="op">=</span> torch.tensor([<span class="fl">5.0</span>, <span class="fl">2.0</span>])</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>sample_input <span class="op">=</span> torch.tensor([<span class="fl">1.0</span>, <span class="fl">2.0</span>])</span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Test the SimpleNet</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> SimpleNet(input_size<span class="op">=</span><span class="dv">2</span>, hidden_size<span class="op">=</span><span class="dv">4</span>, output_size<span class="op">=</span><span class="dv">1</span>)  <span class="co"># Create an instance</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> net(sample_input)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>my_net <span class="op">=</span> SimpleNet(input_size<span class="op">=</span><span class="dv">2</span>, hidden_size<span class="op">=</span><span class="dv">4</span>, output_size<span class="op">=</span><span class="dv">2</span>)  <span class="co"># Create an instance</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> my_net(sample_input)</span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"SimpleNet output:"</span>, output)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>SimpleNet output: tensor([0.0133], grad_fn=&lt;ViewBackward0&gt;)</code></pre>
+<pre><code>SimpleNet output: tensor([-0.0521,  0.2529], grad_fn=&lt;ViewBackward0&gt;)</code></pre>
 </div>
 </div>
 
