@@ -325,15 +325,19 @@ window.Quarto = {
 <p>So far we have been eyeballing our outputs and attempting to manually tweak our weights and biases to solve a given problem. This aspect of “training” is something we will learn how to do automatically in the later theory section. Before we get to that process, we should set ourselves up for success so that we know how to prepare our data for training and testing and have a suitable way to evaluate how well our neural network is guessing.</p>
 <section id="losscost-functions" class="level2">
 <h2 class="anchored" data-anchor-id="losscost-functions">Loss/cost functions</h2>
-<p>There are any different ways of evaluating loss/cost, i.e.&nbsp;quantifying how wrong our model is from correctly guessing the answer. In this course we will focus on the more conventional Sum of Square Errors or (SSE) for short. In other material you might encounter other forms of loss such as “Cross Entropy Loss”.</p>
+<p>There are any different ways of evaluating loss/cost, i.e.&nbsp;quantifying how wrong our model is from correctly guessing the answer. In this course we will focus on the more conventional Mean Square Error or MSE for short. In other material you might encounter other forms of loss such as “Cross Entropy Loss”.</p>
 <p>The basic idea is fairly intuitive. If your guess is the right answer, loss should be low, if your guess is the wrong answer, your loss should be high. A straightforward way to do this is to take the difference between your guess and your final answer. But this could run into issues.</p>
 <p>If we have a neural network set up to guess if something is in class 0 or class 1 (this could be guessing if a picture is a cat, class 0, or a dog, class 1, for example) then if our neural network has a picture of a cat <code>0</code> that it guesses is a dog <code>1</code> and a picture of a dog <code>1</code> it guesses is a dog <code>0</code> then if we add together the differences between those two error we get:</p>
 <p><span class="math inline">\((0-1) + (1-0) = 0\)</span></p>
 <p>which implies that there the network is perfect! So we want to make sure minus signs don’t cancel out. It transpires that a sensible way to do this is to square each of the errors before adding them together:</p>
 <p><span class="math inline">\((0-1)^2 + (1-0)^2 = 2\)</span></p>
-<p>More generally for <span class="math inline">\(n\)</span> data points of <span class="math inline">\(Observation_{i}\)</span> <span class="math inline">\(Prediction_{i}\)</span> for <span class="math inline">\(i=1, \ldots, n\)</span> we define the Sum of Square Errors as:</p>
-<p><span class="math inline">\(SSE = \Sigma_{i=1}^{n} (Observation_{i}- Prediction_{i})^2\)</span></p>
-<p><span class="math inline">\(= (Observation_{1}- Prediction_{1})^2 + (Observation_{2}- Prediction_{2})^2 + \ldots + (Observation_{n}- Prediction_{n})^2\)</span></p>
+<p>What we also want, is for our loss to not depend on the <em>number</em> of data points we are testing on at a given time. To do this, we just divide by the number of data points <span class="math inline">\(n\)</span>. Generally for <span class="math inline">\(n\)</span> data points of <span class="math inline">\(Observation_{i}\)</span> <span class="math inline">\(Prediction_{i}\)</span> for <span class="math inline">\(i=1, \ldots, n\)</span> we define the Mean Squared Error as:</p>
+<section id="mse-frac1n-sigma_i1n-observation_i--prediction_i2" class="level4">
+<h4 class="anchored" data-anchor-id="mse-frac1n-sigma_i1n-observation_i--prediction_i2"><span class="math inline">\(MSE = \frac{1}{n} \Sigma_{i=1}^{n} (Observation_{i}- Prediction_{i})^2\)</span></h4>
+</section>
+<section id="frac1n-leftobservation_1--prediction_12-observation_2--prediction_22-ldots-observation_n--prediction_n2right" class="level4">
+<h4 class="anchored" data-anchor-id="frac1n-leftobservation_1--prediction_12-observation_2--prediction_22-ldots-observation_n--prediction_n2right"><span class="math inline">\(= \frac{1}{n} \left((Observation_{1}- Prediction_{1})^2 + (Observation_{2}- Prediction_{2})^2 + \ldots + (Observation_{n}- Prediction_{n})^2\right)\)</span></h4>
+</section>
 </section>
 <section id="out-of-sample-predictive-power" class="level2">
 <h2 class="anchored" data-anchor-id="out-of-sample-predictive-power">Out of sample predictive power</h2>
