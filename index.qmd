@@ -25,7 +25,7 @@ You should be comfortable programming in Python. Experience with the content of 
 - Using classes such as sklearn models
 - Test train split and validating models
 
-The theory of deep learning includes ideas from calculus and linear algebra. Understanding the idea of a derivative of a function would be strongly recommend. Having some notion of matrix multiplication would be useful but is not essential.
+The theory of deep learning includes ideas from calculus and linear algebra. Understanding the idea of a derivative of a function would be strongly recommended. Having some notion of matrix multiplication would be useful but is not essential.
 
 ## Intended learning outcomes
 
