@@ -105,6 +105,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -300,10 +329,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#input-layer" id="toc-input-layer" class="nav-link active" data-scroll-target="#input-layer">Input layer</a></li>
-  <li><a href="#hidden-layer" id="toc-hidden-layer" class="nav-link" data-scroll-target="#hidden-layer">Hidden layer</a></li>
-  <li><a href="#output-layer" id="toc-output-layer" class="nav-link" data-scroll-target="#output-layer">Output layer</a></li>
-  <li><a href="#step-1-define-the-mlp-model" id="toc-step-1-define-the-mlp-model" class="nav-link" data-scroll-target="#step-1-define-the-mlp-model">Step 1: Define the MLP model</a></li>
+  <li><a href="#step-1-define-the-mlp-model" id="toc-step-1-define-the-mlp-model" class="nav-link active" data-scroll-target="#step-1-define-the-mlp-model">Step 1: Define the MLP model</a></li>
   <li><a href="#step-2-set-model-parameters-and-initialise-model" id="toc-step-2-set-model-parameters-and-initialise-model" class="nav-link" data-scroll-target="#step-2-set-model-parameters-and-initialise-model">Step 2: Set model parameters and initialise model</a></li>
   <li><a href="#insert-picture-here" id="toc-insert-picture-here" class="nav-link" data-scroll-target="#insert-picture-here">Insert picture here</a>
   <ul class="collapse">
@@ -335,26 +361,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>A <a href="https://www.datacamp.com/tutorial/multilayer-perceptrons-in-machine-learning">multi-layer perceptron</a> is a type of <a href="https://deepai.org/machine-learning-glossary-and-terms/feed-forward-neural-network">feedforward neural network (FNN)</a>. It is composed of fully connected layers and non-linear activation functions, and is commonly used for classifying data that cannot be separated by a straight line.</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Colored_neural_network.svg" class="img-fluid"></p>
-<section id="input-layer" class="level3">
-<h3 class="anchored" data-anchor-id="input-layer">Input layer</h3>
-<p>Each neuron represents a feature (e.g.&nbsp;petal length). This layer passes data forward without performing computation.</p>
-</section>
-<section id="hidden-layer" class="level3">
-<h3 class="anchored" data-anchor-id="hidden-layer">Hidden layer</h3>
-<p>Hidden layers form the core of the neural network. Neurons:</p>
-<ul>
-<li>Receive inputs from all previous-layer neurons (fully connected)</li>
-<li>Apply a weighted sum and a non-linear activation function (like ReLU)</li>
-<li>Learn by updating weights during training</li>
-</ul>
-</section>
-<section id="output-layer" class="level3">
-<h3 class="anchored" data-anchor-id="output-layer">Output layer</h3>
-<p>Generates the prediction. For classification tasks like the Iris dataset, each neuron can represent a class (e.g.&nbsp;setosa, versicolor, virginica).</p>
-<p>Check out <a href="https://playground.tensorflow.org/">Neural Network Playground</a> to experiment with layers, activations, and more.</p>
-</section>
+<p>Now we are going to code a multi-layer perceptron and get it to randomly initialise weights and biases, take in some pre-processed data and give us some predictions for which classes the data falls into. Because we’re not doing any training <em>yet</em>, we don’t expect it to make good guesses, but we need to setup the network and the pipeline before we can train!</p>
+<p>An MLP with a single hidden layer might look something like this:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="07-Multi-layer-perceptron_files/figure-html/0-1-image.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p><em>Note</em>: in practise your MLP can be as deep (i.e.&nbsp;number of hidden layers) and as wide (i.e.&nbsp;number of neurons in a hidden layer) but for our purposes, a single hidden layer will be sufficient!</p>
+<p>The three main components of an MLP are: 1. The Input layer: where each neuron represents a feature (e.g.&nbsp;petal length). This layer passes data forward without performing computation. 2. The Hidden layer(s): The core of the neural network. Neurons in the hidden layers: - Receive inputs from all previous-layer neurons (fully connected) - Apply a weighted sum and a non-linear activation function (like ReLU) - Learn by updating weights during training (using backpropogation which we’ll learn about later) 3. The Output layer: Generates the prediction. For classification tasks like the Iris dataset, each neuron can represent a class (e.g.&nbsp;setosa, versicolor, virginica).</p>
 <section id="step-1-define-the-mlp-model" class="level2">
 <h2 class="anchored" data-anchor-id="step-1-define-the-mlp-model">Step 1: Define the MLP model</h2>
 <div id="2" class="cell" data-execution_count="1">
@@ -689,7 +705,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Average MSE loss on test set (30 samples): 0.2252</code></pre>
+Average MSE loss on test set (30 samples): 0.2334</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -699,7 +715,11 @@ Average MSE loss on test set (30 samples): 0.2252</code></pre>
 </div>
 </div>
 </div>
-<p>It should not surprise</p>
+<p>Two things worth noting here!</p>
+<ol type="1">
+<li>It should not surprise us that the MSE is generally bad and that it doesn’t get any better. Each time we initialise our MLP, its with random weights and biases, so we expect the MSE to be somewhat sporadic.</li>
+<li>Given that there are 3 classes of equal sizes, we expect on average to get about <span class="math inline">\(33%\)</span> of the guesses right which is why our MSE has values around 0.2 to 0.3.</li>
+</ol>
 
 
 </section>
