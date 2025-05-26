@@ -294,7 +294,14 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#other-optimisers" id="toc-other-optimisers" class="nav-link active" data-scroll-target="#other-optimisers">Other optimisers</a></li>
+  <li><a href="#backpropogation-step-by-step" id="toc-backpropogation-step-by-step" class="nav-link active" data-scroll-target="#backpropogation-step-by-step">Backpropogation, step-by-step</a>
+  <ul class="collapse">
+  <li><a href="#forward-pass" id="toc-forward-pass" class="nav-link" data-scroll-target="#forward-pass">1. Forward Pass</a></li>
+  <li><a href="#gradient-descent" id="toc-gradient-descent" class="nav-link" data-scroll-target="#gradient-descent">2. Gradient descent</a></li>
+  <li><a href="#propogation" id="toc-propogation" class="nav-link" data-scroll-target="#propogation">3. Propogation</a></li>
+  <li><a href="#test-the-neural-network" id="toc-test-the-neural-network" class="nav-link" data-scroll-target="#test-the-neural-network">4. Test the neural network</a></li>
+  <li><a href="#repeat" id="toc-repeat" class="nav-link" data-scroll-target="#repeat">5. Repeat</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/bristol-training/intro-to-ai/blob/main/notebooks/09-Backpropagation.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bristol-training/intro-to-ai/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -323,21 +330,54 @@ window.Quarto = {
 <p>Now that we’ve explored how adjusting weights and biases affects the loss function, it’s time to delve into how neural networks systematically learn these optimal parameters. This is where the <strong>backpropagation</strong> algorithm comes into play.</p>
 <p>Backpropagation, short for “backward propagation of errors,” is a fundamental algorithm used to train neural networks. It efficiently computes the gradient of the loss function with respect to each parameter (weights and biases) in the network. These gradients indicate the direction and rate at which each parameter should be adjusted to minimize the loss.</p>
 <p>This process is repeated iteratively, allowing the network to learn the optimal parameters that minimize the loss function.​​</p>
-<p>The steps of the backpropagation algorithm are as follows:</p>
-<ol type="1">
-<li><p>Forward pass: Input data is passed through the network to compute the predictions. The loss function is used to measure how far the predictions are from the true outputs.</p></li>
-<li><p>Compute gradients (Backward pass): Starting from the output layer, we compute the gradient of the loss with respect to the output. We then recursively compute gradients for each previous layer (i.e., how the loss changes with respect to the weights and biases in each layer).</p></li>
-<li><p>Update parameters: Once we have the gradients, we update the weights and biases using gradient descent:</p></li>
-</ol>
-<p><span class="math inline">\(w \leftarrow w - l \frac{\partial f}{\partial w}, \quad b \leftarrow b - l \frac{\partial f}{\partial b}\)</span></p>
-<p>where <span class="math inline">\(l\)</span> is the learning rate and <span class="math inline">\(f\)</span> is the loss function.</p>
-<p>Larger learning rates mean you might converge faster to a minimum but you have a chance of jumping <em>over</em> a minimum. Smaller learning rates mean you are less likely to overshoot but might converge more slowly/get stuck in local minima.</p>
-<section id="other-optimisers" class="level2">
-<h2 class="anchored" data-anchor-id="other-optimisers">Other optimisers</h2>
-<p>In practise, modern optimisers can perform better than standard gradient descent. The general principles are the same, with some clever maths under the hood. Some of these methods include “Stochastic Gradient Descent” (SGD) and “Momentum Gradient Descent” (MGD) more info on these can be found here: - <a href="https://www.youtube.com/watch?v=JdeemZDr-hU&amp;list=PLqwozWPBo-FtJ1wfHq47F__ReKfmGLUZP&amp;index=5">Standard GD</a> - <a href="https://www.youtube.com/watch?v=VbYTp0CIJkY&amp;list=PLqwozWPBo-FtJ1wfHq47F__ReKfmGLUZP&amp;index=5">SGD</a> - <a href="https://www.youtube.com/watch?v=qfb2ezDWGIU&amp;list=PLqwozWPBo-FtJ1wfHq47F__ReKfmGLUZP&amp;index=7">MGD</a></p>
+<section id="backpropogation-step-by-step" class="level2">
+<h2 class="anchored" data-anchor-id="backpropogation-step-by-step">Backpropogation, step-by-step</h2>
+<p>Let’s say we have our iris dataset and recall we were trying to sort out data points into one of three classes: ‘setosa’, ‘versicolor’ or ‘virginica’, which meant our output layer had three neurons in which represented the probability our network would put a data point into each one of those classes. In an ideal world, the output layer would have a value of <span class="math inline">\(1\)</span> for the correct class and <span class="math inline">\(0\)</span> for the other two, meaning that it was perfectly confident (and correct)!</p>
+<section id="forward-pass" class="level3">
+<h3 class="anchored" data-anchor-id="forward-pass">1. Forward Pass</h3>
+<p>First we do a forward pass with our training data to compute some predictions and use our loss function (in our case, mean squared error) to measure how far the predictions are from the true labels.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="09-Backpropagation_files/figure-html/1-3-image.png" class="img-fluid figure-img"></p>
+<figcaption>An image of the final hidden layer and its effect on a neuron in the output layer, showing how different values of weights, bias and activation of neurons affect the signal sent to the neuron. Screenshot from: https://www.youtube.com/watch?v=Ilg3gGewQ5U&amp;list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi&amp;index=3</figcaption>
+</figure>
+</div>
+</section>
+<section id="gradient-descent" class="level3">
+<h3 class="anchored" data-anchor-id="gradient-descent">2. Gradient descent</h3>
+<p>We then look at an output layer and work out how much we want our output layer to change, based on how far away it is from the right answer. Essentially, we want the value for the correct/true output to go up towards <span class="math inline">\(1\)</span> and we want the other values to reduce towards <span class="math inline">\(0\)</span>. The further we are away from that ideal, the larger the change we want.</p>
+<p>But how do we change those values? Well the values of neurons in a layer depend on the values of all the neurons in the previous layer <em>and</em> the weights and biases of those neurons. We understood previously that: <em>Changing your weights and biases in your neural network will change your error</em> and so we can use a tool from calculus called the <em>chain rule</em> to calculate the gradient of the loss function with respect to these weights and biases.</p>
+<p>(If you’re not familiar with the chain rule, don’t worry, you could watch a video series like <a href="https://youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr&amp;si=yaPZgsjig_rvjUqT">3Blue1Brown’s Essenece of Calculus</a> to build a general intuition about what’s going on!)</p>
+<p>We can then use gradient descent to nudge the weights and biases of our penultimate layer in such a way to reduce the value of the loss function at our output layer.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="09-Backpropagation_files/figure-html/1-1-image-2.png" class="img-fluid figure-img"></p>
+<figcaption>An image of the final hidden layer and its effect on a neuron in the output layer, this time showing specifically how changing values coming from the final hidden layer affect values in the output layer. Screenshot from: https://www.youtube.com/watch?v=Ilg3gGewQ5U&amp;list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi&amp;index=3</figcaption>
+</figure>
+</div>
+</section>
+<section id="propogation" class="level3">
+<h3 class="anchored" data-anchor-id="propogation">3. Propogation</h3>
+<p>Once we have done this, we can then propogate this process back through the other layers! We know what value we want our penulatimate layer to be in order to minimise loss, so we now want to updates the weights and biases of each layer in the network to keep reducing our loss function.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="09-Backpropagation_files/figure-html/1-2-image-3.png" class="img-fluid figure-img"></p>
+<figcaption>Showing how we keep track of the loss value in the output layer whilst backpropogating through all the other layers in the neural network, updating weights and biases as we go to reduce our loss value. Screenshot from: https://www.youtube.com/watch?v=Ilg3gGewQ5U&amp;list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi&amp;index=3</figcaption>
+</figure>
+</div>
+</section>
+<section id="test-the-neural-network" class="level3">
+<h3 class="anchored" data-anchor-id="test-the-neural-network">4. Test the neural network</h3>
+<p>Once we have done this for all of our training data, we can run our seperate, test data through the neural network and evaluate our test loss to see how well our neural network generalises to data it hasn’t been trained on!</p>
+</section>
+<section id="repeat" class="level3">
+<h3 class="anchored" data-anchor-id="repeat">5. Repeat</h3>
+<p>We do this process many times (many <em>epochs</em>) until our test loss is sufficiently low!</p>
 <p>For a fun visualise of a neural network training (and the associated decision boundary warping around points), you can have a play with the <a href="https://playground.tensorflow.org/#activation=tanh&amp;batchSize=10&amp;dataset=circle&amp;regDataset=reg-plane&amp;learningRate=0.03&amp;regularizationRate=0&amp;noise=0&amp;networkShape=4,2&amp;seed=0.61021&amp;showTestData=false&amp;discretize=false&amp;percTrainData=50&amp;x=true&amp;y=true&amp;xTimesY=false&amp;xSquared=false&amp;ySquared=false&amp;cosX=false&amp;sinX=false&amp;cosY=false&amp;sinY=false&amp;collectStats=false&amp;problem=classification&amp;initZero=false&amp;hideText=false">Tensorflow Playground</a>.</p>
+<p>For some video explainers of all the theory in this course, including multi-layer perceptrons, gradient descent and back propogation (both intuitively and with some mathematical rigour), we recommend <a href="https://youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi&amp;si=nvM8KoEBPmXBvsb6">3Blue1Brown’s YouTube Series on Neural Networks</a>. Note this series also includes contents on Transformers and Large Language Models which are not covered in this course!</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
