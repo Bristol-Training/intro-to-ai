@@ -48,3 +48,4 @@ Deep learning and neural networks are a huge field of active research that we ca
 - Recurrent Neural Networks (RNNs) for time series and natural language processing
 - Transformers and Large Language Models (LLMs)
 - Graphical Neural Networks (GNNs)
+- Reinforcement Learning (RL)
