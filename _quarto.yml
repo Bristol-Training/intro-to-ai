@@ -43,8 +43,8 @@ website:
             text: "Training pipeline"
           - href: "notebooks/11-Learning-rate.ipynb"
             text: "Learning rate"
-          - href: "notebooks/12-Moving-to-HPC.ipynb"
-            text: "Moving to HPC"
+          - href: "notebooks/12-HPC-and-outro.ipynb"
+            text: "HPC and where to go next"
       - section: "About"
         contents:
           - href: "contributors.qmd"
