@@ -30,8 +30,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../contributors.html" rel="next">
-<link href="../notebooks/11-Learning-rate.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -73,192 +71,12 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar docked quarto-light">
+<body class="quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/10-Training-pipeline.html">Practical (part 2)</a></li><li class="breadcrumb-item"><a href="../notebooks/12-Moving-to-HPC.html">Moving to HPC</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
-  </nav>
-</header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-    <div class="pt-lg-2 mt-2 text-center sidebar-header sidebar-header-stacked">
-      <a href="../index.html" class="sidebar-logo-link">
-      <img src="../assets/UoB_RGB_24.png" alt="Jean Golding Institute Logo" class="sidebar-logo py-0 d-lg-inline d-none">
-      </a>
-    <div class="sidebar-title mb-0 py-0">
-      <a href="../">Introduction to AI</a> 
-    </div>
-      </div>
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Setup</span></a>
-  </div>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Theory (part 1)</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/01-Perceptron.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Perceptron</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/02-Activation-functions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Activation functions</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/03-MLP-evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">MLP evaluation</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">Practical (part 1)</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/04-PyTorch-and-tensors.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">PyTorch and tensors</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/05-Data-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data pipeline</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/06-Classes-and-perceptron.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Classes and perceptron</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/07-Multi-layer-perceptron.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Multi-later perceptron</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Theory (part 2)</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/08-Gradient-descent.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Gradient descent</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/09-Backpropagation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Backpropagation</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text">Practical (part 2)</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/10-Training-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Training pipeline</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/11-Learning-rate.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Learning rate</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/12-Moving-to-HPC.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Moving to HPC</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
- <span class="menu-text">About</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../contributors.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Contributors</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -266,13 +84,20 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#bristol-hpc-resources" id="toc-bristol-hpc-resources" class="nav-link active" data-scroll-target="#bristol-hpc-resources">Bristol HPC Resources</a></li>
+  <li><a href="#where-to-go-next" id="toc-where-to-go-next" class="nav-link" data-scroll-target="#where-to-go-next">Where to go next?</a>
+  <ul class="collapse">
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a>
+  <ul class="collapse">
+  <li><a href="#where-to-go-next-1" id="toc-where-to-go-next-1" class="nav-link" data-scroll-target="#where-to-go-next-1">Where to go next?</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.dev/bristol-training/intro-to-ai/blob/main/notebooks/12-Moving-to-HPC.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bristol-training/intro-to-ai/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.dev/bristol-training/intro-to-ai/blob/main/notebooks/12-HPC-and-outro.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bristol-training/intro-to-ai/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/10-Training-pipeline.html">Practical (part 2)</a></li><li class="breadcrumb-item"><a href="../notebooks/12-Moving-to-HPC.html">Moving to HPC</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Difference between local vs.&nbsp;HPC processing</h1>
 </div>
@@ -306,8 +131,43 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>BluePebble</strong>: Designed specifically for machine learning workloads with advanced GPU nodes</li>
 </ul>
 <p>Registered students and researchers should visit the <a href="https://www.bristol.ac.uk/acrc/high-performance-computing/">High Performance Computing</a> or <a href="https://uob.sharepoint.com/:u:/r/sites/hpc/SitePages/Isambard-3.aspx?csf=1&amp;web=1&amp;e=wnbek5">Bristol’s new supercomputer Isambard 3 and Isambard-AI</a> website for access information and documentation.</p>
+</section>
+<section id="where-to-go-next" class="level1">
+<h1>Where to go next?</h1>
+<section id="learning-outcomes" class="level2">
+<h2 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h2>
+<p>In this course we have:</p>
+<ul>
+<li>Understand the basic theory of a feed forward multi layer perceptron.</li>
+<li>Start to get the grips with PyTorch, tensors and writing classes in Python.</li>
+<li>Understand how to pre-process data for training (including test train split)</li>
+<li>Understand how to feed forward data and evaluate test loss for a neural network.</li>
+<li>Have a basic intuition for what gradient descent and back propagation are.</li>
+<li>Implement back propagation to update our weights and biases and reduce our test loss.</li>
+</ul>
+<section id="where-to-go-next-1" class="level3">
+<h3 class="anchored" data-anchor-id="where-to-go-next-1">Where to go next?</h3>
+<p>Deep learning and neural networks are a huge field of active research that we cannot cover in 3 hours. This is an intro level class designed to cover the learning outcomes above and serve as a prerequisite to further topics in AI, neural networks and deep learning, such as:</p>
+<ul>
+<li>Cross entropy loss and more advanced optimisers</li>
+<li>Training neural networks using High Powered Computing (HPC) resources</li>
+<li>Convolutional Neural Networks (CNNs) for image/video analysis</li>
+<li>Recurrent Neural Networks (RNNs) for time series and natural language processing</li>
+<li>Transformers and Large Language Models (LLMs)</li>
+<li>Graphical Neural Networks (GNNs)</li>
+<li>Reinforcement Learning (RL)</li>
+</ul>
+<p>For moving forward in your deep learning journey, we recommend some of these external resources:</p>
+<ul>
+<li>3Blue1Brown is a YouTuber who has excellent videos on the mathematics of <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab">Linear Algebra</a>, <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr">Calculus</a> and <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi">Neural Networks</a>.</li>
+<li>The PyTorch documentation has plenty of tutorials on neural networks. <a href="https://docs.pytorch.org/tutorials/beginner/basics/intro.html">Their first tutorial</a> walks you through making a convolutional neural network (CNN) to classify images of different clothes from the FashionMNIST dataset.</li>
+<li>StatsQuest is a <a href="https://www.youtube.com/c/joshstarmer">YouTuber</a> who makes excellent videos on the mathematics of statistics, machine learning and AI. He also has a free course on: <a href="https://www.deeplearning.ai/short-courses/attention-in-transformers-concepts-and-code-in-pytorch/?utm_campaign=joshstarmer-launch&amp;utm_medium=partner&amp;utm_source=statquest">Attention in Transformers: Concepts and Code in PyTorch</a>.</li>
+<li><a href="https://playground.tensorflow.org/#activation=tanh&amp;batchSize=10&amp;dataset=circle&amp;regDataset=reg-plane&amp;learningRate=0.03&amp;regularizationRate=0&amp;noise=0&amp;networkShape=4,2&amp;seed=0.61021&amp;showTestData=false&amp;discretize=false&amp;percTrainData=50&amp;x=true&amp;y=true&amp;xTimesY=false&amp;xSquared=false&amp;ySquared=false&amp;cosX=false&amp;sinX=false&amp;cosY=false&amp;sinY=false&amp;collectStats=false&amp;problem=classification&amp;initZero=false&amp;hideText=false">The TensorFlow playground</a> is a nice tool to visualise how neural networks train and bend decision boundaries around points for classification and regression.</li>
+</ul>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -710,18 +570,6 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="../notebooks/11-Learning-rate.html" class="pagination-link" aria-label="Learning rate">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Learning rate</span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="../contributors.html" class="pagination-link" aria-label="Contributors">
-        <span class="nav-page-text">Contributors</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
@@ -730,7 +578,7 @@ ul.task-list li input[type="checkbox"] {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/bristol-training/intro-to-ai/blob/main/notebooks/12-Moving-to-HPC.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bristol-training/intro-to-ai/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/bristol-training/intro-to-ai/blob/main/notebooks/12-HPC-and-outro.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bristol-training/intro-to-ai/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

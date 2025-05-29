@@ -30,7 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../notebooks/12-Moving-to-HPC.html" rel="next">
+<link href="../notebooks/12-Moving-to-HPC.ipynb" rel="next">
 <link href="../notebooks/10-Training-pipeline.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -232,7 +232,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../notebooks/12-Moving-to-HPC.html" class="sidebar-item-text sidebar-link">
+  <a href="../notebooks/12-Moving-to-HPC.ipynb" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Moving to HPC</span></a>
   </div>
 </li>
@@ -286,7 +286,13 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p><img src="https://cs231n.github.io/assets/nn3/learningrates.jpeg" class="img-fluid"></p>
-<p>When examining <a href="https://cs231n.github.io/neural-networks-3/#sanitycheck">learning rate</a> graphs, several distinct patterns emerge that provide valuable insights into model training dynamics: - <strong>Very high learning rate</strong> (yellow curve) typically produces diverging loss that increases over time, indicating unstable optimisation where parameter updates overshoot minima and potentially cause numerical instability. - <strong>High learning rates</strong> (green curve) show rapid initial progress followed by oscillation or plateauing, suggesting the model approaches optimal regions quickly but lacks the precision to settle properly, bouncing around like a ball with too much energy. - <strong>Good learning rates</strong> (red curve) display steady, consistent decreases that eventually flatten at low values, representing an ideal balance between speed and stability that allows the model to converge efficiently. - <strong>Low learning rates</strong> (blue curve) produce very slow, almost linear decreases in loss, indicating cautious parameter updates that never overshoot but require significantly more computational resources and training time.</p>
+<p>When examining <a href="https://cs231n.github.io/neural-networks-3/#sanitycheck">learning rate</a> graphs, several distinct patterns emerge that provide valuable insights into model training dynamics:</p>
+<ul>
+<li><strong>Very high learning rate</strong> (yellow curve) typically produces diverging loss that increases over time, indicating unstable optimisation where parameter updates overshoot minima and potentially cause numerical instability.</li>
+<li><strong>High learning rates</strong> (green curve) show rapid initial progress followed by oscillation or plateauing, suggesting the model approaches optimal regions quickly but lacks the precision to settle properly, bouncing around like a ball with too much energy.</li>
+<li><strong>Good learning rates</strong> (red curve) display steady, consistent decreases that eventually flatten at low values, representing an ideal balance between speed and stability that allows the model to converge efficiently.</li>
+<li><strong>Low learning rates</strong> (blue curve) produce very slow, almost linear decreases in loss, indicating cautious parameter updates that never overshoot but require significantly more computational resources and training time.</li>
+</ul>
 
 
 
@@ -697,7 +703,7 @@ ul.task-list li input[type="checkbox"] {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../notebooks/12-Moving-to-HPC.html" class="pagination-link" aria-label="Moving to HPC">
+      <a href="../notebooks/12-Moving-to-HPC.ipynb" class="pagination-link" aria-label="Moving to HPC">
         <span class="nav-page-text">Moving to HPC</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>

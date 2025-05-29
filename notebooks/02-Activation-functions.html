@@ -296,7 +296,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../notebooks/12-Moving-to-HPC.html" class="sidebar-item-text sidebar-link">
+  <a href="../notebooks/12-Moving-to-HPC.ipynb" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Moving to HPC</span></a>
   </div>
 </li>
@@ -473,7 +473,9 @@ For input: [1 1] we wanted to get 0 and got 1</code></pre>
 </div>
 <p>Have a play with different weights and biases to try and make a decision boundary that can distinguish between the two different categories of points. What do you notice about the decision boundary?</p>
 <p>What we saw previously is that doing multiple linear transformations to your data is still at the end of the day, a linear transformation. You can think of this in terms of composing functions:</p>
-<p>If $ f(x) = w_{1}x + b_{1} $ and $ g(x) = w_{2}x + b_{2} $ are two functions that draw straight lines then we see that:</p>
+<p>If:</p>
+<p>$f(x) = w_{1}x + b_{1} $ and $ g(x) = w_{2}x + b_{2}$</p>
+<p>are two functions that draw straight lines then we see that:</p>
 <p><span class="math inline">\(f(g(x)) = f(w_{2}x + b_{2}) = w_{1}(w_{2}x + b_{2}) + b_{1} = (w_{1}w_{2})x + (w_{1}b_{2} + b_{1})\)</span></p>
 <p>…which is still just a straight line but with slope: <span class="math inline">\((w_{1}w_{2})\)</span> and intercept <span class="math inline">\((w_{1}b_{2} + b_{1})\)</span>.</p>
 <p>So what we need to do is introduce some non-linearity by adding something called an activation function. We have already seen these in some sense when we introduced the “step” by making an output 1 if the input is positive and 0 otherwise.</p>
