@@ -339,7 +339,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="10-Training-pipeline_files/figure-html/0-1-image.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
+<figcaption>A multi-layer perceptron with two neurons on the input layer, connected to four neurons in a single hidden layer which are then all fully connected to two neurons in the output layer</figcaption>
 </figure>
 </div>
 <p><em>Note</em>: in practise your MLP can be as deep (i.e.&nbsp;number of hidden layers) and as wide (i.e.&nbsp;number of neurons in a hidden layer) as we want but for our purposes (and to make it quick to train), a single hidden layer will be sufficient!</p>
@@ -513,7 +513,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Average MSE loss on test set (30 samples): 0.2155</code></pre>
+Average MSE loss on test set (30 samples): 0.2295</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -603,16 +603,16 @@ Average MSE loss on test set (30 samples): 0.2155</code></pre>
 <span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
 <span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Epoch [10/100], Train Loss: 0.1857, Test Loss: 0.1832
-Epoch [20/100], Train Loss: 0.1408, Test Loss: 0.1376
-Epoch [30/100], Train Loss: 0.1185, Test Loss: 0.1126
-Epoch [40/100], Train Loss: 0.1027, Test Loss: 0.0937
-Epoch [50/100], Train Loss: 0.0882, Test Loss: 0.0764
-Epoch [60/100], Train Loss: 0.0754, Test Loss: 0.0613
-Epoch [70/100], Train Loss: 0.0632, Test Loss: 0.0487
-Epoch [80/100], Train Loss: 0.0530, Test Loss: 0.0387
-Epoch [90/100], Train Loss: 0.0449, Test Loss: 0.0313
-Epoch [100/100], Train Loss: 0.0381, Test Loss: 0.0258</code></pre>
+<pre><code>Epoch [10/100], Train Loss: 0.1890, Test Loss: 0.1858
+Epoch [20/100], Train Loss: 0.1399, Test Loss: 0.1348
+Epoch [30/100], Train Loss: 0.1142, Test Loss: 0.1063
+Epoch [40/100], Train Loss: 0.0978, Test Loss: 0.0880
+Epoch [50/100], Train Loss: 0.0847, Test Loss: 0.0723
+Epoch [60/100], Train Loss: 0.0729, Test Loss: 0.0589
+Epoch [70/100], Train Loss: 0.0635, Test Loss: 0.0481
+Epoch [80/100], Train Loss: 0.0554, Test Loss: 0.0398
+Epoch [90/100], Train Loss: 0.0481, Test Loss: 0.0331
+Epoch [100/100], Train Loss: 0.0414, Test Loss: 0.0278</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>

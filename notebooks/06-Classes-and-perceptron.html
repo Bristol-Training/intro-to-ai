@@ -358,7 +358,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="06-Classes-and-perceptron_files/figure-html/2-1-image.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
+<figcaption>A perceptron with two neurons in the input layer connected to a single neuron on the output layer</figcaption>
 </figure>
 </div>
 <div id="3" class="cell" data-execution_count="1">
@@ -385,7 +385,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> my_perceptron.forward(sample_input)</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Perceptron output:"</span>, output)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Perceptron output: tensor([1])</code></pre>
+<pre><code>Perceptron output: tensor([0])</code></pre>
 </div>
 </div>
 </section>
@@ -399,7 +399,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="06-Classes-and-perceptron_files/figure-html/5-1-image.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
+<figcaption>A multi-layer perceptron with two neurons on the input layer, connected to four neurons in a single hidden layer which are then all fully connected to two neurons in the output layer</figcaption>
 </figure>
 </div>
 <div id="6" class="cell" data-execution_count="2">
@@ -423,7 +423,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> my_net(sample_input)</span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"SimpleNet output:"</span>, output)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>SimpleNet output: tensor([-0.0143, -0.0467], grad_fn=&lt;ViewBackward0&gt;)</code></pre>
+<pre><code>SimpleNet output: tensor([ 0.1857, -0.4621], grad_fn=&lt;ViewBackward0&gt;)</code></pre>
 </div>
 </div>
 
