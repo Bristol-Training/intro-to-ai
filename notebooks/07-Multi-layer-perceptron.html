@@ -76,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-4a990d8dcb58f517c7c86712b8f2ac7c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6440de5572a3fda7d752b7962ad83b6d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-222286a752683b944f2c3c4d26cb26ea.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -146,7 +146,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/04-PyTorch-and-tensors.html">Practical (part 1)</a></li><li class="breadcrumb-item"><a href="../notebooks/07-Multi-layer-perceptron.html">Multi-later perceptron</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/04-PyTorch-and-tensors.html">Practical (part 1)</a></li><li class="breadcrumb-item"><a href="../notebooks/07-Multi-layer-perceptron.html">Multi-layer perceptron</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -245,7 +245,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../notebooks/07-Multi-layer-perceptron.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Multi-later perceptron</span></a>
+ <span class="menu-text">Multi-layer perceptron</span></a>
   </div>
 </li>
       </ul>
@@ -331,18 +331,15 @@ window.Quarto = {
   <ul>
   <li><a href="#step-1-define-the-mlp-model" id="toc-step-1-define-the-mlp-model" class="nav-link active" data-scroll-target="#step-1-define-the-mlp-model">Step 1: Define the MLP model</a></li>
   <li><a href="#step-2-set-model-parameters-and-initialise-model" id="toc-step-2-set-model-parameters-and-initialise-model" class="nav-link" data-scroll-target="#step-2-set-model-parameters-and-initialise-model">Step 2: Set model parameters and initialise model</a></li>
-  <li><a href="#insert-picture-here" id="toc-insert-picture-here" class="nav-link" data-scroll-target="#insert-picture-here">Insert picture here</a>
-  <ul class="collapse">
   <li><a href="#step-3-prepare-iris-test-dataset" id="toc-step-3-prepare-iris-test-dataset" class="nav-link" data-scroll-target="#step-3-prepare-iris-test-dataset">Step 3: Prepare Iris Test Dataset</a></li>
   <li><a href="#step-4-evaluate-test-loss-and-accuracy" id="toc-step-4-evaluate-test-loss-and-accuracy" class="nav-link" data-scroll-target="#step-4-evaluate-test-loss-and-accuracy">Step 4: Evaluate Test Loss and Accuracy</a></li>
-  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/bristol-training/intro-to-ai/blob/main/notebooks/07-Multi-layer-perceptron.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bristol-training/intro-to-ai/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/04-PyTorch-and-tensors.html">Practical (part 1)</a></li><li class="breadcrumb-item"><a href="../notebooks/07-Multi-layer-perceptron.html">Multi-later perceptron</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/04-PyTorch-and-tensors.html">Practical (part 1)</a></li><li class="breadcrumb-item"><a href="../notebooks/07-Multi-layer-perceptron.html">Multi-layer perceptron</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Multi-layer perceptron implementation</h1>
 </div>
@@ -452,11 +449,9 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="insert-picture-here" class="level1">
-<h1>Insert picture here</h1>
 <section id="step-3-prepare-iris-test-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="step-3-prepare-iris-test-dataset">Step 3: Prepare Iris Test Dataset</h2>
-<div id="7" class="cell" data-execution_count="3">
+<div id="6" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In this step, the process is identical to the data handling steps in "DataPipeline" notebook.</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_iris</span>
@@ -483,7 +478,7 @@ window.Quarto = {
 <span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>test_dataset <span class="op">=</span> TensorDataset(X_test_tensor, y_test_tensor)</span>
 <span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>test_loader <span class="op">=</span> DataLoader(test_dataset, batch_size<span class="op">=</span>batch_size, shuffle<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="8" class="cell" data-execution_count="4">
+<div id="7" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -647,7 +642,7 @@ window.Quarto = {
 </section>
 <section id="step-4-evaluate-test-loss-and-accuracy" class="level2">
 <h2 class="anchored" data-anchor-id="step-4-evaluate-test-loss-and-accuracy">Step 4: Evaluate Test Loss and Accuracy</h2>
-<div id="10" class="cell" data-execution_count="5">
+<div id="9" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -704,7 +699,7 @@ window.Quarto = {
 <span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Average MSE loss on test set (30 samples): 0.2238</code></pre>
+Average MSE loss on test set (30 samples): 0.2190</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -721,7 +716,6 @@ Average MSE loss on test set (30 samples): 0.2238</code></pre>
 </ol>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
