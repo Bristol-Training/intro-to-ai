@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -69,14 +69,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../setup.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-4a990d8dcb58f517c7c86712b8f2ac7c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-a6e161b2431e1f94a14e0f5d32135a3c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-222286a752683b944f2c3c4d26cb26ea.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-ff2659f7572b4fbde40ceb06a3f86054.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -119,7 +120,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -161,7 +162,8 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-center sidebar-header sidebar-header-stacked">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="../assets/UoB_RGB_24.png" alt="Jean Golding Institute Logo" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="../assets/UoB_RGB_24.png" alt="Jean Golding Institute Logo" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../assets/UoB_RGB_24.png" alt="Jean Golding Institute Logo" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Introduction to AI</a> 
@@ -434,7 +436,7 @@ window.Quarto = {
 <h4 class="anchored" data-anchor-id="plot-a-decision-boundary">Plot a decision boundary</h4>
 <p>We can use the following code to plot this decision boundary.</p>
 <div id="cell-20" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:253,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1743062237728,&quot;user&quot;:{&quot;displayName&quot;:&quot;Boyi Li&quot;,&quot;userId&quot;:&quot;16254815089781686313&quot;},&quot;user_tz&quot;:0}}" data-outputid="cfabb43e-80f4-40e7-92fc-3cf35926acc9" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw_decision_boundary_and_gate(w1, w2, b):</span>
@@ -483,11 +485,11 @@ window.Quarto = {
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
 <span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Example call</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>draw_decision_boundary_and_gate(w1<span class="op">=</span><span class="dv">1</span>, w2<span class="op">=</span><span class="fl">0.8</span>, b<span class="op">=-</span><span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>draw_decision_boundary_and_gate(w1<span class="op">=</span><span class="dv">1</span>, w2<span class="op">=</span><span class="fl">0.8</span>, b<span class="op">=-</span><span class="fl">1.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01-Perceptron_files/figure-html/cell-2-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="01-Perceptron_files/figure-html/cell-2-output-1.png" width="687" height="529" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -499,7 +501,7 @@ window.Quarto = {
 <h4 class="anchored" data-anchor-id="plot-decision-boundaries-with-different-bias">Plot decision boundaries with different bias</h4>
 <p>Bias is a parameter that adjusts the ease with which a neuron is activated (i.e., the degree to which the output signal equals 1). Through the following example, we can explore the impact of different bias values on the resulting decision boundary.</p>
 <div id="cell-25" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:380,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1743066284741,&quot;user&quot;:{&quot;displayName&quot;:&quot;Boyi Li&quot;,&quot;userId&quot;:&quot;16254815089781686313&quot;},&quot;user_tz&quot;:0}}" data-outputid="53984735-c730-4729-f915-5745c50ff71a" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.lines <span class="im">import</span> Line2D</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> cycle</span>
@@ -545,11 +547,11 @@ window.Quarto = {
 <span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep w1 and w2 constant and only adjust b</span></span>
 <span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>b_list<span class="op">=</span>np.arange(<span class="op">-</span><span class="fl">1.1</span>, <span class="op">-</span><span class="fl">1.7</span>, <span class="op">-</span><span class="fl">0.1</span>)</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>draw_decision_boundary_and_gate(w1<span class="op">=</span><span class="dv">1</span>,w2<span class="op">=</span><span class="fl">0.8</span>,b_list<span class="op">=</span>b_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>draw_decision_boundary_and_gate(w1<span class="op">=</span><span class="dv">1</span>,w2<span class="op">=</span><span class="fl">0.8</span>,b_list<span class="op">=</span>b_list)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01-Perceptron_files/figure-html/cell-3-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="01-Perceptron_files/figure-html/cell-3-output-1.png" width="687" height="511" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -560,7 +562,7 @@ window.Quarto = {
 <h4 class="anchored" data-anchor-id="plot-decision-boundaries-with-different-weights">Plot decision boundaries with different weights</h4>
 <p>Each input signal in a perceptron has its own inherent weight, which plays a crucial role in controlling the importance of each signal. In other words, the greater the weight, the more significant the corresponding signal is. Through the following example, we can explore the impact of different weights on the result.</p>
 <div id="cell-29" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:248,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1743066318233,&quot;user&quot;:{&quot;displayName&quot;:&quot;Boyi Li&quot;,&quot;userId&quot;:&quot;16254815089781686313&quot;},&quot;user_tz&quot;:0}}" data-outputid="be8461de-2473-4bd4-d9b0-853a4548ca95" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.lines <span class="im">import</span> Line2D</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> cycle</span>
@@ -606,11 +608,11 @@ window.Quarto = {
 <span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep w2 and b constant and only adjust w1</span></span>
 <span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>w1_list<span class="op">=</span>np.arange(<span class="fl">0.2</span>, <span class="fl">1.2</span>, <span class="fl">0.2</span>)</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>draw_decision_boundary_and_gate(w1_list<span class="op">=</span>w1_list,w2<span class="op">=</span><span class="dv">1</span>,b<span class="op">=-</span><span class="fl">1.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>draw_decision_boundary_and_gate(w1_list<span class="op">=</span>w1_list,w2<span class="op">=</span><span class="dv">1</span>,b<span class="op">=-</span><span class="fl">1.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01-Perceptron_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="01-Perceptron_files/figure-html/cell-4-output-1.png" width="687" height="511" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -658,7 +660,7 @@ window.Quarto = {
 </table>
 <p>However, a perceptron cannot implement the XOR gate by simply plotting the truth table as an image. We can see that the perceptron is unable to achieve this XOR gate functionality. We can try to think through the reason by visualizing the problem.</p>
 <div id="cell-35" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:122,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1743062785599,&quot;user&quot;:{&quot;displayName&quot;:&quot;Boyi Li&quot;,&quot;userId&quot;:&quot;16254815089781686313&quot;},&quot;user_tz&quot;:0}}" data-outputid="84fefbef-ea53-4f0f-d425-224f26c190b2" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.lines <span class="im">import</span> Line2D</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -698,11 +700,11 @@ window.Quarto = {
 <span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Displaying the plot</span></span>
 <span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
 <span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>draw_xor_gate()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>draw_xor_gate()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01-Perceptron_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="01-Perceptron_files/figure-html/cell-5-output-1.png" width="687" height="511" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -764,13 +766,14 @@ window.Quarto = {
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

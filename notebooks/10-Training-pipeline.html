@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -69,14 +69,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../notebooks/09-Backpropagation.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-4a990d8dcb58f517c7c86712b8f2ac7c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-a6e161b2431e1f94a14e0f5d32135a3c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-222286a752683b944f2c3c4d26cb26ea.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-ff2659f7572b4fbde40ceb06a3f86054.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -132,7 +133,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-center sidebar-header sidebar-header-stacked">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="../assets/UoB_RGB_24.png" alt="Jean Golding Institute Logo" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="../assets/UoB_RGB_24.png" alt="Jean Golding Institute Logo" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../assets/UoB_RGB_24.png" alt="Jean Golding Institute Logo" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Introduction to AI</a> 
@@ -347,7 +349,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-1-define-the-mlp-model" class="level2">
 <h2 class="anchored" data-anchor-id="step-1-define-the-mlp-model">Step 1: Define the MLP model</h2>
 <div id="2" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MLP(nn.Module):</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, input_size, hidden_size, num_classes):</span>
@@ -395,17 +397,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.output(x)</span>
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.softmax(x)  <span class="co"># Apply softmax to get probabilities</span></span>
 <span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> x</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="step-2-set-model-parameters-and-initialise-model" class="level2">
 <h2 class="anchored" data-anchor-id="step-2-set-model-parameters-and-initialise-model">Step 2: Set model parameters and initialise model</h2>
 <div id="4" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>input_size <span class="op">=</span> <span class="dv">4</span>    <span class="co"># Assuming 4 features (like Iris dataset)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>input_size <span class="op">=</span> <span class="dv">4</span>    <span class="co"># Assuming 4 features (like Iris dataset)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>hidden_size <span class="op">=</span> <span class="dv">16</span>  <span class="co"># Neurons in hidden layer</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>num_classes <span class="op">=</span> <span class="dv">3</span>   <span class="co"># Output classes </span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> MLP(input_size, hidden_size, num_classes)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>model</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <pre><code>MLP(
   (layer1): Linear(in_features=4, out_features=16, bias=True)
@@ -420,7 +422,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-3-prepare-iris-test-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="step-3-prepare-iris-test-dataset">Step 3: Prepare Iris Test Dataset</h2>
 <div id="6" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In this step, the process is identical to the data handling steps in "DataPipeline" notebook.</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In this step, the process is identical to the data handling steps in "DataPipeline" notebook.</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_iris</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
@@ -451,13 +453,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>test_loader <span class="op">=</span> DataLoader(test_dataset, batch_size<span class="op">=</span>batch_size)</span>
 <span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>train_dataset <span class="op">=</span> TensorDataset(torch.FloatTensor(X_train), torch.LongTensor(y_train))</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>train_loader <span class="op">=</span> DataLoader(train_dataset, batch_size<span class="op">=</span>batch_size, shuffle<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>train_loader <span class="op">=</span> DataLoader(train_dataset, batch_size<span class="op">=</span>batch_size, shuffle<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="step-4-evaluate-test-loss-and-accuracy" class="level2">
 <h2 class="anchored" data-anchor-id="step-4-evaluate-test-loss-and-accuracy">Step 4: Evaluate Test Loss and Accuracy</h2>
 <div id="8" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize a list to store the individual losses</span></span>
@@ -510,15 +512,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
 <span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>    plt.grid(<span class="va">True</span>)</span>
 <span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
-<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Average MSE loss on test set (30 samples): 0.2268</code></pre>
+Average MSE loss on test set (30 samples): 0.2237</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="10-Training-pipeline_files/figure-html/cell-5-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="10-Training-pipeline_files/figure-html/cell-5-output-2.png" width="950" height="566" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -530,14 +532,14 @@ Average MSE loss on test set (30 samples): 0.2268</code></pre>
 <h3 class="anchored" data-anchor-id="setting-the-learning-rate">Setting the learning Rate</h3>
 <p>Ineuralep network trainingsettingng the learning rate over time is beneficial. With high learning rates, parameter vectors bounce chaotically, struggling to settle into optimal regions of the loss function. The timing of decay is crucial; too slow wastes computation, too fast prevents finding the best solution. The code below <code>optim.SGD(model.parameters(), lr=Learning_rate)</code> creates a <a href="https://optimization.cbe.cornell.edu/index.php?title=Stochastic_gradient_descent">Stochastic Gradient Descent optimiser</a> that will adjust the parameters of our model during training. It configures the optimiser to work with all the parameters in our model and sets an initial learning rate. This optimiser SGD is responsible for updating our model’s weights based on the calculated gradients, helping the model to improve over time during the training process.er training.</p>
 <div id="10" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.optim <span class="im">as</span> optim</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.optim <span class="im">as</span> optim</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Learning_rate <span class="op">=</span> <span class="fl">0.1</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up optimiser which in our case is Stochastic Gradient Descent</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>optimiser <span class="op">=</span> optim.SGD(model.parameters(), lr<span class="op">=</span>Learning_rate)</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># nn.Module has a built in method called .parameters() which returns the model's parameters</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Related batches to learning rate</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Related batches to learning rate</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>As an exercise, you can try varying the learning rate and seeing how the test loss curve changes. More on fine tuning the learning rate is in the next section!</p>
 </section>
@@ -545,13 +547,13 @@ Average MSE loss on test set (30 samples): 0.2268</code></pre>
 <h3 class="anchored" data-anchor-id="choosing-number-of-epochs">Choosing number of epochs</h3>
 <p>Determining the optimal <a href="https://deepai.org/machine-learning-glossary-and-terms/epoch">number of epochs</a> is crucial for neural network design. Too few, and our model will not learn properly; too many, and it may overfit, learning data noise rather than useful patterns. The right number is typically found through experimentation and monitoring performance on a validation set. You can also sometimes set the training to stop early if you reach a certain MSE threshold.</p>
 <div id="13" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What is an epoch? One run of all the batches. </span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What is an epoch? One run of all the batches. </span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>num_epochs <span class="op">=</span> <span class="dv">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>num_epochs <span class="op">=</span> <span class="dv">100</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>As an exercise, you can try increasing or decreasing the number of epochs to analyse how it affects our training.</p>
 <div id="15" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>train_losses <span class="op">=</span> []</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>train_losses <span class="op">=</span> []</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>test_losses <span class="op">=</span> []</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Training loop</span></span>
@@ -601,23 +603,23 @@ Average MSE loss on test set (30 samples): 0.2268</code></pre>
 <span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"Training and Testing Loss Curves, Epochs: </span><span class="sc">{</span>num_epochs<span class="sc">}</span><span class="ss">, Learning Rate: </span><span class="sc">{</span>Learning_rate<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Epoch [10/100], Train Loss: 0.1955, Test Loss: 0.1906
-Epoch [20/100], Train Loss: 0.1381, Test Loss: 0.1291
-Epoch [30/100], Train Loss: 0.1072, Test Loss: 0.0956
-Epoch [40/100], Train Loss: 0.0909, Test Loss: 0.0784
-Epoch [50/100], Train Loss: 0.0777, Test Loss: 0.0648
-Epoch [60/100], Train Loss: 0.0664, Test Loss: 0.0534
-Epoch [70/100], Train Loss: 0.0569, Test Loss: 0.0441
-Epoch [80/100], Train Loss: 0.0489, Test Loss: 0.0364
-Epoch [90/100], Train Loss: 0.0420, Test Loss: 0.0309
-Epoch [100/100], Train Loss: 0.0362, Test Loss: 0.0265</code></pre>
+<pre><code>Epoch [10/100], Train Loss: 0.1929, Test Loss: 0.1914
+Epoch [20/100], Train Loss: 0.1550, Test Loss: 0.1514
+Epoch [30/100], Train Loss: 0.1250, Test Loss: 0.1171
+Epoch [40/100], Train Loss: 0.1052, Test Loss: 0.0935
+Epoch [50/100], Train Loss: 0.0931, Test Loss: 0.0797
+Epoch [60/100], Train Loss: 0.0836, Test Loss: 0.0696
+Epoch [70/100], Train Loss: 0.0758, Test Loss: 0.0613
+Epoch [80/100], Train Loss: 0.0688, Test Loss: 0.0541
+Epoch [90/100], Train Loss: 0.0628, Test Loss: 0.0479
+Epoch [100/100], Train Loss: 0.0569, Test Loss: 0.0425</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="10-Training-pipeline_files/figure-html/cell-8-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="10-Training-pipeline_files/figure-html/cell-8-output-2.png" width="829" height="523" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -625,7 +627,7 @@ Epoch [100/100], Train Loss: 0.0362, Test Loss: 0.0265</code></pre>
 <p>With small datasets (like Iris), the variance between train and test splits can lead to test loss being lower by chance — particularly if the test set is slightly easier to model.</p>
 <p>For classification problems it’s good practise to visualise a confusion matrix to see how well our classifier predicts each class. We are using a very small, clean dataset here so it’s not surprising that our MLP performs very well.</p>
 <div id="17" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -649,11 +651,11 @@ Epoch [100/100], Train Loss: 0.0362, Test Loss: 0.0265</code></pre>
 <span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Confusion Matrix"</span>)</span>
 <span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Predicted Label"</span>)</span>
 <span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"True Label"</span>)</span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="10-Training-pipeline_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="10-Training-pipeline_files/figure-html/cell-9-output-1.png" width="655" height="523" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -715,13 +717,14 @@ Epoch [100/100], Train Loss: 0.0362, Test Loss: 0.0265</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

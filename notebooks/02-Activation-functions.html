@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -69,14 +69,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../notebooks/01-Perceptron.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-4a990d8dcb58f517c7c86712b8f2ac7c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-a6e161b2431e1f94a14e0f5d32135a3c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-222286a752683b944f2c3c4d26cb26ea.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-ff2659f7572b4fbde40ceb06a3f86054.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -119,7 +120,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -161,7 +162,8 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-center sidebar-header sidebar-header-stacked">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="../assets/UoB_RGB_24.png" alt="Jean Golding Institute Logo" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="../assets/UoB_RGB_24.png" alt="Jean Golding Institute Logo" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../assets/UoB_RGB_24.png" alt="Jean Golding Institute Logo" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Introduction to AI</a> 
@@ -369,7 +371,7 @@ window.Quarto = {
 </figure>
 </div>
 <div id="cell-4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:15,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1746606877200,&quot;user&quot;:{&quot;displayName&quot;:&quot;Boyi Li&quot;,&quot;userId&quot;:&quot;16254815089781686313&quot;},&quot;user_tz&quot;:-60}}" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> toy_MLP(<span class="bu">input</span>, weights, bias):</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
@@ -388,11 +390,11 @@ window.Quarto = {
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> hidden_layer[<span class="dv">0</span>] <span class="op">*</span> weights[<span class="dv">4</span>] <span class="op">+</span> hidden_layer[<span class="dv">1</span>] <span class="op">*</span> weights[<span class="dv">5</span>] <span class="op">+</span> bias[<span class="dv">2</span>]</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Because we are doing a classification task, we want discrete outputs, so we return 1 if the output is positive and 0 otherwise</span></span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> <span class="dv">1</span> <span class="cf">if</span> output <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> output</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can see that when we run this with some weights and biases we get some sense in which we are right or wrong:</p>
 <div id="cell-6" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:14,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1746606879637,&quot;user&quot;:{&quot;displayName&quot;:&quot;Boyi Li&quot;,&quot;userId&quot;:&quot;16254815089781686313&quot;},&quot;user_tz&quot;:-60}}" data-outputid="e75dccc7-ae1c-42ce-cac4-071315c3b290" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Change the values in the below numpy arrays to test the function with different inputs</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Change the values in the below numpy arrays to test the function with different inputs</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> np.array([<span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="fl">0.6</span>])</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>bias <span class="op">=</span> np.array([<span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>])</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -401,7 +403,7 @@ window.Quarto = {
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> toy_MLP(XORinputs[i], weights, bias)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"For input: </span><span class="sc">{</span>XORinputs[i]<span class="sc">}</span><span class="ss"> we wanted to get </span><span class="sc">{</span>XORoutputs[i]<span class="sc">}</span><span class="ss"> and got </span><span class="sc">{</span>output<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"For input: </span><span class="sc">{</span>XORinputs[i]<span class="sc">}</span><span class="ss"> we wanted to get </span><span class="sc">{</span>XORoutputs[i]<span class="sc">}</span><span class="ss"> and got </span><span class="sc">{</span>output<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>For input: [0 0] we wanted to get 0 and got 1
 For input: [0 1] we wanted to get 1 and got 1
@@ -411,7 +413,7 @@ For input: [1 1] we wanted to get 0 and got 1</code></pre>
 </div>
 <p>Run the code below by changing the values of the weights and biases and see what happens to the decision boundary.</p>
 <div id="cell-8" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:3344,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1746606884585,&quot;user&quot;:{&quot;displayName&quot;:&quot;Boyi Li&quot;,&quot;userId&quot;:&quot;16254815089781686313&quot;},&quot;user_tz&quot;:-60}}" data-outputid="7287ea6e-fdcf-47c7-b84b-e03cb35940cb" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.lines <span class="im">import</span> Line2D</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> cycle</span>
@@ -462,11 +464,11 @@ For input: [1 1] we wanted to get 0 and got 1</code></pre>
 <span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>XORoutputs <span class="op">=</span> np.array([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>])</span>
 <span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> np.array([<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="fl">0.6</span>])</span>
 <span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>bias <span class="op">=</span> np.array([<span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>])</span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>decision_boundary_toy_mlp(function <span class="op">=</span> toy_MLP, weights <span class="op">=</span> weights, bias <span class="op">=</span> bias, XORinputs <span class="op">=</span> XORinputs, XORoutputs <span class="op">=</span> XORoutputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>decision_boundary_toy_mlp(function <span class="op">=</span> toy_MLP, weights <span class="op">=</span> weights, bias <span class="op">=</span> bias, XORinputs <span class="op">=</span> XORinputs, XORoutputs <span class="op">=</span> XORoutputs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="02-Activation-functions_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="02-Activation-functions_files/figure-html/cell-4-output-1.png" width="613" height="437" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -502,7 +504,7 @@ For input: [1 1] we wanted to get 0 and got 1</code></pre>
 <section id="tanhx-fracex-e-xexe-x." class="level4">
 <h4 class="anchored" data-anchor-id="tanhx-fracex-e-xexe-x."><span class="math inline">\(\tanh(x) := \frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}.\)</span></h4>
 <div id="cell-12" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:345,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1743065395098,&quot;user&quot;:{&quot;displayName&quot;:&quot;Boyi Li&quot;,&quot;userId&quot;:&quot;16254815089781686313&quot;},&quot;user_tz&quot;:0}}" data-outputid="dc0864d7-6f6d-4e82-b1da-94b83593c9a6" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Sigmoid</span></span>
@@ -527,17 +529,17 @@ For input: [1 1] we wanted to get 0 and got 1</code></pre>
 <span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
 <span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>plt.plot(x, tanh(x))</span>
 <span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Tanh'</span>)</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="02-Activation-functions_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="02-Activation-functions_files/figure-html/cell-5-output-1.png" width="943" height="357" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <div id="cell-13" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Recode toy_mlp function with activation functions</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Recode toy_mlp function with activation functions</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> toy_MLP_with_activations(<span class="bu">input</span>, weights, bias, activation_function<span class="op">=</span><span class="va">None</span>):</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
@@ -565,11 +567,11 @@ For input: [1 1] we wanted to get 0 and got 1</code></pre>
 <span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(output)</span></span>
 <span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Because we are doing a classification task, we want discrete outputs, so we return 1 if the output is positive and 0 otherwise</span></span>
 <span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> <span class="dv">1</span> <span class="cf">if</span> output <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> output</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can now try again to see if, using an activation function, we can get the right shape for the XOR problem:</p>
 <div id="cell-15" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:16,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1743065400048,&quot;user&quot;:{&quot;displayName&quot;:&quot;Boyi Li&quot;,&quot;userId&quot;:&quot;16254815089781686313&quot;},&quot;user_tz&quot;:0}}" data-outputid="916db109-0c9a-4839-8d75-fcc5d295598a" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Change the values in the below numpy arrays to test the function with different inputs</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Change the values in the below numpy arrays to test the function with different inputs</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>])</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>bias <span class="op">=</span> np.array([<span class="op">-</span><span class="fl">0.1</span>, <span class="op">-</span><span class="fl">1.8</span>, <span class="op">-</span><span class="fl">2.0</span>])</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -578,7 +580,7 @@ For input: [1 1] we wanted to get 0 and got 1</code></pre>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> toy_MLP_with_activations(XORinputs[i], weights, bias, activation_function<span class="op">=</span>tanh)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"For input: </span><span class="sc">{</span>XORinputs[i]<span class="sc">}</span><span class="ss"> we wanted to get </span><span class="sc">{</span>XORoutputs[i]<span class="sc">}</span><span class="ss"> and got </span><span class="sc">{</span>output<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"For input: </span><span class="sc">{</span>XORinputs[i]<span class="sc">}</span><span class="ss"> we wanted to get </span><span class="sc">{</span>XORoutputs[i]<span class="sc">}</span><span class="ss"> and got </span><span class="sc">{</span>output<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>For input: [0 0] we wanted to get 0 and got 0
 For input: [0 1] we wanted to get 1 and got 1
@@ -587,11 +589,11 @@ For input: [1 1] we wanted to get 0 and got 0</code></pre>
 </div>
 </div>
 <div id="cell-16" class="cell" data-outputid="e01241f8-1e86-4e3e-8465-47eed29c972e" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>decision_boundary_toy_mlp(function<span class="op">=</span>toy_MLP_with_activations, weights<span class="op">=</span>weights, bias<span class="op">=</span>bias, XORinputs<span class="op">=</span>XORinputs, XORoutputs<span class="op">=</span>XORoutputs, activation_function<span class="op">=</span>tanh)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>decision_boundary_toy_mlp(function<span class="op">=</span>toy_MLP_with_activations, weights<span class="op">=</span>weights, bias<span class="op">=</span>bias, XORinputs<span class="op">=</span>XORinputs, XORoutputs<span class="op">=</span>XORoutputs, activation_function<span class="op">=</span>tanh)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="02-Activation-functions_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="02-Activation-functions_files/figure-html/cell-8-output-1.png" width="613" height="437" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -661,13 +663,14 @@ For input: [1 1] we wanted to get 0 and got 0</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
