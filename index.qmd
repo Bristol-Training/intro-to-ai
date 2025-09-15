@@ -16,7 +16,7 @@ You can also access individual pages from the course as [Juypter notebooks](http
 
 ## Audience level
 
-You should be comfortable programming in Python. Experience with the content of our [Applied Data Analysis in Python course](https://bristol-training.github.io/applied-data-analysis-in-python/) or equivalent is strongly recommended. This covers:
+You should be comfortable programming in Python. Experience with the content of our [Data Analysis in Python part 2 course](https://bristol-training.github.io/data-analysis-python-2/) or equivalent is strongly recommended. This covers:
 
 - Running python in a Jupyter notebook
 - Working with dataframes/numpy arrays
